@@ -1,0 +1,17 @@
+dist
+node_modules
+public
+.husky
+.vscode
+.idea
+*.sh
+*.md
+*.local
+*.d.ts
+tsconfig.json
+tsconfig.node.json
+tsconfig.app.json
+eslint.config.js
+package.json
+
+src/assets
