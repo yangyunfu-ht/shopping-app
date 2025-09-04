@@ -12,7 +12,7 @@ export const permission: Directive = {
         permissions.includes(permissionId)
       )
       if (!hasPermission && el.parentNode) {
-        ;(el.parentNode as HTMLElement).removeChild(el)
+        el.parentNode.removeChild(el)
       }
     }
 
@@ -20,7 +20,7 @@ export const permission: Directive = {
     if (!Array.isArray(value)) {
       const hasPermission = permissions.includes(value)
       if (!hasPermission && el.parentNode) {
-        ;(el.parentNode as HTMLElement).removeChild(el)
+        el.parentNode.removeChild(el)
       }
     }
   },

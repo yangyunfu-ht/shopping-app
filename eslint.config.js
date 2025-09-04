@@ -27,7 +27,6 @@ export default defineConfig([
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-
         extraFileExtensions: ['.vue'],
       },
     },
@@ -35,6 +34,9 @@ export default defineConfig([
     extends: ['js/recommended'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+      'no-unused-vars': 'off'
     },
   },
   // Vue 文件配置
@@ -49,6 +51,7 @@ export default defineConfig([
     rules: {
       'vue/multi-word-component-names': 'off', // 关闭组件名多单词规则
       'vue/max-attributes-per-line': 'error', //每个属性独占一行
+      'vue/component-definition-name-casing': 'off', // 关闭组件名大小写规则
     },
   },
   // Prettier 配置

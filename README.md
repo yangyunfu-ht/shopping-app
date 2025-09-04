@@ -1,5 +1,16 @@
-# Vue 3 + TypeScript + Vite
+# shopping-app
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 技术栈
+- vue3
+- typescript
+- vue-router
+- pinia
+- axios
+- node -v 22.19.0
+- npm -v 10.9.3
+- pnpm -v 10.15.1
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## 项目启动
+- npm install -g pnpm
+- pnpm install
+- pnpm run dev

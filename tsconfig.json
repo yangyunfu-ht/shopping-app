@@ -1,11 +1,16 @@
 {
   "files": [],
   "compilerOptions": {
+    "jsx": "preserve",
+    "jsxFactory": "vue",
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
       "#/*": ["./types/*"]
-    }
+    },
+    "types": [
+      "element-plus/global"
+    ]
   },
   "references": [
     { "path": "./tsconfig.app.json" },
