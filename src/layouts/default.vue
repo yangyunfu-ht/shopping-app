@@ -1,8 +1,6 @@
 <template>
   <div class="app-container">
-    <!-- <aside class="app-aside"> -->
     <app-aside class="app-aside" />
-    <!-- </aside> -->
 
     <section class="app-content">
       <app-header class="app-header" />
@@ -39,13 +37,14 @@ const cachedRoutes = computed(() => {
 .app-container {
   display: flex;
   flex-direction: row;
+  gap: 8px;
   min-height: 100vh; /* 100vh 表示视口高度的100% */
 }
 
 /* 左侧边栏固定宽度 */
 .app-aside {
-  width: 200px;
-  background-color: #f5f5f5;
+  width: 210px;
+  background-color: var(--el-color-primary);
   flex-shrink: 0; /* 阻止左侧边栏收缩 */
 }
 
@@ -72,6 +71,6 @@ const cachedRoutes = computed(() => {
   flex-grow: 1; /* 占据剩余的水平空间 */
   background-color: #fff;
   overflow-y: auto; /* 关键：只允许垂直滚动 */
-  padding: 8px;
+  padding: 8px 0;
 }
 </style>

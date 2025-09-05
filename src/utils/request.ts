@@ -5,13 +5,10 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios'
 
-// 创建一个 Axios 实例
 const service: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_APP_REQUEST_URL, // 替换为你的后端 API 地址
-  timeout: 5000, // 请求超时时间
+  baseURL: import.meta.env.VITE_APP_REQUEST_URL,
+  timeout: 60000,
 })
-
-export let isTokenExpired = false
 
 // 请求拦截器
 service.interceptors.request.use(
@@ -51,7 +48,6 @@ service.interceptors.response.use(
         case 401:
           // 401: 未登录或 Token 过期，可以跳转到登录页
           console.error('未授权，请重新登录')
-          isTokenExpired = true
           break
         case 404:
           // 404: 资源不存在

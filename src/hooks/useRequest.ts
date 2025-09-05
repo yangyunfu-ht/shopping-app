@@ -1,7 +1,12 @@
-import { onDeactivated, onUnmounted, ref, type Ref } from 'vue'
-import service, { isTokenExpired } from '@/utils/request'
+import { ref, type Ref } from 'vue'
+import service from '@/utils/request'
 import type { AxiosRequestConfig } from 'axios'
 import type { UseRequestReturn } from '#/hooks'
+import axios from 'axios'
+import { useOnline } from '@vueuse/core'
+
+// 全局状态：锁定所有请求，例如当遇到401或5xx错误时
+const isRequestLocked = ref(false)
 
 /**
  * 封装一个通用的请求 Hooks
@@ -18,23 +23,26 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
   const request = async (config: AxiosRequestConfig) => {
     const { url } = config
     if (!url) {
-      console.log('请求缺少 URL')
-      return
+      return Promise.reject(new Error('缺少请求必要参数url'))
     }
 
-    // 在发起请求前，首先检查全局状态
-    if (isTokenExpired) {
-      console.warn('登录信息已过期，阻止新的请求。')
-      error.value = '登录信息已过期'
-      return
+    // 检查设备网络连接
+    const online = useOnline()
+    if (!online) {
+      return Promise.reject(new Error('当前设备网络连接异常'))
     }
 
+    // 1. 在请求发起前检查全局锁定状态
+    if (isRequestLocked.value) {
+      return Promise.reject(new Error('登录信息过期，无法发起任何新请求'))
+    }
+
+    // 判断相同url是否存在未完成的请求，存在则取消该请求
     cancel(url)
 
     loading.value = true
     error.value = null
 
-    // 创建一个新的 AbortController 实例并存储
     const abortController = new AbortController()
     controllerMap.set(url, abortController)
 
@@ -45,8 +53,16 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
       })
       data.value = response as T
     } catch (err: any) {
-      error.value = err
-      console.error('请求出错:', err)
+      if (axios.isCancel(err)) {
+        console.log('请求已取消', err.message)
+      } else {
+        error.value = err
+        if (err.response && err.response.status === 401) {
+          isRequestLocked.value = true
+          cancel()
+        }
+      }
+      throw err
     } finally {
       loading.value = false
     }
@@ -66,19 +82,13 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
     }
   }
 
-  onUnmounted(() => {
-    cancel()
-  })
-
-  onDeactivated(() => {
-    cancel()
-  })
-
   return {
     data,
     loading,
     error,
     request,
+    get: (url, options = {}) => request({ url, ...options }),
+    post: (url, data, options = {}) => request({ url, data, ...options }),
     cancel,
   }
 }

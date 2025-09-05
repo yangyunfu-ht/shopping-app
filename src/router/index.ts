@@ -6,6 +6,7 @@ import {
 } from 'vue-router'
 import { addDynamicRoutes } from './addDynamicRouter'
 import { menuStore } from '@/store/menuStore'
+import { useRequest } from '@/hooks/useRequest'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -149,8 +150,10 @@ router.beforeEach((to, _from, next) => {
   }
 })
 
-// router.afterEach((to) => {
-//   document.title = to.meta?.title as string
-// })
+router.afterEach(() => {
+  const { cancel } = useRequest()
+  // 取消上一个页面的所有请求
+  cancel()
+})
 
 export default router

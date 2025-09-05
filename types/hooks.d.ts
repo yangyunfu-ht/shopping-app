@@ -6,6 +6,8 @@ export interface UseRequestReturn<T = any> {
   loading: Ref<boolean>
   error: Ref<any>
   request: (config: AxiosRequestConfig) => Promise<void> | void
+  get: (url: string, options: Omit<AxiosRequestConfig, 'url'>) => Promise<void> | void
+  post: (url: string, data: any, options: Omit<AxiosRequestConfig, 'url' | 'data'>) => Promise<void> | void
   cancel: (url?: string) => void
 }
 

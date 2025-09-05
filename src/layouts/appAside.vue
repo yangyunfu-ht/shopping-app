@@ -1,7 +1,7 @@
 <template>
   <div class="app-aside-element">
-    <div class="app-logo">app-logo</div>
-    <div class="app-menu-search">app-menu-search</div>
+    <div class="app-logo"></div>
+    <div class="app-menu-search"></div>
     <div class="app-menu-data">
       <renderAppMen :menus="menus" />
     </div>

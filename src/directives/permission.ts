@@ -1,12 +1,14 @@
 import type { Directive, DirectiveBinding } from 'vue'
+import { userStore } from '@/store/userStore'
 
 export const permission: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding
 
-    const permissions: string[] = []
+    const useUserStore = userStore()
 
-    // 如果指令绑定的值是一个数组，则表示需要多个权限中的任意一个
+    const permissions: string[] = useUserStore.permissions
+
     if (Array.isArray(value)) {
       const hasPermission = value.some((permissionId) =>
         permissions.includes(permissionId)
@@ -16,7 +18,6 @@ export const permission: Directive = {
       }
     }
 
-    // 如果指令绑定的值是字符串，则表示需要单个权限
     if (!Array.isArray(value)) {
       const hasPermission = permissions.includes(value)
       if (!hasPermission && el.parentNode) {

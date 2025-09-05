@@ -25,7 +25,17 @@ export default defineComponent({
               index={menu.path}
               key={menu.path}
               v-slots={{
-                title: () => <span>{menu.meta?.title}</span>,
+                title: () => (
+                  <>
+                    <svg-icon
+                      icon={'expand'}
+                      size={18}
+                    ></svg-icon>
+                    <span style={{ paddingLeft: '8px', fontSize: '16px' }}>
+                      {menu.meta?.title}
+                    </span>
+                  </>
+                ),
               }}
             >
               {/* 递归调用时，传入当前路径作为 basePath */}
@@ -57,7 +67,11 @@ export default defineComponent({
             index={menu.path}
             key={menu.path}
             v-slots={{
-              title: () => <span>{menu.meta?.title}</span>,
+              title: () => (
+                <span style={{ paddingLeft: '8px', fontSize: '16px' }}>
+                  {menu.meta?.title}
+                </span>
+              ),
             }}
           ></ElMenuItem>
         )
@@ -68,7 +82,13 @@ export default defineComponent({
       <ElMenu
         uniqueOpened
         router
-        style={{ borderRight: 'none', userSelect: 'none', height: '100%' }}
+        style={{
+          borderRight: 'none',
+          userSelect: 'none',
+          height: '100%',
+          fontSize: '16px',
+          backgroundColor: 'var(--el-color-primary)',
+        }}
       >
         {renderMenu(props.menus)}
       </ElMenu>
