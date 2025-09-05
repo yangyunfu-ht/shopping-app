@@ -9,6 +9,19 @@ import legacy from '@vitejs/plugin-legacy'
 import postcssPresetEnv from 'postcss-preset-env'
 import autoprefixer from 'autoprefixer'
 import gapProperties from 'postcss-gap-properties'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+
+const vendorLibs = [
+  'vue',
+  'vue-router',
+  'pinia',
+  'element-plus',
+  'lodash-es',
+  'ag-grid.css',
+  'ag-theme-alpine',
+  'ag-grid-community',
+  '@ctrl',
+]
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -40,6 +53,12 @@ export default defineConfig({
       polyfills: true, // 启用 polyfills
       additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
       modernPolyfills: true, // 按需注入现代特性 Polyfill
+    }),
+    createSvgIconsPlugin({
+      // 指定需要缓存的图标文件夹
+      iconDirs: [resolve(__dirname, 'src/assets/icons')],
+      // 指定symbolId格式
+      symbolId: 'icon-[dir]-[name]',
     }),
   ],
   resolve: {

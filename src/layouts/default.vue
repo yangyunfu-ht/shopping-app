@@ -1,38 +1,43 @@
 <template>
-  <el-container>
-    <el-header>Header</el-header>
-    <el-container>
-      <el-aside width="200px">Aside</el-aside>
-      <el-main style="overflow-y: auto">
-        <div style="height: 100%">
-          {{ cachedRoutes }}
-          <RouterLink
-            to="/home"
-            style="padding-right: 100px"
-            >首页</RouterLink
-          >
-
-          <RouterLink
-            to="/about"
-            style="padding-right: 100px"
-            >关于</RouterLink
-          >
-
-          <RouterLink
-            to="/mine"
-            style="padding-right: 100px"
-            >我的</RouterLink
-          >
-
-          <router-view v-slot="{ Component }">
-            <keep-alive :include="cachedRoutes">
-              <component :is="Component"></component>
-            </keep-alive>
-          </router-view>
-        </div>
-      </el-main>
-    </el-container>
-  </el-container>
+  <div class="app-container">
+    <header
+      class="app-header"
+      style="padding-left: 200px"
+    >
+      app-header
+      <RouterLink
+        to="/home"
+        style="margin-right: 100px"
+        >首页</RouterLink
+      >
+      <RouterLink
+        to="/about"
+        style="margin-right: 100px"
+        >关于</RouterLink
+      >
+      <RouterLink
+        to="/mine"
+        style="margin-right: 100px"
+        >我的</RouterLink
+      >
+      <RouterLink
+        to="/data"
+        style="margin-right: 100px"
+        >数据</RouterLink
+      >
+    </header>
+    <section class="app-content">
+      <aside class="app-content__aside">app-content__aside</aside>
+      <main class="app-content__main">
+        <!-- <div>app-content__main</div> -->
+        <RouterView v-slot="{ Component }">
+          <KeepAlive :include="cachedRoutes">
+            <component :is="Component"></component>
+          </KeepAlive>
+        </RouterView>
+      </main>
+    </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -50,19 +55,42 @@ const cachedRoutes = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.el-container {
-  min-height: 100vh;
+/* 设置父容器，使其占据整个视口 */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 100vh 表示视口高度的100% */
+}
 
-  .el-aside {
-    background-color: var(--el-color-primary);
-  }
+/* 头部固定高度 */
+.app-header {
+  height: 50px;
+  background-color: #f0f0f0;
+  flex-shrink: 0; /* 阻止头部收缩 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .el-header {
-    background-color: var(--el-color-danger);
-  }
+/* 内容区，占据剩余空间 */
+.app-content {
+  display: flex;
+  flex-grow: 1; /* 占据剩余的垂直空间 */
+  overflow: hidden; /* 防止父容器滚动，将滚动行为交给子元素 */
+}
 
-  .el-main {
-    --el-main-padding: 8px;
-  }
+/* 左侧边栏固定宽度 */
+.app-content__aside {
+  width: 200px;
+  background-color: #e0e0e0;
+  flex-shrink: 0; /* 阻止左侧边栏收缩 */
+}
+
+/* 主要内容区，占据剩余空间并允许内部滚动 */
+.app-content__main {
+  flex-grow: 1; /* 占据剩余的水平空间 */
+  background-color: #fff;
+  overflow-y: auto; /* 关键：只允许垂直滚动 */
+  padding: 8px;
 }
 </style>

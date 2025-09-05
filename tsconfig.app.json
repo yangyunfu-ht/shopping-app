@@ -25,6 +25,7 @@
     "noUncheckedSideEffectImports": true,
 
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "jsxFactory": "vue",
 
     "baseUrl": "./",

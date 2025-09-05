@@ -7,6 +7,12 @@ import {
 // import { addDynamicRoutes } from './addDynamicRouter'
 // import type { DynamicRoute } from '#/router'
 
+const appLayoutsMap = import.meta.glob('@/layouts/**/**.vue')
+const appPagesMap = import.meta.glob('@/pages/**/**.vue')
+
+console.log(appLayoutsMap, 'appLayoutsMap')
+console.log(appPagesMap, 'appPagesMap')
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -61,6 +67,22 @@ const routes: RouteRecordRaw[] = [
         meta: {
           keepAlive: true,
           title: '我的',
+        },
+      },
+    ],
+  },
+  {
+    path: '/data',
+    name: 'data',
+    component: () => import('@/layouts/default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'dataPage',
+        component: () => import('@/pages/data/dataPage.vue'),
+        meta: {
+          keepAlive: true,
+          title: '数据',
         },
       },
     ],

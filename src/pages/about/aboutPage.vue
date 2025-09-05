@@ -1,7 +1,7 @@
 <template>
   <div>
     {{ keepAlive ? 1 : 0 }}
-    <hello-world msg="关于页面" />
+
     <input
       v-model="value"
       type="text"
@@ -11,7 +11,6 @@
 
 <script setup lang="ts">
 import { computed, onActivated, onMounted, ref } from 'vue'
-import helloWorld from '@/components/helloWorld.vue'
 import { useRoute } from 'vue-router'
 
 defineOptions({
