@@ -108,7 +108,7 @@ export default defineConfig({
     },
     emptyOutDir: true,
     cssCodeSplit: true,
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 1024,
     rollupOptions: {
       input: {
         index: resolve(__dirname, 'index.html'),
@@ -124,7 +124,11 @@ export default defineConfig({
         },
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            return 'vendors'
+            const match = vendorLibs.find((lib) => id.includes(lib))
+            if (match) {
+              return `vendor-${match}`
+            }
+            return 'vendor'
           }
         },
       },

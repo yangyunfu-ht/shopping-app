@@ -1,6 +1,7 @@
 <template>
   <div>
     {{ keepAlive ? 1 : 0 }}
+    <h2>我的</h2>
     <input
       v-model="value"
       type="text"

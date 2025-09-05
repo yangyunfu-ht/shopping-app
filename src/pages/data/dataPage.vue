@@ -1,7 +1,7 @@
 <template>
   <page-layout>
     <template #search>
-      <div style="background-color: burlywood; height: 60px"></div>
+      <div style="height: 60px"></div>
     </template>
     <template #buttons>
       <el-button type="primary">新增</el-button>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import usePagination from '@/hooks/usePagination'
+import { usePagination } from '@/hooks/usePagination'
 import type {
   ColDef,
   ValueGetterParams,
@@ -44,7 +44,7 @@ const {
   setTotal,
   changeCurrent,
   changePageSize,
-} = usePagination(() => getTableData())
+} = usePagination({ callback: () => getTableData() })
 
 const gridApi = shallowRef<GridApi<any> | null>(null)
 const onGridReady = (params: GridReadyEvent) => {
@@ -54,11 +54,11 @@ const onGridReady = (params: GridReadyEvent) => {
 const selectRow = ref([])
 const tableData = ref([])
 const getTableData = async () => {
+  setTotal(1000)
   gridApi.value!.setFilterModel(null)
   gridApi.value!.deselectAll()
 
   gridApi.value!.setRowData(tableData.value)
-  setTotal(0)
 }
 
 const columnDefs = ref<ColDef[]>([

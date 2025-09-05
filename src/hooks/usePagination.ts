@@ -1,38 +1,41 @@
-import { reactive, toRefs } from 'vue'
+import type { UsePaginationOptions } from '#/hooks'
+import { ref } from 'vue'
 
-type Callback = () => void
+/**
+ * 封装分页逻辑的 Hooks
+ * @param {object} options - 配置项
+ * @param {number} options.initialPage - 初始页码，默认为 1
+ * @param {number} options.initialPageSize - 初始每页条数，默认为 10
+ * @param {function} options.callback - 页码或每页条数改变后的回调函数
+ */
+export function usePagination(options: UsePaginationOptions) {
+  const {
+    initialPage = 1,
+    initialPageSize = 100,
+    initialPageSizes = [50, 100, 200],
+  } = options
 
-type Options = {
-  defaultPageSize?: number
-  defaultPageSizes?: number[]
-}
+  // 核心状态
+  const currentPage = ref(initialPage)
+  const pageSize = ref(initialPageSize)
+  const pageSizes = ref(initialPageSizes)
+  const total = ref(0)
 
-export default function usePagination(
-  callback: Callback,
-  options: Options = { defaultPageSize: 100, defaultPageSizes: [50, 100, 200] }
-) {
-  const pagination = reactive({
-    currentPage: 1,
-    pageSize: options.defaultPageSize,
-    pageSizes: options.defaultPageSizes,
-    total: 0,
-    onChange: (size: number) => {
-      pagination.currentPage = size
-      callback && callback()
-    },
-    onPagesizeChange: (size: number) => {
-      pagination.currentPage = 1
-      pagination.pageSize = size
-      callback && callback()
-    },
-  })
+  // 方法：改变页码
+  const changeCurrent = (page: number) => {
+    currentPage.value = page
+    options.callback &&
+      options.callback({ page: currentPage.value, pageSize: pageSize.value })
+  }
 
-  const changeCurrent = pagination.onChange
-  const changePageSize = pagination.onPagesizeChange
-  const setTotal = (value: number) => (pagination.total = value)
+  // 方法：改变每页条数
+  const changePageSize = (size: number) => {
+    pageSize.value = size
+    options.callback &&
+      options.callback({ page: currentPage.value, pageSize: pageSize.value })
+  }
 
-  const { currentPage, pageSize, pageSizes, total } = toRefs(pagination)
-
+  // 暴露给外部使用
   return {
     currentPage,
     pageSize,
@@ -40,6 +43,8 @@ export default function usePagination(
     total,
     changeCurrent,
     changePageSize,
-    setTotal,
+    setTotal: (newTotal: number) => {
+      total.value = newTotal
+    },
   }
 }

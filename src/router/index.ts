@@ -4,19 +4,17 @@ import {
   type Router,
   type RouteRecordRaw,
 } from 'vue-router'
-// import { addDynamicRoutes } from './addDynamicRouter'
-// import type { DynamicRoute } from '#/router'
-
-const appLayoutsMap = import.meta.glob('@/layouts/**/**.vue')
-const appPagesMap = import.meta.glob('@/pages/**/**.vue')
-
-console.log(appLayoutsMap, 'appLayoutsMap')
-console.log(appPagesMap, 'appPagesMap')
+import { addDynamicRoutes } from './addDynamicRouter'
+import { menuStore } from '@/store/menuStore'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'loginPage',
+    redirect: '/login',
+  },
+  {
+    path: '/login',
+    name: 'login',
     component: () => import('@/pages/login/loginPage.vue'),
     meta: {
       keepAlive: false,
@@ -29,7 +27,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/layouts/default.vue'),
     children: [
       {
-        path: '',
+        path: 'homePage',
         name: 'homePage',
         component: () => import('@/pages/home/homePage.vue'),
         meta: {
@@ -39,15 +37,28 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+]
+
+const router: Router = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+
+let hasAddedDynamicRoutes = false
+const mockRoutes = [
   {
     path: '/about',
     name: 'about',
-    component: () => import('@/layouts/default.vue'),
+    component: '/src/layouts/default.vue',
+    meta: {
+      keepAlive: false,
+      title: '关于管理',
+    },
     children: [
       {
-        path: '',
+        path: 'aboutPage',
         name: 'aboutPage',
-        component: () => import('@/pages/about/aboutPage.vue'),
+        component: '/src/pages/about/aboutPage.vue',
         meta: {
           keepAlive: false,
           title: '关于',
@@ -58,12 +69,16 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/mine',
     name: 'mine',
-    component: () => import('@/layouts/default.vue'),
+    component: '/src/layouts/default.vue',
+    meta: {
+      keepAlive: false,
+      title: '我的管理',
+    },
     children: [
       {
-        path: '',
+        path: 'minePage',
         name: 'minePage',
-        component: () => import('@/pages/mine/minePage.vue'),
+        component: '/src/pages/mine/minePage.vue',
         meta: {
           keepAlive: true,
           title: '我的',
@@ -74,12 +89,16 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/data',
     name: 'data',
-    component: () => import('@/layouts/default.vue'),
+    component: '/src/layouts/default.vue',
+    meta: {
+      keepAlive: false,
+      title: '数据管理',
+    },
     children: [
       {
-        path: '',
+        path: 'dataPage',
         name: 'dataPage',
-        component: () => import('@/pages/data/dataPage.vue'),
+        component: '/src/pages/data/dataPage.vue',
         meta: {
           keepAlive: true,
           title: '数据',
@@ -87,89 +106,51 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  {
-    path: '/404',
-    name: '404',
-    component: () => import('@/layouts/default.vue'),
-    children: [
-      {
-        path: '',
-        name: 'notFoundPage',
-        component: () => import('@/pages/notFound/notFoundPage.vue'),
-      },
-    ],
-  },
-  // 匹配所有路径的路由，必须放在最后
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/404',
-  },
 ]
+// 在 router.js 或 main.js 中
+router.beforeEach((to, _from, next) => {
+  const useMenuStore = menuStore()
+  const token = localStorage.getItem('token')
 
-const router: Router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
-
-// let hasAddedDynamicRoutes = false
-// router.beforeEach(async (to, _from, next) => {
-//   // 获取 token，用于判断用户是否登录
-//   const token = localStorage.getItem('token')
-
-//   // 1. 如果是访问登录页，直接放行
-//   if (to.path === '/') {
-//     next()
-//     return // 结束守卫
-//   }
-
-//   // 2. 如果没有 token（未登录）
-//   if (!token) {
-//     // 强制跳转到登录页
-//     next({ path: '/', query: { redirect: to.fullPath } })
-//     return
-//   }
-
-//   // 3. 如果有 token（已登录）
-//   if (token) {
-//     // 检查是否已经添加了动态路由
-//     if (!hasAddedDynamicRoutes) {
-//       try {
-//         // 模拟获取用户路由数据的 API 请求
-//         // 实际项目中，这里会调用你的API
-//         const mockRoutes = [
-//           { path: '/dashboard', name: 'Dashboard' },
-//           { path: '/products', name: 'Products' },
-//         ]
-
-//         // 调用动态添加路由的函数
-//         addDynamicRoutes(mockRoutes as DynamicRoute[], router).catch(() => {
-//           // 如果添加路由失败，强制返回登录页
-//           localStorage.removeItem('token')
-//           next('/')
-//         })
-
-//         // 标记为已添加，避免重复执行
-//         hasAddedDynamicRoutes = true
-
-//         // 确保路由被正确添加后再进行跳转
-//         // 使用 next(to.fullPath) 确保这次的导航可以重新执行，
-//         // 并且能找到刚刚添加的新路由
-//         next({ ...to, replace: true })
-//       } catch (error) {
-//         // 如果获取路由失败，可能是 token 无效，强制返回登录页
-//         console.error('Failed to get dynamic routes:', error)
-//         localStorage.removeItem('token')
-//         next('/')
-//       }
-//     } else {
-//       // 动态路由已添加，直接放行
-//       next()
-//     }
-//   }
-// })
-
-router.afterEach((to) => {
   document.title = to.meta?.title as string
+
+  // 如果没有 token 且目标路径不是登录页，则重定向到登录页
+  if (!token && to.path !== '/login') {
+    return next('/login')
+  }
+
+  // 如果有 token 且目标路径是登录页，则重定向到主页
+  if (token && to.path === '/login') {
+    return next('/home/homePage')
+  }
+
+  // 如果有 token 且动态路由还未添加
+  if (token && !hasAddedDynamicRoutes) {
+    // 异步添加动态路由
+    // 注意：这里必须使用 next() 来放行，或者返回一个 Promise
+    addDynamicRoutes(mockRoutes)
+      .then((data) => {
+        useMenuStore.setAppMenus(data)
+        hasAddedDynamicRoutes = true
+        // 动态路由添加成功后，确保本次导航能继续，
+        // 并且利用 next() 的参数来重新触发一次导航。
+        // 这次导航会因为 hasAddedDynamicRoutes 为 true 而直接放行。
+        return next({ ...to, replace: true })
+      })
+      .catch(() => {
+        // 如果添加失败，则移除 token 并重定向到登录页
+        useMenuStore.setAppMenus([])
+        localStorage.removeItem('token')
+        return next('/login')
+      })
+  } else {
+    // 动态路由已添加，或者没有 token，直接放行
+    return next()
+  }
 })
+
+// router.afterEach((to) => {
+//   document.title = to.meta?.title as string
+// })
 
 export default router

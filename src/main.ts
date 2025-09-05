@@ -2,6 +2,9 @@ import 'virtual:svg-icons-register'
 
 import { createApp } from 'vue'
 import App from './App.tsx'
+// import ElementPlus from 'element-plus'
+
+import 'element-plus/dist/index.css'
 
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-alpine.css'
@@ -17,6 +20,7 @@ import directives from '@/directives'
 import components from '@/components'
 
 const app = createApp(App)
+// app.use(ElementPlus)
 app.use(router)
 app.use(store)
 app.use(directives)
