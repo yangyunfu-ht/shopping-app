@@ -10,11 +10,14 @@ declare module 'vue' {
   export interface GlobalComponents {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
+    ElCol: typeof import('element-plus/es')['ElCol']
+    ElCollapseTransition: typeof import('element-plus/es')['ElCollapseTransition']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElRow: typeof import('element-plus/es')['ElRow']
     ElSubMenuGroup: typeof import('element-plus/es')['ElSubMenuGroup']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     GridTable: typeof import('./src/components/gridTable/index.vue')['default']
@@ -22,6 +25,7 @@ declare module 'vue' {
     PageLayout: typeof import('./src/components/pageLayout/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchCollapse: typeof import('./src/components/searchCollapse/index.vue')['default']
   }
   export interface GlobalDirectives {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

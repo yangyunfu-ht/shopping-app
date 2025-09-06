@@ -57,12 +57,10 @@ const cachedRoutes = computed(() => {
 
 /* 头部固定高度 */
 .app-header {
-  height: 60px;
-  background-color: #f5f5f5;
+  height: 56px;
+  // background-color: #f5f5f5;
   flex-shrink: 0; /* 阻止头部收缩 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border-bottom: 4px solid #f5f5f5;
 }
 
 /* 主要内容区，占据剩余空间并允许内部滚动 */
@@ -70,6 +68,5 @@ const cachedRoutes = computed(() => {
   flex-grow: 1; /* 占据剩余的水平空间 */
   background-color: #fff;
   overflow-y: auto; /* 关键：只允许垂直滚动 */
-  padding: 8px 8px 8px;
 }
 </style>

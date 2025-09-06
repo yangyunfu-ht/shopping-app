@@ -88,5 +88,51 @@ const onLogin = async (formEl: FormInstance | undefined) => {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/loginPage.scss';
+/* 整个登录页面的背景 */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('https://picsum.photos/1920/1080'); /* Replace with your background image */
+  background-size: cover;
+  background-position: center;
+}
+
+/* 登录卡片容器 */
+.login-card {
+  width: 400px;
+  max-width: 90%;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* The key for the frosted glass effect */
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Adjust Element Plus components for better visibility */
+:deep(.el-input__inner) {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  backdrop-filter: blur(5px);
+}
+
+:deep(.el-form-item__label) {
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Make sure the placeholder text is visible */
+:deep(.el-input__inner::placeholder) {
+  color: #ccc;
+}
 </style>

@@ -1,13 +1,107 @@
 <template>
   <page-layout>
     <template #search>
-      <div style="height: 60px"></div>
+      <search-collapse>
+        <el-form label-width="100px">
+          <el-row>
+            <el-col v-bind="wrapperColSmall">
+              <el-form-item label="查询条件">
+                <el-input></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col v-bind="wrapperColSmall">
+              <el-form-item label="查询条件">
+                <el-input></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col v-bind="wrapperColLarge">
+              <el-form-item label="查询条件">
+                <el-input></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col v-bind="wrapperColSmall">
+              <el-form-item label="查询条件">
+                <el-input></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col v-bind="wrapperColSmall">
+              <el-form-item label="查询条件">
+                <el-input></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col v-bind="wrapperColLarge">
+              <el-form-item label="查询条件">
+                <el-input></el-input>
+              </el-form-item>
+            </el-col>
+            <!-- <el-col v-bind="wrapperColSmall">
+              <el-form-item label="查询条件">
+                <el-input></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col v-bind="wrapperColSmall">
+              <el-form-item label="查询条件">
+                <el-input></el-input>
+              </el-form-item>
+            </el-col> -->
+          </el-row>
+        </el-form>
+
+        <template #collapse>
+          <el-form label-width="100px">
+            <el-row>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </template>
+      </search-collapse>
     </template>
+
     <template #buttons>
       <el-button type="primary">新增</el-button>
       <el-button type="warning">修改</el-button>
       <el-button type="danger">删除</el-button>
     </template>
+
     <template #table>
       <grid-table
         :row-data="tableData"
@@ -35,6 +129,7 @@ import type {
   GridReadyEvent,
 } from 'ag-grid-community'
 import { ref, shallowRef } from 'vue'
+import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
 
 const {
   currentPage,

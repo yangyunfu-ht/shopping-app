@@ -3,7 +3,7 @@
     <div>
       <ag-grid-vue
         class="ag-theme-alpine"
-        style="width: 100%; height: 100%; min-height: 300px; overflow: hidden"
+        style="width: 100%; height: 100%; min-height: 200px; overflow: hidden"
         :header-height="32"
         :row-height="32"
         :grid-options="gridOptions"
@@ -340,6 +340,8 @@ const emits = defineEmits<{
   --ag-input-focus-border-color: var(--el-color-primary) !important;
   /* 表格单元格聚焦边框颜色 */
   --ag-range-selection-border-color: var(--el-color-primary) !important;
+  /* 表格字体*/
+  --ag-font-family: var(--el-font-family) !important;
 }
 
 /* 单元格有边框样式 */
@@ -359,13 +361,11 @@ const emits = defineEmits<{
 .ag-header-cell-label {
   justify-content: center;
   font-size: 13px;
-  font-weight: 700;
 }
 
 .ag-header-row .ag-header-group-cell {
   justify-content: center;
   font-size: 13px;
-  font-weight: 700;
   border-right: var(--ag-borders) var(--ag-border-color);
 }
 

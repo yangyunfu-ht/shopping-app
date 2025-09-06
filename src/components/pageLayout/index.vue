@@ -23,18 +23,21 @@
   grid-template-rows: auto auto 1fr;
   grid-template-columns: 1fr;
   background-color: #fff;
-  row-gap: 4px;
+  row-gap: 8px;
 
   .page-layout-search {
-    border-bottom: 2px solid #f5f5f5;
+    border-bottom: 4px solid #f5f5f5;
   }
 
   .page-layout-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 4px 8px;
+  }
+
+  .page-layout-table {
+    padding: 0 8px 8px 8px;
   }
 }
 </style>

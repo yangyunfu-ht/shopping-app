@@ -12,7 +12,7 @@ export function usePagination(options: UsePaginationOptions) {
   const {
     initialPage = 1,
     initialPageSize = 100,
-    initialPageSizes = [50, 100, 200],
+    initialPageSizes = [100, 200, 300, 400, 500],
   } = options
 
   // 核心状态

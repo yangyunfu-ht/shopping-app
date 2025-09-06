@@ -2,6 +2,7 @@ import type { App } from 'vue'
 import pageLayout from './pageLayout/index.vue'
 import gridTable from './gridTable/index.vue'
 import svgIcon from './svgIcon/svgIcon'
+import searchCollapse from './searchCollapse/index.vue'
 
 const globalComponent = [
   {
@@ -15,6 +16,10 @@ const globalComponent = [
   {
     name: 'svgIcon',
     component: svgIcon,
+  },
+  {
+    name: 'searchCollapse',
+    component: searchCollapse,
   },
 ]
 

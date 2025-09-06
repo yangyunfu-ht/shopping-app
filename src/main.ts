@@ -6,15 +6,15 @@ import App from './app.tsx'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-alpine.css'
 
-import 'normalize.css'
-import '@/styles/style.scss'
-
 import 'element-plus/dist/index.css'
-import router from '@/router'
-import store from '@/store'
+import 'normalize.css'
+import './styles/style.scss'
 
-import directives from '@/directives'
-import components from '@/components'
+import router from './router'
+import store from './store'
+
+import directives from './directives'
+import components from './components'
 
 const app = createApp(App)
 app.use(router)

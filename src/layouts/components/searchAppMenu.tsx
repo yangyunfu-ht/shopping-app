@@ -65,7 +65,7 @@ export default defineComponent({
           trigger-on-focus={triggerOnFocus.value}
           onSelect={handleSelect}
           onChange={handleChange}
-          style={{ width: '100%' }}
+          style={{ width: '100%', '--el-input-height': '38px' }}
         >
           {{
             prefix: () => (
