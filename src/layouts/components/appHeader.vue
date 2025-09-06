@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <header>
     <RouterLink
       to="/home/homePage"
       style="margin-right: 100px"
@@ -25,7 +25,7 @@
       @click="handleBack"
       >返回首页</el-button
     >
-  </div>
+  </header>
 </template>
 
 <script setup lang="ts">

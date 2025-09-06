@@ -1,15 +1,20 @@
 <template>
-  <div class="app-aside-element">
-    <div class="app-logo"></div>
-    <div class="app-menu-search"></div>
-    <div class="app-menu-data">
-      <renderAppMen :menus="menus" />
-    </div>
-  </div>
+  <aside class="app-aside-element">
+    <appLogo class="app-logo" />
+
+    <searchAppMenu class="app-menu-search" />
+
+    <renderAppMen
+      class="app-menu-data"
+      :menus="menus"
+    />
+  </aside>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import appLogo from './appLogo'
+import searchAppMenu from './searchAppMenu'
 import renderAppMen from './renderAppMenu'
 import { menuStore } from '@/store/menuStore'
 

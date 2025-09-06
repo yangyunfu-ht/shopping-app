@@ -15,7 +15,7 @@
         :column-defs="columnDefs"
         :row-selection="rowSelection"
         :pinned-bottom-row-data="pinnedBottomRowData"
-        :noRowsOverlayComponent="noRowsOverlay"
+        :noRowsOverlayComponent="rowsEmpty"
         @grid-ready="onGridReady"
         @selection-changed="onSelectionChanged"
         @row-clicked="onRowClicked"
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { ref, toRefs, type ModelRef } from 'vue'
 import { AgGridVue } from 'ag-grid-vue3'
-import noRowsOverlay from './noRowsOverlay.vue'
+import rowsEmpty from './rowsEmpty'
 
 import type {
   ColDef,

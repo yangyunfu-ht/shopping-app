@@ -17,9 +17,9 @@ declare module 'vue' {
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElSubMenuGroup: typeof import('element-plus/es')['ElSubMenuGroup']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
-    GridTable: typeof import('./src/components/gridTable.vue')['default']
+    GridTable: typeof import('./src/components/gridTable/index.vue')['default']
     NoRowsOverlay: typeof import('./src/components/noRowsOverlay.vue')['default']
-    PageLayout: typeof import('./src/components/pageLayout.vue')['default']
+    PageLayout: typeof import('./src/components/pageLayout/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

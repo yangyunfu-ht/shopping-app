@@ -5,4 +5,12 @@
 body,
 #app {
   height: 100vh;
+  box-sizing: border-box;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }

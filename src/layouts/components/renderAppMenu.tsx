@@ -13,12 +13,10 @@ export default defineComponent({
   setup(props) {
     const renderMenu = (menus: RouteRecordRaw[]) => {
       return menus.map((menu) => {
-        // 如果路由有隐藏属性，则不渲染
         if (menu.meta?.hidden) {
           return null
         }
 
-        // 检查是否有子菜单
         if (menu.children && menu.children.length > 0) {
           return (
             <ElSubMenu
@@ -30,7 +28,7 @@ export default defineComponent({
                     <svg-icon
                       icon={'expand'}
                       size={18}
-                    ></svg-icon>
+                    />
                     <span style={{ paddingLeft: '8px', fontSize: '16px' }}>
                       {menu.meta?.title}
                     </span>
@@ -38,7 +36,6 @@ export default defineComponent({
                 ),
               }}
             >
-              {/* 递归调用时，传入当前路径作为 basePath */}
               {renderMenu(menu.children)}
             </ElSubMenu>
           )
@@ -61,7 +58,6 @@ export default defineComponent({
         //   )
         // }
 
-        // 渲染为单个 ElMenuItem
         return (
           <ElMenuItem
             index={menu.path}
@@ -73,7 +69,7 @@ export default defineComponent({
                 </span>
               ),
             }}
-          ></ElMenuItem>
+          />
         )
       })
     }

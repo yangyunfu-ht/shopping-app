@@ -53,7 +53,7 @@ export default defineConfig([
       'vue/max-attributes-per-line': 'error', //每个属性独占一行
       'vue/component-definition-name-casing': 'off', // 关闭组件名大小写规则
       'vue/attributes-order': 'off', 
-      'vue/attribute-hyphenation': 'off'
+      'vue/attribute-hyphenation': 'off',
     },
   },
   // Prettier 配置

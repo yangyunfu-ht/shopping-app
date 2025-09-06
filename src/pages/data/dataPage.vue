@@ -102,7 +102,6 @@ const columnDefs = ref<ColDef[]>([
     field: 'no',
     colId: 'no',
     width: 150,
-    pinned: 'left',
     sortable: false,
   },
   {

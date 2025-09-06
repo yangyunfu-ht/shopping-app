@@ -1,7 +1,7 @@
 import type { App } from 'vue'
-import pageLayout from './pageLayout.vue'
-import gridTable from './gridTable.vue'
-import svgIcon from './svgIcon.tsx'
+import pageLayout from './pageLayout/index.vue'
+import gridTable from './gridTable/index.vue'
+import svgIcon from './svgIcon/svgIcon'
 
 const globalComponent = [
   {
