@@ -6,7 +6,12 @@ import {
 } from 'vue-router'
 import { addDynamicRoutes } from './addDynamicRouter'
 import { menuStore } from '@/store/menuStore'
-import { useRequest } from '@/hooks/useRequest'
+import { tokenStore } from '@/store/tokenStore'
+
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+NProgress.configure({ showSpinner: false })
 
 const routes: RouteRecordRaw[] = [
   {
@@ -110,8 +115,11 @@ const mockRoutes = [
 ]
 // 在 router.js 或 main.js 中
 router.beforeEach((to, _from, next) => {
+  NProgress.start()
+
   const useMenuStore = menuStore()
-  const token = localStorage.getItem('token')
+  const useTokenStore = tokenStore()
+  const token = useTokenStore.token
 
   document.title = to.meta?.title as string
 
@@ -151,9 +159,7 @@ router.beforeEach((to, _from, next) => {
 })
 
 router.afterEach(() => {
-  const { cancel } = useRequest()
-  // 取消上一个页面的所有请求
-  cancel()
+  NProgress.done()
 })
 
 export default router

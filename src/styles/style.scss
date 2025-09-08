@@ -6,7 +6,6 @@ html,
 body,
 #app {
   height: 100vh;
-  margin: 0;
 }
 
 .flex-center {
@@ -14,8 +13,4 @@ body,
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-}
-
-.el-form {
-  font-family: var(--el-font-family);
 }

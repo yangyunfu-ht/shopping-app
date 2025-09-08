@@ -341,7 +341,7 @@ const emits = defineEmits<{
   /* 表格单元格聚焦边框颜色 */
   --ag-range-selection-border-color: var(--el-color-primary) !important;
   /* 表格字体*/
-  --ag-font-family: var(--el-font-family) !important;
+  /* --ag-font-family: var(--el-font-family) !important; */
 }
 
 /* 单元格有边框样式 */

@@ -33,11 +33,12 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding: 4px 8px;
+    padding: 0 8px;
   }
 
   .page-layout-table {
     padding: 0 8px 8px 8px;
+    transition: all var(--el-transition-all);
   }
 }
 </style>

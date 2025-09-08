@@ -1,28 +1,30 @@
+import { tokenStore } from '@/store/tokenStore'
 import axios from 'axios'
 import type {
   AxiosInstance,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios'
+import { ElMessage } from 'element-plus'
+import router from '@/router'
 
 const service: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_APP_REQUEST_URL,
   timeout: 60000,
 })
 
+const useTokenStore = tokenStore()
+
 // 请求拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // 假设你的 token 存储在 localStorage
-    const token = localStorage.getItem('token')
+    const token = useTokenStore.token
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
   },
   (error) => {
-    // 处理请求错误
-    console.error('请求拦截器错误:', error)
     return Promise.reject(error)
   }
 )
@@ -30,36 +32,50 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response: AxiosResponse) => {
-    // 对响应数据做点什么
-    const { data } = response
-    // 根据你后端的返回格式，判断请求是否成功
-    if (data.code === 200) {
-      return data.data // 返回业务数据
-    } else {
-      // 处理业务错误，例如弹出提示
-      console.error('业务错误:', data.message)
-      return Promise.reject(new Error(data.message || 'Error'))
+    const { code, data, msg } = response.data
+    if (code !== 200) {
+      return Promise.reject(new Error(msg || '请求失败'))
     }
+    return data
   },
   (error) => {
-    // 处理 HTTP 状态码错误
+    let message = ''
+    if (axios.isCancel(error)) {
+      // 请求已取消，不进行任何提示
+      console.warn('Request canceled:', error.message)
+      return Promise.reject(error)
+    }
     if (error.response) {
-      switch (error.response.status) {
+      const status = error.response.status
+      switch (status) {
+        case 400:
+          message = '请求错误'
+          break
         case 401:
-          // 401: 未登录或 Token 过期，可以跳转到登录页
-          console.error('未授权，请重新登录')
+          message = '登录过期，请重新登录'
+          useTokenStore.removeToken()
+          router.push('/login')
+          break
+        case 403:
+          message = '无权访问'
           break
         case 404:
-          // 404: 资源不存在
-          console.error('请求的资源不存在')
+          message = `请求的地址不存在: ${error.config?.url}`
+          break
+        case 500:
+          message = '服务器内部错误'
           break
         default:
-          console.error(`HTTP 错误: ${error.response.status}`)
+          message = `${error.response.status}———未知错误`
       }
+    } else if (error.message.includes('Network Error')) {
+      message = '网络连接异常'
     } else {
-      // 处理网络错误
-      console.error('网络错误或请求超时')
+      message = error.message
     }
+
+    ElMessage.error(message)
+
     return Promise.reject(error)
   }
 )

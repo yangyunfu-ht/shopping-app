@@ -1,12 +1,10 @@
-import { ref, type Ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 import service from '@/utils/request'
 import type { AxiosRequestConfig } from 'axios'
 import type { UseRequestReturn } from '#/hooks'
 import axios from 'axios'
 import { useOnline } from '@vueuse/core'
-
-// 全局状态：锁定所有请求，例如当遇到401或5xx错误时
-const isRequestLocked = ref(false)
+import { globalStore } from '@/store/globalStore'
 
 /**
  * 封装一个通用的请求 Hooks
@@ -15,32 +13,33 @@ const isRequestLocked = ref(false)
  */
 export function useRequest<T = any>(): UseRequestReturn<T> {
   const data: Ref<T | null> = ref(null)
-  const loading = ref(false)
+  const loadingCount = ref(0)
   const error = ref<null | string>(null)
 
+  const online = useOnline()
   const controllerMap = new Map<string, AbortController>()
+  const useGlobalStore = globalStore()
 
   const request = async (config: AxiosRequestConfig) => {
     const { url } = config
     if (!url) {
-      return Promise.reject(new Error('缺少请求必要参数url'))
+      throw new Error('缺少请求必要参数url')
     }
 
     // 检查设备网络连接
-    const online = useOnline()
     if (!online) {
-      return Promise.reject(new Error('当前设备网络连接异常'))
+      throw new Error('当前设备网络连接异常')
     }
 
     // 1. 在请求发起前检查全局锁定状态
-    if (isRequestLocked.value) {
-      return Promise.reject(new Error('登录信息过期，无法发起任何新请求'))
+    if (useGlobalStore.isRequestLocked) {
+      throw new Error('登录信息过期，无法发起任何新请求')
     }
 
     // 判断相同url是否存在未完成的请求，存在则取消该请求
     cancel(url)
 
-    loading.value = true
+    loadingCount.value++
     error.value = null
 
     const abortController = new AbortController()
@@ -58,13 +57,14 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
       } else {
         error.value = err
         if (err.response && err.response.status === 401) {
-          isRequestLocked.value = true
+          useGlobalStore.lockREquests()
           cancel()
         }
       }
       throw err
     } finally {
-      loading.value = false
+      controllerMap.delete(url)
+      loadingCount.value--
     }
   }
 
@@ -84,7 +84,7 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
 
   return {
     data,
-    loading,
+    loading: computed(() => loadingCount.value > 0),
     error,
     request,
     get: (url, options = {}) => request({ url, ...options }),
