@@ -12,7 +12,7 @@ export default defineComponent({
     )
 
     return () => (
-      <>
+      <div>
         {breadcrumbs.value.length >= 2 ? (
           <ElBreadcrumb class={'flex-center'}>
             {breadcrumbs.value.map((breadcrumb) => (
@@ -20,7 +20,7 @@ export default defineComponent({
             ))}
           </ElBreadcrumb>
         ) : null}
-      </>
+      </div>
     )
   },
 })
