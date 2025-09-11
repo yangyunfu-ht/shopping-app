@@ -33,9 +33,11 @@ export default defineComponent({
                   <>
                     <svg-icon
                       icon={'expand'}
-                      size={18}
+                      size={16}
                     />
-                    <span>{menu.meta?.title}</span>
+                    <span style={{ paddingLeft: '8px' }}>
+                      {menu.meta?.title}
+                    </span>
                   </>
                 ),
               }}
@@ -50,7 +52,9 @@ export default defineComponent({
             index={menu.path}
             key={menu.path}
             v-slots={{
-              title: () => <span>{menu.meta?.title}</span>,
+              title: () => (
+                <span style={{ paddingLeft: '8px' }}>{menu.meta?.title}</span>
+              ),
             }}
           />
         )
