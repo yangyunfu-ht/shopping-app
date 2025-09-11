@@ -6,8 +6,7 @@ export default defineComponent({
     return () => (
       <div
         style={{
-          padding: '8px',
-          boxSizing: 'border-box',
+          height: '60px',
         }}
       >
         <div style={{ backgroundColor: '#f5f5f5', height: '100%' }}></div>

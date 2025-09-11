@@ -1,6 +1,6 @@
 import { ElButton, ElIcon } from 'element-plus'
 import { defineComponent } from 'vue'
-import { Bell, Setting, SwitchButton, User } from '@element-plus/icons-vue'
+import { Bell, SwitchButton } from '@element-plus/icons-vue'
 import { tokenStore } from '@/store/tokenStore'
 import router from '@/router'
 
@@ -18,31 +18,28 @@ export default defineComponent({
     }
 
     return () => (
-      <>
-        <ElButton text>
+      <div>
+        <ElButton
+          text
+          circle
+          bg
+        >
           <ElIcon size={16}>
             <Bell />
           </ElIcon>
         </ElButton>
-        <ElButton text>
-          <ElIcon size={16}>
-            <Setting />
-          </ElIcon>
-        </ElButton>
-        <ElButton text>
-          <ElIcon size={16}>
-            <User />
-          </ElIcon>
-        </ElButton>
+
         <ElButton
           text
+          circle
+          bg
           onClick={handleOnLoginOut}
         >
           <ElIcon size={16}>
             <SwitchButton />
           </ElIcon>
         </ElButton>
-      </>
+      </div>
     )
   },
 })

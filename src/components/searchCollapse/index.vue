@@ -1,8 +1,7 @@
 <template>
-  <el-card
+  <div
     ref="cardRef"
-    shadow="never"
-    style="width: 100%"
+    class="collapse-wrapper"
   >
     <div class="collapse-container">
       <div>
@@ -44,7 +43,7 @@
         :size="18"
       />
     </div>
-  </el-card>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -83,8 +82,9 @@ const handleQuery = () => {
 </script>
 
 <style lang="scss" scoped>
-.el-card {
-  --el-card-padding: 4px;
+.collapse-wrapper {
+  padding: 16px 0 8px 0;
+  box-sizing: border-box;
   position: relative;
   border: none !important;
 }

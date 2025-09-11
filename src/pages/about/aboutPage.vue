@@ -1,27 +1,22 @@
 <template>
-  <div>
-    {{ keepAlive ? 1 : 0 }}
-    <h2>关于</h2>
-    <input
-      v-model="value"
-      type="text"
-    />
+  <div
+    class="page-layout"
+    style="
+      height: 100%;
+      background-color: #fff;
+      padding: 8px;
+      box-sizing: border-box;
+    "
+  >
+    <h2 style="padding: 0; margin: 0">关于</h2>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onActivated, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { onActivated, onMounted } from 'vue'
 
 defineOptions({
   name: 'aboutPage',
-})
-
-const route = useRoute()
-const value = ref<string>('')
-
-const keepAlive = computed(() => {
-  return route.meta.keepAlive
 })
 
 onActivated(() => {

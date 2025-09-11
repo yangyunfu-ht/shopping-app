@@ -7,14 +7,20 @@ export default defineComponent({
   setup() {
     const route = useRoute()
 
-    const breadcrumbs = computed(() => route.matched)
+    const breadcrumbs = computed(() =>
+      route.matched.filter((el) => el.meta.title)
+    )
 
     return () => (
-      <ElBreadcrumb class={'flex-center'}>
-        {breadcrumbs.value.map((breadcrumb) => (
-          <ElBreadcrumbItem>{breadcrumb.meta?.title}</ElBreadcrumbItem>
-        ))}
-      </ElBreadcrumb>
+      <>
+        {breadcrumbs.value.length >= 2 ? (
+          <ElBreadcrumb class={'flex-center'}>
+            {breadcrumbs.value.map((breadcrumb) => (
+              <ElBreadcrumbItem>{breadcrumb.meta?.title}</ElBreadcrumbItem>
+            ))}
+          </ElBreadcrumb>
+        ) : null}
+      </>
     )
   },
 })

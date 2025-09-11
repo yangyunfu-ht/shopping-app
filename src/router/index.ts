@@ -112,6 +112,66 @@ const mockRoutes = [
       },
     ],
   },
+  {
+    path: '/error',
+    name: 'error',
+    component: '/src/layouts/default.vue',
+    meta: {
+      keepAlive: false,
+      title: '异常管理',
+    },
+    children: [
+      {
+        path: '404',
+        name: '404',
+        component: '/src/pages/notFound/notFoundPage.vue',
+        meta: {
+          keepAlive: true,
+          title: '404-notFound',
+        },
+      },
+    ],
+  },
+  {
+    path: '/goods',
+    name: 'goods',
+    component: '/src/layouts/default.vue',
+    meta: {
+      keepAlive: false,
+      title: '商品管理',
+    },
+    children: [
+      {
+        path: 'kind',
+        name: 'kind',
+        component: '/src/pages/goods/goodsPage.vue',
+        meta: {
+          keepAlive: true,
+          title: 'goods-kind',
+        },
+      },
+    ],
+  },
+  {
+    path: '/person',
+    name: 'person',
+    component: '/src/layouts/default.vue',
+    meta: {
+      keepAlive: false,
+      title: '烦人管理',
+    },
+    children: [
+      {
+        path: 'man',
+        name: 'man',
+        component: '/src/pages/person/personPage.vue',
+        meta: {
+          keepAlive: true,
+          title: 'person-man',
+        },
+      },
+    ],
+  },
 ]
 // 在 router.js 或 main.js 中
 router.beforeEach((to, _from, next) => {

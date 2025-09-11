@@ -3,11 +3,13 @@
     <div class="page-layout-search">
       <slot name="search"></slot>
     </div>
-    <div class="page-layout-buttons">
-      <slot name="buttons"></slot>
-    </div>
-    <div class="page-layout-table">
-      <slot name="table"></slot>
+    <div class="page-layout-content">
+      <div class="page-layout-buttons">
+        <slot name="buttons"></slot>
+      </div>
+      <div class="page-layout-table">
+        <slot name="table"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -20,25 +22,35 @@
   width: 100%;
   overflow: hidden;
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
-  background-color: #fff;
   row-gap: 8px;
 
   .page-layout-search {
-    border-bottom: 4px solid #f5f5f5;
+    background-color: #fff;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+  }
+
+  .page-layout-content {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr;
+    background-color: #fff;
+    row-gap: 8px;
+    padding: 8px;
+    box-sizing: border-box;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
   }
 
   .page-layout-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 0 8px;
+    padding: 4px 0;
   }
 
   .page-layout-table {
-    padding: 0 8px 8px 8px;
-    transition: all var(--el-transition-all);
+    height: 100%;
   }
 }
 </style>

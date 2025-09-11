@@ -1,17 +1,11 @@
 <template>
   <div>
     <h2>首页</h2>
-    <input
-      v-model="value"
-      type="text"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onActivated, ref } from 'vue'
-
-const value = ref<string>('')
+import { onActivated } from 'vue'
 
 defineOptions({
   name: 'homePage',
