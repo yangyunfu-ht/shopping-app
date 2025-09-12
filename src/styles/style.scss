@@ -8,6 +8,10 @@ html,
 body,
 #app {
   height: 100vh;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
+    Cantarell, 'Helvetica Neue', sans-serif;
+  color: var(--el-text-color-regular);
 }
 
 .flex-center {
@@ -15,6 +19,17 @@ body,
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+}
+
+.ellipsis-text {
+  /* 1. 强制文本在一行内显示 */
+  white-space: nowrap;
+
+  /* 2. 隐藏超出部分 */
+  overflow: hidden;
+
+  /* 3. 用省略号来代替被隐藏的文本 */
+  text-overflow: ellipsis;
 }
 
 .page-layout {

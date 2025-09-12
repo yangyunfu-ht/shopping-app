@@ -25,6 +25,7 @@
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
   row-gap: 8px;
+  transition: var(--el-transition-all);
 
   .page-layout-search {
     background-color: #fff;

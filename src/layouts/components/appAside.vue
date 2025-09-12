@@ -22,8 +22,11 @@ import searchAppMenu from './searchAppMenu'
 import renderAppMen from './renderAppMenu'
 import { menuStore } from '@/store/menuStore'
 import { useWindowSize, watchThrottled } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { screenSize } from '@/utils/enum'
 
 const useMenuStore = menuStore()
+const { appMenuCollapse } = storeToRefs(useMenuStore)
 const menus = computed(() => useMenuStore.appMenus)
 const collapse = computed(() => useMenuStore.appMenuCollapse)
 
@@ -32,17 +35,11 @@ const { width } = useWindowSize()
 watchThrottled(
   () => width.value,
   (value: number) => {
-    if (value <= 1100) {
+    if (value <= screenSize.default && !appMenuCollapse.value) {
       useMenuStore.setAppMenuCollapse(true)
-      useMenuStore.setAppDrawerAside(false)
     }
-    if (value > 1100) {
+    if (value >= screenSize.large && appMenuCollapse.value) {
       useMenuStore.setAppMenuCollapse(false)
-      useMenuStore.setAppDrawerAside(false)
-    }
-    if (value <= 900) {
-      useMenuStore.setAppMenuCollapse(true)
-      useMenuStore.setAppDrawerAside(false)
     }
   },
   { throttle: 500 }

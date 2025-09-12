@@ -12,17 +12,21 @@ interface Link {
 }
 
 export default defineComponent({
-  setup() {
+  name: 'SearchAppMenu',
+  emits: ['select'],
+  setup(_, { emit }) {
     const state = ref('')
     const visible = ref(false)
     const triggerOnFocus = ref(false)
     const router = useRouter()
     const useMenuStore = menuStore()
-    const { appMenuCollapse } = storeToRefs(useMenuStore)
+    const { appMenuCollapse, appDrawerAside } = storeToRefs(useMenuStore)
 
     const handleSelect = (item: any) => {
       router.push({ path: item.path })
+      emit('select')
       visible.value = false
+      state.value = ''
     }
 
     const generateSearchValue = (): Array<Link> => {
@@ -68,7 +72,7 @@ export default defineComponent({
         class={'el-sub-menu'}
         style={{ height: '38px' }}
       >
-        {appMenuCollapse.value ? (
+        {appMenuCollapse.value && !appDrawerAside.value ? (
           <div
             class={['flex-center', 'el-sub-menu__title']}
             style={{
@@ -92,7 +96,7 @@ export default defineComponent({
             trigger-on-focus={triggerOnFocus.value}
             onSelect={handleSelect}
             onChange={handleChange}
-            style={{ width: '100%', '--el-input-height': '38px' }}
+            style={{ width: '100%', '--el-input-height': '36px' }}
           >
             {{
               prefix: () => (

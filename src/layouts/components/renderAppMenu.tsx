@@ -35,7 +35,7 @@ export default defineComponent({
                       icon={'expand'}
                       size={16}
                     />
-                    <span style={{ paddingLeft: '8px' }}>
+                    <span style={{ paddingLeft: props.collapse ? 0 : '8px' }}>
                       {menu.meta?.title}
                     </span>
                   </>
@@ -53,7 +53,14 @@ export default defineComponent({
             key={menu.path}
             v-slots={{
               title: () => (
-                <span style={{ paddingLeft: '8px' }}>{menu.meta?.title}</span>
+                <>
+                  <span
+                    class={'ellipsis-text'}
+                    style={{ paddingLeft: props.collapse ? 0 : '8px' }}
+                  >
+                    {menu.meta?.title}
+                  </span>
+                </>
               ),
             }}
           />
@@ -66,7 +73,7 @@ export default defineComponent({
         uniqueOpened
         router
         collapse={props.collapse}
-        popper-offset={17}
+        popper-offset={8}
         style={{
           borderRight: 'none',
           userSelect: 'none',

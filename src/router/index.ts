@@ -164,10 +164,106 @@ const mockRoutes = [
       {
         path: 'man',
         name: 'man',
-        component: '/src/pages/person/personPage.vue',
+        component: '/src/layouts/subLayout.vue',
         meta: {
           keepAlive: true,
           title: 'person-man',
+        },
+        children: [
+          {
+            name: 'woMan',
+            path: 'woMan',
+            component: '/src/pages/person/personPage.vue',
+            meta: {
+              keepAlive: true,
+              title: 'person-man',
+            },
+          },
+          {
+            name: 'sexMan',
+            path: 'sexMan',
+            component: '/src/pages/man/manPage.vue',
+            meta: {
+              keepAlive: true,
+              title: 'sex-man',
+            },
+          },
+        ],
+      },
+      {
+        path: 'button',
+        name: 'button',
+        component: '/src/layouts/subLayout.vue',
+        meta: {
+          keepAlive: true,
+          title: '按钮管理',
+        },
+        children: [
+          {
+            name: 'large',
+            path: 'large',
+            component: '/src/pages/button/large/largePage.vue',
+            meta: {
+              keepAlive: true,
+              title: '大的按钮',
+            },
+          },
+          {
+            name: 'small',
+            path: 'small',
+            component: '/src/pages/button/small/smallPage.vue',
+            meta: {
+              keepAlive: true,
+              title: '小的按钮',
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/system',
+    name: 'system',
+    component: '/src/layouts/default.vue',
+    meta: {
+      keepAlive: false,
+      title: '系统管理',
+    },
+    children: [
+      {
+        path: 'menu',
+        name: 'menu',
+        component: '/src/pages/system/menu/menuPage.vue',
+        meta: {
+          keepAlive: true,
+          title: '菜单管理',
+        },
+      },
+      {
+        path: 'role',
+        name: 'role',
+        component: '/src/pages/system/role/rolePage.vue',
+        meta: {
+          keepAlive: true,
+          title: '角色管理',
+        },
+      },
+      {
+        path: 'post',
+        name: 'post',
+        component: '/src/pages/system/post/postPage.vue',
+        meta: {
+          keepAlive: true,
+          title: '岗位管理',
+        },
+      },
+      {
+        path: 'branch',
+        name: 'branch',
+        component: '/src/pages/system/branch/branchPage.vue',
+        meta: {
+          keepAlive: true,
+          title: '部门管理',
         },
       },
     ],

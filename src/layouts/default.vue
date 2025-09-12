@@ -5,7 +5,6 @@
 
     <section class="app-content">
       <app-header class="app-header" />
-      <!-- <appTag class="app-tag" /> -->
 
       <main class="app-content__main">
         <RouterView v-slot="{ Component }">
@@ -28,7 +27,6 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import appAside from '@/layouts/components/appAside.vue'
 import appHeader from '@/layouts/components/appHeader.vue'
-// import appTag from './components/appTag.vue'
 import appDrawerAside from './components/appDrawerAside.vue'
 
 const router = useRouter()
@@ -89,7 +87,7 @@ const cachedRoutes = computed(() => {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .app-container {
     transition: var(--el-transition-all);
 
