@@ -26,11 +26,11 @@
   grid-template-columns: 1fr;
   row-gap: 8px;
   transition: var(--el-transition-all);
+  overflow: auto;
 
   .page-layout-search {
     background-color: #fff;
     box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
   }
 
   .page-layout-content {
@@ -43,7 +43,6 @@
     padding: 8px;
     box-sizing: border-box;
     box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
   }
 
   .page-layout-buttons {

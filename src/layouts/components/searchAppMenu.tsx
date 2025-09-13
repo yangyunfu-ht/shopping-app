@@ -1,7 +1,7 @@
 import { defineComponent, ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
-import { ElAutocomplete, ElIcon } from 'element-plus'
+import { ElAutocomplete, ElIcon, ElTooltip } from 'element-plus'
 import { useMenuStore } from '@/store/menuStore'
 import { storeToRefs } from 'pinia'
 
@@ -69,25 +69,32 @@ export default defineComponent({
 
     return () => (
       <li
-        class={'el-sub-menu'}
-        style={{ height: '38px' }}
+        class={['el-sub-menu', 'flex-center']}
+        style={{ height: '56px' }}
       >
         {appMenuCollapse.value && !appDrawerAside.value ? (
-          <div
-            class={['flex-center', 'el-sub-menu__title']}
-            style={{
-              width: '100%',
-              cursor: 'pointer',
-            }}
-            onClick={handleClickSearch}
+          <ElTooltip
+            effect="dark"
+            content="搜索"
+            placement="right"
+            offset={8}
           >
-            <ElIcon
-              size={16}
-              color={'#000000'}
+            <div
+              class={['flex-center', 'el-sub-menu__title']}
+              style={{
+                width: '100%',
+                cursor: 'pointer',
+              }}
+              onClick={handleClickSearch}
             >
-              <Search />
-            </ElIcon>
-          </div>
+              <ElIcon
+                size={16}
+                color={'#000000'}
+              >
+                <Search />
+              </ElIcon>
+            </div>
+          </ElTooltip>
         ) : (
           <ElAutocomplete
             v-model={state.value}
@@ -96,7 +103,12 @@ export default defineComponent({
             trigger-on-focus={triggerOnFocus.value}
             onSelect={handleSelect}
             onChange={handleChange}
-            style={{ width: '100%', '--el-input-height': '36px' }}
+            style={{
+              width: '100%',
+              '--el-input-height': '36px',
+              padding: '0 4px',
+              boxSize: 'border-box',
+            }}
           >
             {{
               prefix: () => (

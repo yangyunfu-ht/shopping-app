@@ -83,7 +83,6 @@ export default defineComponent({
           userSelect: 'none',
           height: '100%',
           fontSize: '14px',
-          backgroundColor: '#fff',
         }}
       >
         <ElMenuItem

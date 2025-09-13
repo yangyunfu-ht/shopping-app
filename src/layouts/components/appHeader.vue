@@ -26,7 +26,6 @@ import appSetting from './appSetting'
   transition: var(--el-transition-all);
   background-color: #fff;
   box-shadow: var(--box-shadow);
-  border-radius: var(--border-radius);
 
   .app-header-left {
     display: flex;

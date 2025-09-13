@@ -1,7 +1,9 @@
 <template>
   <div class="app-container">
-    <app-aside class="app-aside" />
-    <appDrawerAside />
+    <app-aside
+      :app-width="appWidth"
+      class="app-aside"
+    />
 
     <section class="app-content">
       <app-header class="app-header" />
@@ -25,11 +27,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import appAside from '@/layouts/components/appAside.vue'
+import appAside from '@/layouts/components/appAside'
 import appHeader from '@/layouts/components/appHeader.vue'
-import appDrawerAside from './components/appDrawerAside.vue'
+import { useGlobalStore } from '@/store/globalStore'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
+const globalStore = useGlobalStore()
+const { appWidth } = storeToRefs(globalStore)
 
 const cachedRoutes = computed(() => {
   return router
@@ -40,65 +45,73 @@ const cachedRoutes = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-/* 设置父容器，使其占据整个视口 */
-.app-container {
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh; /* 100vh 表示视口高度的100% */
-  background-color: var(--bg-color);
-  padding: 8px 12px;
-  gap: 8px;
-  box-sizing: border-box;
+@media (min-width: 768px) {
+  .app-container {
+    height: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    grid-template-rows: 1fr;
+    background-color: var(--bg-color);
 
-  /* 左侧边栏固定宽度 */
-  .app-aside {
-    background-color: #fff;
-    flex-shrink: 0; /* 阻止左侧边栏收缩 */
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-  }
-
-  /* 内容区，占据剩余空间 */
-  .app-content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* 占据剩余的垂直空间 */
-    overflow: hidden; /* 防止父容器滚动，将滚动行为交给子元素 */
-    gap: 8px;
-
-    /* 头部固定高度 */
-    .app-header {
-      height: auto;
-      flex-shrink: 0; /* 阻止头部收缩 */
+    .app-aside {
+      box-shadow: var(--box-shadow);
     }
 
-    // /* 头部固定高度 */
-    // .app-tag {
-    //   height: 32px;
-    //   flex-shrink: 0; /* 阻止头部收缩 */
-    // }
+    .app-content {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: 56px 1fr;
+      row-gap: 8px;
+      grid-template-columns: 1fr;
+      overflow: hidden;
 
-    /* 主要内容区，占据剩余空间并允许内部滚动 */
-    .app-content__main {
-      flex-grow: 1; /* 占据剩余的水平空间 */
-      overflow-y: auto; /* 关键：只允许垂直滚动 */
-      -webkit-overflow-scrolling: touch;
+      .app-header {
+        height: 100%;
+      }
+
+      .app-content__main {
+        height: 100%;
+        padding-right: 8px;
+        padding-bottom: 8px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+      }
     }
   }
 }
 
 @media (max-width: 768px) {
   .app-container {
-    transition: var(--el-transition-all);
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    background-color: var(--bg-color);
 
-    .app-aside {
-      display: none;
+    .app-content {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 56px 1fr;
+      grid-template-columns: 1fr;
+      row-gap: 8px;
+      padding: 8px;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      .app-header {
+        height: 100%;
+      }
+
+      .app-content__main {
+        height: 100%;
+        overflow-y: auto;
+      }
     }
   }
 }
-
-/* 淡入淡出效果的 CSS */
 
 /* 定义过渡的活跃状态 */
 .fade-enter-active,
