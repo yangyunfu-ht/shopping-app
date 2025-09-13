@@ -83,6 +83,7 @@ const cachedRoutes = computed(() => {
     .app-content__main {
       flex-grow: 1; /* 占据剩余的水平空间 */
       overflow-y: auto; /* 关键：只允许垂直滚动 */
+      -webkit-overflow-scrolling: touch;
     }
   }
 }

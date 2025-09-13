@@ -1,16 +1,16 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { globalStore } from './globalStore'
-import { menuStore } from './menuStore'
-import { userStore } from './userStore'
+import { useGlobalStore } from './globalStore'
+import { useMenuStore } from './menuStore'
+import { useUserStore } from './userStore'
 
-export const tokenStore = defineStore(
+export const useTokenStore = defineStore(
   'token',
   () => {
     const token = ref('')
-    const useGlobalStore = globalStore()
-    const useMenuStore = menuStore()
-    const useUserStore = userStore()
+    const globalStore = useGlobalStore()
+    const menuStore = useMenuStore()
+    const userStore = useUserStore()
 
     const setToken = (newToken: string) => {
       token.value = newToken
@@ -18,9 +18,9 @@ export const tokenStore = defineStore(
 
     const removeToken = async () => {
       token.value = ''
-      useGlobalStore.$reset()
-      useMenuStore.$reset()
-      useUserStore.$reset()
+      globalStore.$reset()
+      menuStore.$reset()
+      userStore.$reset()
     }
 
     return {

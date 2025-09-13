@@ -79,7 +79,7 @@ const initializeTabs = () => {
   const currentTab = tabs.value.find((tab) => tab.fullPath === route.fullPath)
   if (!currentTab) {
     // 如果当前路由不在列表中，则添加它
-    tabs.value.push({
+    tabs.value.unshift({
       fullPath: route.fullPath,
       meta: route.meta,
       name: route.name,
@@ -97,7 +97,7 @@ watch(
     currentPath.value = newPath
     const existingTab = tabs.value.find((tab) => tab.fullPath === newPath)
     if (!existingTab) {
-      tabs.value.push({
+      tabs.value.unshift({
         fullPath: route.fullPath,
         meta: route.meta,
         name: route.name,

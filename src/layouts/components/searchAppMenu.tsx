@@ -2,7 +2,7 @@ import { defineComponent, ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { ElAutocomplete, ElIcon } from 'element-plus'
-import { menuStore } from '@/store/menuStore'
+import { useMenuStore } from '@/store/menuStore'
 import { storeToRefs } from 'pinia'
 
 interface Link {
@@ -19,8 +19,8 @@ export default defineComponent({
     const visible = ref(false)
     const triggerOnFocus = ref(false)
     const router = useRouter()
-    const useMenuStore = menuStore()
-    const { appMenuCollapse, appDrawerAside } = storeToRefs(useMenuStore)
+    const menuStore = useMenuStore()
+    const { appMenuCollapse, appDrawerAside } = storeToRefs(menuStore)
 
     const handleSelect = (item: any) => {
       router.push({ path: item.path })
@@ -64,7 +64,7 @@ export default defineComponent({
     }
 
     const handleClickSearch = () => {
-      useMenuStore.setAppMenuCollapse(false)
+      menuStore.setAppMenuCollapse(false)
     }
 
     return () => (

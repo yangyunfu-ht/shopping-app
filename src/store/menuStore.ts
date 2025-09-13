@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 
-export const menuStore = defineStore(
+export const useMenuStore = defineStore(
   'menu',
   () => {
     const appMenus = ref<RouteRecordRaw[]>([])

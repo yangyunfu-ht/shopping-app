@@ -5,8 +5,8 @@ import {
   type RouteRecordRaw,
 } from 'vue-router'
 import { addDynamicRoutes } from './addDynamicRouter'
-import { menuStore } from '@/store/menuStore'
-import { tokenStore } from '@/store/tokenStore'
+import { useMenuStore } from '@/store/menuStore'
+import { useTokenStore } from '@/store/tokenStore'
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -273,9 +273,9 @@ const mockRoutes = [
 router.beforeEach((to, _from, next) => {
   NProgress.start()
 
-  const useMenuStore = menuStore()
-  const useTokenStore = tokenStore()
-  const token = useTokenStore.token
+  const menuStore = useMenuStore()
+  const tokenStore = useTokenStore()
+  const token = tokenStore.token
 
   document.title = to.meta?.title as string
 
@@ -295,7 +295,7 @@ router.beforeEach((to, _from, next) => {
     // 注意：这里必须使用 next() 来放行，或者返回一个 Promise
     addDynamicRoutes(mockRoutes)
       .then((data) => {
-        useMenuStore.setAppMenus(data)
+        menuStore.setAppMenus(data)
         hasAddedDynamicRoutes = true
         // 动态路由添加成功后，确保本次导航能继续，
         // 并且利用 next() 的参数来重新触发一次导航。
@@ -304,7 +304,7 @@ router.beforeEach((to, _from, next) => {
       })
       .catch(() => {
         // 如果添加失败，则移除 token 并重定向到登录页
-        useMenuStore.setAppMenus([])
+        menuStore.setAppMenus([])
         localStorage.removeItem('token')
         return next('/login')
       })

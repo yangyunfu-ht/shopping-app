@@ -14,6 +14,10 @@ export default defineComponent({
       type: String,
       default: 'currentColor',
     },
+    class: {
+      type: String,
+      default: 'el-icon',
+    },
   },
   setup(props) {
     const symbolId: ComputedRef<string> = computed(() => `#icon-${props.icon}`)
@@ -30,6 +34,7 @@ export default defineComponent({
         color={props.color}
         fill="currentColor"
         style={{ cursor: 'pointer' }}
+        class={props.class}
       >
         <use xlinkHref={symbolId.value}></use>
       </svg>

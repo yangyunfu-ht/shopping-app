@@ -26,15 +26,15 @@ import { computed } from 'vue'
 import appLogo from './appLogo'
 import searchAppMenu from './searchAppMenu'
 import renderAppMenu from './renderAppMenu'
-import { menuStore } from '@/store/menuStore'
+import { useMenuStore } from '@/store/menuStore'
 
-const useMenuStore = menuStore()
-const menus = computed(() => useMenuStore.appMenus)
+const menuStore = useMenuStore()
+const menus = computed(() => menuStore.appMenus)
 
-const visible = computed(() => useMenuStore.appDrawerAside)
+const visible = computed(() => menuStore.appDrawerAside)
 
 const handleClose = () => {
-  useMenuStore.setAppDrawerAside(false)
+  menuStore.setAppDrawerAside(false)
 }
 </script>
 

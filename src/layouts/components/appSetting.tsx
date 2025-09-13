@@ -1,15 +1,15 @@
 import { ElButton, ElIcon } from 'element-plus'
 import { defineComponent } from 'vue'
 import { Bell, SwitchButton } from '@element-plus/icons-vue'
-import { tokenStore } from '@/store/tokenStore'
+import { useTokenStore } from '@/store/tokenStore'
 import router from '@/router'
 
 export default defineComponent({
   name: 'AppSetting',
   setup() {
-    const useTokenStore = tokenStore()
+    const tokenStore = useTokenStore()
     const handleOnLoginOut = () => {
-      useTokenStore.removeToken().finally(() => {
+      tokenStore.removeToken().finally(() => {
         router.replace({
           path: '/login',
         })

@@ -1,6 +1,8 @@
-import { ElMenu, ElMenuItem, ElSubMenu } from 'element-plus'
+import { House } from '@element-plus/icons-vue'
+import { ElIcon, ElMenu, ElMenuItem, ElSubMenu } from 'element-plus'
 import { defineComponent, type PropType } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'RenderAppMenu',
@@ -17,6 +19,8 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const route = useRoute()
+
     const renderMenu = (menus: RouteRecordRaw[]) => {
       return menus.map((menu) => {
         if (menu.meta?.hidden) {
@@ -31,13 +35,12 @@ export default defineComponent({
               v-slots={{
                 title: () => (
                   <>
-                    <svg-icon
+                    <svgIcon
                       icon={'expand'}
                       size={16}
                     />
-                    <span style={{ paddingLeft: props.collapse ? 0 : '8px' }}>
-                      {menu.meta?.title}
-                    </span>
+
+                    <span>{menu.meta?.title}</span>
                   </>
                 ),
               }}
@@ -56,7 +59,7 @@ export default defineComponent({
                 <>
                   <span
                     class={'ellipsis-text'}
-                    style={{ paddingLeft: props.collapse ? 0 : '8px' }}
+                    style={{ paddingLeft: '8px' }}
                   >
                     {menu.meta?.title}
                   </span>
@@ -74,6 +77,7 @@ export default defineComponent({
         router
         collapse={props.collapse}
         popper-offset={8}
+        defaultActive={route.path}
         style={{
           borderRight: 'none',
           userSelect: 'none',
@@ -82,6 +86,17 @@ export default defineComponent({
           backgroundColor: '#fff',
         }}
       >
+        <ElMenuItem
+          index={'/home/homePage'}
+          v-slots={{
+            default: () => (
+              <ElIcon size={16}>
+                <House />
+              </ElIcon>
+            ),
+            title: () => <span>首页</span>,
+          }}
+        ></ElMenuItem>
         {renderMenu(props.menus)}
       </ElMenu>
     )

@@ -45,9 +45,9 @@
 import { reactive, useTemplateRef } from 'vue'
 import type { FormInstance, FormItemRule } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { tokenStore } from '@/store/tokenStore'
+import { useTokenStore } from '@/store/tokenStore'
 
-const useTokenStore = tokenStore()
+const tokenStore = useTokenStore()
 
 interface LoginForm {
   username: string
@@ -82,7 +82,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid) => {
     if (valid) {
-      useTokenStore.setToken('token')
+      tokenStore.setToken('token')
 
       router.replace({ path: '/home/homePage' })
     }

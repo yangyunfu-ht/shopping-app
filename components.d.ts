@@ -18,6 +18,7 @@ declare module 'vue' {
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElOverlay: typeof import('element-plus/es')['ElOverlay']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSubMenuGroup: typeof import('element-plus/es')['ElSubMenuGroup']
@@ -28,6 +29,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchCollapse: typeof import('./src/components/searchCollapse/index.vue')['default']
+    TransitionBox: typeof import('./src/components/transitionBox/index.vue')['default']
   }
   export interface GlobalDirectives {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

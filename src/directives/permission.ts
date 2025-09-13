@@ -1,13 +1,13 @@
 import type { Directive, DirectiveBinding } from 'vue'
-import { userStore } from '@/store/userStore'
+import { useUserStore } from '@/store/userStore'
 
 export const permission: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding
 
-    const useUserStore = userStore()
+    const userStore = useUserStore()
 
-    const permissions: string[] = useUserStore.permissions
+    const permissions: string[] = userStore.permissions
 
     if (Array.isArray(value)) {
       const hasPermission = value.some((permissionId) =>

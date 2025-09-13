@@ -2,7 +2,7 @@ import { useWindowSize } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const globalStore = defineStore(
+export const useGlobalStore = defineStore(
   'global',
   () => {
     const isRequestLocked = ref(false)
