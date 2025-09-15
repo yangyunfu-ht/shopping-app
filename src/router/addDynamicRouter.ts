@@ -47,7 +47,7 @@ export const addDynamicRoutes = (dynamicRoutes: DynamicRoute[]) => {
       path: '/:pathMatch(.*)*',
       name: 'notFoundWrapper',
       meta: { title: '异常页面' },
-      component: () => import('@/layouts/appLayout'),
+      component: () => import('@/layouts/appLayout.vue'),
       children: [
         {
           path: '',

@@ -9,15 +9,18 @@
     "
   >
     <h2 style="padding: 0; margin: 0">关于</h2>
+    <el-input v-model="input"></el-input>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onActivated, onMounted } from 'vue'
+import { onActivated, onMounted, ref } from 'vue'
 
 defineOptions({
   name: 'aboutPage',
 })
+
+const input = ref('')
 
 onActivated(() => {
   console.log('aboutPage onActivated')

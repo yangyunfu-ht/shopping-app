@@ -131,6 +131,10 @@ import type {
 import { reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
 
+defineOptions({
+  name: 'dataPage',
+})
+
 const searchForm = reactive({
   value: '',
 })

@@ -30,14 +30,14 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('@/layouts/appLayout'),
+    component: () => import('@/layouts/appLayout.vue'),
     children: [
       {
         path: 'homePage',
         name: 'homePage',
         component: () => import('@/pages/home/homePage.vue'),
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: '首页',
         },
       },
@@ -55,9 +55,9 @@ const mockRoutes = [
   {
     path: '/about',
     name: 'about',
-    component: '/src/layouts/appLayout.tsx',
+    component: '/src/layouts/appLayout.vue',
     meta: {
-      keepAlive: false,
+      keepAlive: true,
       title: '关于管理',
     },
     children: [
@@ -66,7 +66,7 @@ const mockRoutes = [
         name: 'aboutPage',
         component: '/src/pages/about/aboutPage.vue',
         meta: {
-          keepAlive: false,
+          keepAlive: true,
           title: '关于',
         },
       },
@@ -75,7 +75,7 @@ const mockRoutes = [
   {
     path: '/mine',
     name: 'mine',
-    component: '/src/layouts/appLayout.tsx',
+    component: '/src/layouts/appLayout.vue',
     meta: {
       keepAlive: false,
       title: '我的管理',
@@ -86,7 +86,7 @@ const mockRoutes = [
         name: 'minePage',
         component: '/src/pages/mine/minePage.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: '我的',
         },
       },
@@ -95,7 +95,7 @@ const mockRoutes = [
   {
     path: '/data',
     name: 'data',
-    component: '/src/layouts/appLayout.tsx',
+    component: '/src/layouts/appLayout.vue',
     meta: {
       keepAlive: false,
       title: '数据管理',
@@ -106,7 +106,7 @@ const mockRoutes = [
         name: 'dataPage',
         component: '/src/pages/data/dataPage.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: '数据',
         },
       },
@@ -115,7 +115,7 @@ const mockRoutes = [
   {
     path: '/error',
     name: 'error',
-    component: '/src/layouts/appLayout.tsx',
+    component: '/src/layouts/appLayout.vue',
     meta: {
       keepAlive: false,
       title: '异常管理',
@@ -126,7 +126,7 @@ const mockRoutes = [
         name: '404',
         component: '/src/pages/notFound/notFoundPage.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: '404-notFound',
         },
       },
@@ -135,7 +135,7 @@ const mockRoutes = [
   {
     path: '/goods',
     name: 'goods',
-    component: '/src/layouts/appLayout.tsx',
+    component: '/src/layouts/appLayout.vue',
     meta: {
       keepAlive: false,
       title: '商品管理',
@@ -146,7 +146,7 @@ const mockRoutes = [
         name: 'kind',
         component: '/src/pages/goods/goodsPage.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: 'goods-kind',
         },
       },
@@ -155,7 +155,7 @@ const mockRoutes = [
   {
     path: '/person',
     name: 'person',
-    component: '/src/layouts/appLayout.tsx',
+    component: '/src/layouts/appLayout.vue',
     meta: {
       keepAlive: false,
       title: '烦人管理',
@@ -166,7 +166,7 @@ const mockRoutes = [
         name: 'man',
         component: '/src/layouts/subLayout.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: 'person-man',
         },
         children: [
@@ -175,7 +175,7 @@ const mockRoutes = [
             path: 'woMan',
             component: '/src/pages/person/personPage.vue',
             meta: {
-              keepAlive: true,
+              keepAlive: false,
               title: 'person-man',
             },
           },
@@ -184,7 +184,7 @@ const mockRoutes = [
             path: 'sexMan',
             component: '/src/pages/man/manPage.vue',
             meta: {
-              keepAlive: true,
+              keepAlive: false,
               title: 'sex-man',
             },
           },
@@ -200,7 +200,7 @@ const mockRoutes = [
         },
         children: [
           {
-            name: 'large',
+            name: 'largeButton',
             path: 'large',
             component: '/src/pages/button/large/largePage.vue',
             meta: {
@@ -209,7 +209,7 @@ const mockRoutes = [
             },
           },
           {
-            name: 'small',
+            name: 'smallButton',
             path: 'small',
             component: '/src/pages/button/small/smallPage.vue',
             meta: {
@@ -224,7 +224,7 @@ const mockRoutes = [
   {
     path: '/system',
     name: 'system',
-    component: '/src/layouts/appLayout.tsx',
+    component: '/src/layouts/appLayout.vue',
     meta: {
       keepAlive: false,
       title: '系统管理',
@@ -235,7 +235,7 @@ const mockRoutes = [
         name: 'menu',
         component: '/src/pages/system/menu/menuPage.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: '菜单管理',
         },
       },
@@ -244,7 +244,7 @@ const mockRoutes = [
         name: 'role',
         component: '/src/pages/system/role/rolePage.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: '角色管理',
         },
       },
@@ -253,7 +253,7 @@ const mockRoutes = [
         name: 'post',
         component: '/src/pages/system/post/postPage.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: '岗位管理',
         },
       },
@@ -262,7 +262,7 @@ const mockRoutes = [
         name: 'branch',
         component: '/src/pages/system/branch/branchPage.vue',
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: '部门管理',
         },
       },
