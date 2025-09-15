@@ -3,9 +3,13 @@
     class="app-aside-element"
     :style="{ width: collapse ? '64px' : '210px' }"
   >
-    <appLogo />
+    <appLogo :collapse="collapse" />
 
-    <searchAppMenu class="app-menu-search" />
+    <searchAppMenu
+      :collapse="collapse"
+      :drawer-aside="false"
+      class="app-menu-search"
+    />
 
     <div class="app-menu-data">
       <renderAppMen
@@ -30,7 +34,7 @@ const collapse = computed(() => menuStore.appMenuCollapse)
 
 <style lang="scss" scoped>
 .app-aside-element {
-  min-height: 100vh;
+  min-height: 100%;
   display: grid;
   grid-template-rows: 56px 56px 1fr;
   grid-template-columns: 1fr;

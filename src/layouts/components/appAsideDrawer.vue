@@ -1,0 +1,89 @@
+<template>
+  <el-drawer
+    v-model="visible"
+    :size="210"
+    :append-to-body="true"
+    :show-close="false"
+    direction="ltr"
+    @close="handleClose"
+  >
+    <template #header>
+      <div>
+        <appLogo :collapse="false" />
+
+        <searchAppMenu
+          :collapse="collapse"
+          :drawer-aside="true"
+          class="app-menu-search"
+        />
+      </div>
+    </template>
+
+    <div class="app-menu-data">
+      <renderAppMen
+        :menus="menus"
+        :collapse="collapse"
+        @select="handleClose"
+      />
+    </div>
+  </el-drawer>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import appLogo from './appLogo'
+import searchAppMenu from './searchAppMenu'
+import renderAppMen from './renderAppMenu'
+import { useMenuStore } from '@/store/menuStore'
+import { storeToRefs } from 'pinia'
+
+const menuStore = useMenuStore()
+const { appDrawerAside } = storeToRefs(menuStore)
+const menus = computed(() => menuStore.appMenus)
+const collapse = computed(() => menuStore.appMenuCollapse)
+
+const visible = computed({
+  get() {
+    return appDrawerAside.value
+  },
+  set(val) {
+    appDrawerAside.value = val
+  },
+})
+
+const handleClose = () => {
+  menuStore.setAppDrawerAside(false)
+}
+</script>
+
+<style lang="scss" scoped>
+.app-aside-element {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 56px 56px 1fr;
+  grid-template-columns: 1fr;
+  box-sizing: border-box;
+  background-color: #fff;
+  transition: var(--el-transition-all);
+  overflow: hidden;
+
+  .app-menu-data {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+</style>
+
+<style lang="css">
+.el-drawer {
+  --el-drawer-padding-primary: 0 !important;
+}
+
+.el-drawer__header {
+  margin-bottom: 0 !important;
+}
+
+.el-drawer__body {
+  padding: 0 !important;
+}
+</style>

@@ -3,7 +3,6 @@ import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { ElAutocomplete, ElIcon, ElTooltip } from 'element-plus'
 import { useMenuStore } from '@/store/menuStore'
-import { storeToRefs } from 'pinia'
 
 interface Link {
   label: any
@@ -13,14 +12,23 @@ interface Link {
 
 export default defineComponent({
   name: 'SearchAppMenu',
+  props: {
+    collapse: {
+      type: Boolean,
+      required: true,
+    },
+    drawerAside: {
+      type: Boolean,
+      required: false,
+    },
+  },
   emits: ['select'],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const state = ref('')
     const visible = ref(false)
     const triggerOnFocus = ref(false)
     const router = useRouter()
     const menuStore = useMenuStore()
-    const { appMenuCollapse, appDrawerAside } = storeToRefs(menuStore)
 
     const handleSelect = (item: any) => {
       router.push({ path: item.path })
@@ -72,10 +80,11 @@ export default defineComponent({
         class={['el-sub-menu', 'flex-center']}
         style={{
           height: '56px',
-          width: appMenuCollapse.value ? '64px' : '210px',
+          width: props.collapse ? '64px' : '210px',
+          transition: 'var(--el-transition-all)',
         }}
       >
-        {appMenuCollapse.value && !appDrawerAside.value ? (
+        {props.collapse && !props.drawerAside ? (
           <ElTooltip
             effect="dark"
             content="搜索"
@@ -111,6 +120,7 @@ export default defineComponent({
               '--el-input-height': '36px',
               padding: '0 4px',
               boxSize: 'border-box',
+              transition: 'var(--el-transition-all)',
             }}
           >
             {{

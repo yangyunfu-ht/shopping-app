@@ -1,17 +1,19 @@
 import { defineComponent } from 'vue'
-import { useMenuStore } from '@/store/menuStore'
-import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'AppLogo',
-  setup() {
-    const menuStore = useMenuStore()
-    const { appMenuCollapse } = storeToRefs(menuStore)
+  props: {
+    collapse: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  setup(props) {
     return () => (
       <div
         style={{
-          width: appMenuCollapse.value ? '64px' : '210px',
-
+          width: props.collapse ? '64px' : '210px',
+          height: '56px',
           boxSizing: 'border-box',
           transition: 'var(--el-transition-all)',
         }}

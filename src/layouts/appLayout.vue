@@ -1,6 +1,6 @@
 <template>
   <div class="layout-app">
-    <LargeAside
+    <AppAside
       v-if="isLarge"
       class="layout-app__aside"
     />
@@ -24,6 +24,8 @@
         </RouterView>
       </main>
     </section>
+
+    <appAsideDrawer v-if="!isLarge" />
   </div>
 </template>
 
@@ -32,7 +34,8 @@ import { computed } from 'vue'
 import { useGlobalStore } from '@/store/globalStore'
 import { storeToRefs } from 'pinia'
 import { screenSize } from '@/utils/enum'
-import LargeAside from './components/largeAside.vue'
+import AppAside from './components/appAside.vue'
+import appAsideDrawer from './components/appAsideDrawer.vue'
 import AppHeader from './components/appHeader.vue'
 import { RouterView, useRouter } from 'vue-router'
 

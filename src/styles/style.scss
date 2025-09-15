@@ -38,14 +38,6 @@ body,
   padding: 0;
 }
 
-.el-drawer {
-  --el-drawer-padding-primary: 0 !important;
-}
-
-.el-drawer__body {
-  padding: 0 !important;
-}
-
 /* 整个滚动条 */
 ::-webkit-scrollbar {
   width: 6px; /* 纵向滚动条宽度 */
