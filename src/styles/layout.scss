@@ -1,0 +1,81 @@
+// 屏幕宽度大于768px
+@media (min-width: 768px) {
+  .layout-app {
+    height: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    grid-template-rows: 1fr;
+    background-color: var(--bg-color);
+
+    .layout-app__aside {
+      box-shadow: var(--box-shadow);
+    }
+
+    .layout-app__content {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: 56px 1fr;
+      row-gap: 8px;
+      grid-template-columns: 1fr;
+      overflow: hidden;
+
+      .layout-app__content__header {
+        height: 100%;
+      }
+
+      .layout-app__content__main {
+        height: 100%;
+        padding-right: 8px;
+        padding-bottom: 8px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  }
+}
+
+// 屏幕宽度小于769px
+@media (max-width: 768px) {
+  .layout-app {
+    height: 100%;
+    background-color: var(--bg-color);
+    overflow: hidden;
+
+    .layout-app__content {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 56px 1fr;
+      row-gap: 8px;
+      grid-template-columns: 1fr;
+      overflow: hidden;
+
+      .layout-app__content__header {
+        height: 100%;
+      }
+
+      .layout-app__content__main {
+        height: 100%;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-bottom: 8px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

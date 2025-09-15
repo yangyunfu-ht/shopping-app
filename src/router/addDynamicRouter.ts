@@ -2,8 +2,8 @@ import type { RouteRecordRaw } from 'vue-router'
 import type { DynamicRoute } from '#/router'
 import router from '@/router'
 
-const appLayoutsMap = import.meta.glob('@/layouts/**/**.vue')
-const appPagesMap = import.meta.glob('@/pages/**/**.vue')
+const appLayoutsMap = import.meta.glob('@/layouts/**/**.{vue,tsx}')
+const appPagesMap = import.meta.glob('@/pages/**/**.{vue,tsx}')
 
 const loadComponent = (componentPath: string) => {
   return appLayoutsMap[componentPath] || appPagesMap[componentPath]
@@ -47,7 +47,7 @@ export const addDynamicRoutes = (dynamicRoutes: DynamicRoute[]) => {
       path: '/:pathMatch(.*)*',
       name: 'notFoundWrapper',
       meta: { title: '异常页面' },
-      component: () => import('@/layouts/default.vue'),
+      component: () => import('@/layouts/appLayout'),
       children: [
         {
           path: '',

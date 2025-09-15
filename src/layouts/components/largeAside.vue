@@ -18,9 +18,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import appLogo from '../appLogo'
-import searchAppMenu from '../searchAppMenu'
-import renderAppMen from '../renderAppMenu'
+import appLogo from './appLogo'
+import searchAppMenu from './searchAppMenu'
+import renderAppMen from './renderAppMenu'
 import { useMenuStore } from '@/store/menuStore'
 
 const menuStore = useMenuStore()
@@ -34,7 +34,6 @@ const collapse = computed(() => menuStore.appMenuCollapse)
   display: grid;
   grid-template-rows: 56px 56px 1fr;
   grid-template-columns: 1fr;
-
   box-sizing: border-box;
   background-color: #fff;
   transition: var(--el-transition-all);
@@ -42,11 +41,12 @@ const collapse = computed(() => menuStore.appMenuCollapse)
   .app-logo,
   .app-menu-search {
     box-sizing: border-box;
-    flex-shrink: 0;
+    width: 100%;
   }
 
   .app-menu-data {
     overflow-y: auto;
+    overflow-x: hidden;
   }
 }
 </style>

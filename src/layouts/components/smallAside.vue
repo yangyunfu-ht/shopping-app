@@ -24,9 +24,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import appLogo from '../appLogo'
-import searchAppMenu from '../searchAppMenu'
-import renderAppMenu from '../renderAppMenu'
+import appLogo from './appLogo'
+import searchAppMenu from './searchAppMenu'
+import renderAppMenu from './renderAppMenu'
 import { useMenuStore } from '@/store/menuStore'
 
 const menuStore = useMenuStore()

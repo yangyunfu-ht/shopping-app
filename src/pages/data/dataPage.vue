@@ -6,7 +6,7 @@
           <el-row>
             <el-col v-bind="wrapperColSmall">
               <el-form-item label="查询条件">
-                <el-input></el-input>
+                <el-input v-model="searchForm.value"></el-input>
               </el-form-item>
             </el-col>
             <el-col v-bind="wrapperColSmall">
@@ -128,8 +128,12 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { ref, shallowRef } from 'vue'
+import { reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
+
+const searchForm = reactive({
+  value: '',
+})
 
 const {
   currentPage,

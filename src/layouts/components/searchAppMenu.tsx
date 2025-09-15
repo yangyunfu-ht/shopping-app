@@ -70,14 +70,17 @@ export default defineComponent({
     return () => (
       <li
         class={['el-sub-menu', 'flex-center']}
-        style={{ height: '56px' }}
+        style={{
+          height: '56px',
+          width: appMenuCollapse.value ? '64px' : '210px',
+        }}
       >
         {appMenuCollapse.value && !appDrawerAside.value ? (
           <ElTooltip
             effect="dark"
             content="搜索"
             placement="right"
-            offset={8}
+            offset={12}
           >
             <div
               class={['flex-center', 'el-sub-menu__title']}

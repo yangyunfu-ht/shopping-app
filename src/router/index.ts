@@ -30,7 +30,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('@/layouts/default.vue'),
+    component: () => import('@/layouts/appLayout'),
     children: [
       {
         path: 'homePage',
@@ -55,7 +55,7 @@ const mockRoutes = [
   {
     path: '/about',
     name: 'about',
-    component: '/src/layouts/default.vue',
+    component: '/src/layouts/appLayout.tsx',
     meta: {
       keepAlive: false,
       title: '关于管理',
@@ -75,7 +75,7 @@ const mockRoutes = [
   {
     path: '/mine',
     name: 'mine',
-    component: '/src/layouts/default.vue',
+    component: '/src/layouts/appLayout.tsx',
     meta: {
       keepAlive: false,
       title: '我的管理',
@@ -95,7 +95,7 @@ const mockRoutes = [
   {
     path: '/data',
     name: 'data',
-    component: '/src/layouts/default.vue',
+    component: '/src/layouts/appLayout.tsx',
     meta: {
       keepAlive: false,
       title: '数据管理',
@@ -115,7 +115,7 @@ const mockRoutes = [
   {
     path: '/error',
     name: 'error',
-    component: '/src/layouts/default.vue',
+    component: '/src/layouts/appLayout.tsx',
     meta: {
       keepAlive: false,
       title: '异常管理',
@@ -135,7 +135,7 @@ const mockRoutes = [
   {
     path: '/goods',
     name: 'goods',
-    component: '/src/layouts/default.vue',
+    component: '/src/layouts/appLayout.tsx',
     meta: {
       keepAlive: false,
       title: '商品管理',
@@ -155,7 +155,7 @@ const mockRoutes = [
   {
     path: '/person',
     name: 'person',
-    component: '/src/layouts/default.vue',
+    component: '/src/layouts/appLayout.tsx',
     meta: {
       keepAlive: false,
       title: '烦人管理',
@@ -193,7 +193,7 @@ const mockRoutes = [
       {
         path: 'button',
         name: 'button',
-        component: '/src/layouts/subLayout.vue',
+        component: '/src/layouts/subLayout.tsx',
         meta: {
           keepAlive: true,
           title: '按钮管理',
@@ -224,7 +224,7 @@ const mockRoutes = [
   {
     path: '/system',
     name: 'system',
-    component: '/src/layouts/default.vue',
+    component: '/src/layouts/appLayout.tsx',
     meta: {
       keepAlive: false,
       title: '系统管理',
