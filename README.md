@@ -1,4 +1,5 @@
-# shopping-app
+# shopping-admin
+- 得胜集团商城项目
 
 ## 技术栈
 - vue3
