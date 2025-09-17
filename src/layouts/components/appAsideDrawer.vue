@@ -73,17 +73,3 @@ const handleClose = () => {
   }
 }
 </style>
-
-<style lang="css">
-.el-drawer {
-  --el-drawer-padding-primary: 0 !important;
-}
-
-.el-drawer__header {
-  margin-bottom: 0 !important;
-}
-
-.el-drawer__body {
-  padding: 0 !important;
-}
-</style>

@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppDrawer: typeof import('./src/components/appDrawer/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -23,6 +24,8 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSubMenuGroup: typeof import('element-plus/es')['ElSubMenuGroup']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     GridTable: typeof import('./src/components/gridTable/index.vue')['default']
     NoRowsOverlay: typeof import('./src/components/noRowsOverlay.vue')['default']
     PageLayout: typeof import('./src/components/pageLayout/index.vue')['default']

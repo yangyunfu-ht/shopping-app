@@ -1,0 +1,21 @@
+.el-drawer {
+  --el-drawer-padding-primary: 0 !important;
+}
+
+.el-drawer__header {
+  height: 56px;
+  padding: 8px !important;
+  box-sizing: border-box;
+  margin-bottom: 0 !important;
+}
+
+.el-drawer__body {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.el-drawer__footer {
+  height: 56px;
+  padding: 8px !important;
+  box-sizing: border-box;
+}

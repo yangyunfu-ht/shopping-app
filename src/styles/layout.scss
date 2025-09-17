@@ -4,7 +4,6 @@
     height: 100%;
     display: grid;
     grid-template-columns: auto 1fr;
-    column-gap: 8px;
     grid-template-rows: 1fr;
     background-color: var(--bg-color);
 
@@ -26,8 +25,7 @@
 
       .layout-app__content__main {
         height: 100%;
-        padding-right: 8px;
-        padding-bottom: 8px;
+        padding: 0 8px 8px 8px;
         box-sizing: border-box;
         overflow-y: auto;
         scroll-behavior: smooth;

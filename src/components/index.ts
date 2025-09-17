@@ -3,6 +3,7 @@ import pageLayout from './pageLayout/index.vue'
 import gridTable from './gridTable/index.vue'
 import svgIcon from './svgIcon/svgIcon'
 import searchCollapse from './searchCollapse/index.vue'
+import appDrawer from './appDrawer/index.vue'
 
 const globalComponent = [
   {
@@ -20,6 +21,10 @@ const globalComponent = [
   {
     name: 'searchCollapse',
     component: searchCollapse,
+  },
+  {
+    name: 'appDrawer',
+    component: appDrawer,
   },
 ]
 

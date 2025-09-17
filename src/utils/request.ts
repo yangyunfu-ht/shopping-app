@@ -1,4 +1,4 @@
-import { tokenStore } from '@/store/tokenStore'
+import { useTokenStore } from '@/store/tokenStore'
 import axios from 'axios'
 import type {
   AxiosInstance,
@@ -13,12 +13,12 @@ const service: AxiosInstance = axios.create({
   timeout: 60000,
 })
 
-const useTokenStore = tokenStore()
+const tokenStore = useTokenStore()
 
 // 请求拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = useTokenStore.token
+    const token = tokenStore.token
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -41,7 +41,6 @@ service.interceptors.response.use(
   (error) => {
     let message = ''
     if (axios.isCancel(error)) {
-      // 请求已取消，不进行任何提示
       console.warn('Request canceled:', error.message)
       return Promise.reject(error)
     }
@@ -53,7 +52,7 @@ service.interceptors.response.use(
           break
         case 401:
           message = '登录过期，请重新登录'
-          useTokenStore.removeToken()
+          tokenStore.removeToken()
           router.push('/login')
           break
         case 403:

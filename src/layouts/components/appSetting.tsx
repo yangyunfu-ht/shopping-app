@@ -1,13 +1,20 @@
 import { ElButton, ElIcon } from 'element-plus'
 import { defineComponent } from 'vue'
-import { Bell, SwitchButton } from '@element-plus/icons-vue'
+import { Bell, FullScreen, SwitchButton } from '@element-plus/icons-vue'
 import { useTokenStore } from '@/store/tokenStore'
 import router from '@/router'
+import { useFullscreen } from '@vueuse/core'
 
 export default defineComponent({
   name: 'AppSetting',
   setup() {
     const tokenStore = useTokenStore()
+    const { isFullscreen, enter, exit } = useFullscreen()
+
+    const handleFullScreen = () => {
+      isFullscreen.value ? exit() : enter()
+    }
+
     const handleOnLoginOut = () => {
       tokenStore.removeToken().finally(() => {
         router.replace({
@@ -19,6 +26,17 @@ export default defineComponent({
 
     return () => (
       <div>
+        <ElButton
+          text
+          circle
+          bg
+          onClick={handleFullScreen}
+        >
+          <ElIcon size={16}>
+            <FullScreen />
+          </ElIcon>
+        </ElButton>
+
         <ElButton
           text
           circle

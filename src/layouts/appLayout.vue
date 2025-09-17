@@ -55,8 +55,6 @@ const cachedRoutes = computed(() => {
     .filter((route) => route.meta.keepAlive)
     .map((route) => route.name as string)
 })
-
-console.log(cachedRoutes.value)
 </script>
 
 <style lang="scss">
