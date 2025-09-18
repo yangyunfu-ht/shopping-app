@@ -19,7 +19,7 @@
   .page-menu__tree {
     padding: 8px;
     box-sizing: border-box;
-    background-color: #fff;
+    background-color: var(--theme-color);
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
   }
@@ -27,7 +27,7 @@
   .page-menu__table {
     padding: 8px;
     box-sizing: border-box;
-    background-color: #fff;
+    background-color: var(--theme-color);
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
   }

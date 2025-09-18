@@ -315,11 +315,11 @@ const emits = defineEmits<{
   /* 边框颜色 */
   --ag-border-color: #dcdfe6 !important;
   /* 偶数行背景颜色 */
-  --ag-odd-row-background-color: #ffffff !important;
+  --ag-odd-row-background-color: var(--theme-color) !important;
   /* 单元格左右padding */
   --ag-cell-horizontal-padding: 7px !important;
   /* 标题单元格字体样色 */
-  --ag-header-foreground-color: #606266 !important;
+  --ag-header-foreground-color: var(--el-text-color-regular) !important;
   /* 表格表头行和过滤行背景颜色 */
   --ag-header-background-color: rgb(250, 250, 250) !important;
   /* ag-grid图标大小 */
@@ -333,7 +333,7 @@ const emits = defineEmits<{
   /* 鼠标移到表格行的背景颜色 */
   --ag-row-hover-color: rgb(250, 250, 250) !important;
   /* 选择列复选框未选择时边框颜色 */
-  --ag-checkbox-unchecked-color: #606266 !important;
+  --ag-checkbox-unchecked-color: var(--el-text-color-regular) !important;
   /* 过滤输入框和选择列复选框聚焦时盒子阴影 */
   --ag-input-focus-box-shadow: none !important;
   /* 过滤输入框和选择列复选框聚焦时边框颜色 */

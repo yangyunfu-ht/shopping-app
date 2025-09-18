@@ -1,11 +1,11 @@
 import { useTokenStore } from '@/store/tokenStore'
 import axios from 'axios'
 import type {
+  AxiosError,
   AxiosInstance,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios'
-import { ElMessage } from 'element-plus'
 import router from '@/router'
 
 const service: AxiosInstance = axios.create({
@@ -24,7 +24,7 @@ service.interceptors.request.use(
     }
     return config
   },
-  (error) => {
+  (error: AxiosError) => {
     return Promise.reject(error)
   }
 )
@@ -38,7 +38,7 @@ service.interceptors.response.use(
     }
     return data
   },
-  (error) => {
+  (error: any) => {
     let message = ''
     if (axios.isCancel(error)) {
       console.warn('Request canceled:', error.message)
@@ -73,9 +73,7 @@ service.interceptors.response.use(
       message = error.message
     }
 
-    ElMessage.error(message)
-
-    return Promise.reject(error)
+    return Promise.reject({ ...error, message: message || error.message })
   }
 )
 

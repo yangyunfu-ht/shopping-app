@@ -4,6 +4,7 @@ import gridTable from './gridTable/index.vue'
 import svgIcon from './svgIcon/svgIcon'
 import searchCollapse from './searchCollapse/index.vue'
 import appDrawer from './appDrawer/index.vue'
+import appModal from './appModal/index.vue'
 
 const globalComponent = [
   {
@@ -25,6 +26,10 @@ const globalComponent = [
   {
     name: 'appDrawer',
     component: appDrawer,
+  },
+  {
+    name: 'appModal',
+    component: appModal,
   },
 ]
 

@@ -63,7 +63,7 @@ const handleClose = () => {
   grid-template-rows: 56px 56px 1fr;
   grid-template-columns: 1fr;
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: var(--theme-color);
   transition: var(--el-transition-all);
   overflow: hidden;
 

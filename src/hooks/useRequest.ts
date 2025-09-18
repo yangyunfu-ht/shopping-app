@@ -1,10 +1,10 @@
-import { computed, ref, type Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import service from '@/utils/request'
 import type { AxiosRequestConfig } from 'axios'
 import type { UseRequestReturn } from '#/hooks'
 import axios from 'axios'
 import { useOnline } from '@vueuse/core'
-import { globalStore } from '@/store/globalStore'
+import { useGlobalStore } from '@/store/globalStore'
 
 /**
  * 封装一个通用的请求 Hooks
@@ -13,12 +13,12 @@ import { globalStore } from '@/store/globalStore'
  */
 export function useRequest<T = any>(): UseRequestReturn<T> {
   const data: Ref<T | null> = ref(null)
-  const loadingCount = ref(0)
+  const loading = ref(false)
   const error = ref<null | string>(null)
 
   const online = useOnline()
   const controllerMap = new Map<string, AbortController>()
-  const useGlobalStore = globalStore()
+  const globalStore = useGlobalStore()
 
   const request = async (config: AxiosRequestConfig) => {
     const { url } = config
@@ -32,14 +32,14 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
     }
 
     // 1. 在请求发起前检查全局锁定状态
-    if (useGlobalStore.isRequestLocked) {
+    if (globalStore.isRequestLocked) {
       throw new Error('登录信息过期，无法发起任何新请求')
     }
 
     // 判断相同url是否存在未完成的请求，存在则取消该请求
     cancel(url)
 
-    loadingCount.value++
+    loading.value = true
     error.value = null
 
     const abortController = new AbortController()
@@ -57,14 +57,14 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
       } else {
         error.value = err
         if (err.response && err.response.status === 401) {
-          useGlobalStore.lockREquests()
+          globalStore.lockREquests()
           cancel()
         }
       }
       throw err
     } finally {
       controllerMap.delete(url)
-      loadingCount.value--
+      loading.value = false
     }
   }
 
@@ -76,7 +76,6 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
         controllerMap.delete(url)
       }
     } else {
-      // 如果没有指定 URL，则取消所有请求
       controllerMap.forEach((controller) => controller.abort())
       controllerMap.clear()
     }
@@ -84,11 +83,9 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
 
   return {
     data,
-    loading: computed(() => loadingCount.value > 0),
+    loading,
     error,
     request,
-    get: (url, options = {}) => request({ url, ...options }),
-    post: (url, data, options = {}) => request({ url, data, ...options }),
     cancel,
   }
 }

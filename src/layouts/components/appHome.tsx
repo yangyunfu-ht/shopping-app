@@ -32,6 +32,7 @@ export default defineComponent({
             text
             circle
             bg
+            size="large"
             onClick={handleClickMenuCollapse}
           >
             <ElIcon size={20}>
@@ -43,6 +44,7 @@ export default defineComponent({
             text
             circle
             bg
+            size="large"
             onClick={handleClickDrawerCollapse}
           >
             <ElIcon size={20}>

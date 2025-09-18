@@ -24,7 +24,7 @@ import appSetting from './appSetting'
   column-gap: 8px;
   box-sizing: border-box;
   transition: var(--el-transition-all);
-  background-color: #fff;
+  background-color: var(--theme-color);
   box-shadow: var(--box-shadow);
 
   .app-header-left {
@@ -39,7 +39,7 @@ import appSetting from './appSetting'
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 20px;
+    gap: 36px;
     padding: 8px;
     box-sizing: border-box;
   }

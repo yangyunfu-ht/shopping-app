@@ -1,21 +1,25 @@
 .el-drawer {
   --el-drawer-padding-primary: 0 !important;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+  font-size: 14px;
 }
 
 .el-drawer__header {
-  height: 56px;
-  padding: 8px !important;
+  padding: 0 !important;
   box-sizing: border-box;
   margin-bottom: 0 !important;
 }
 
 .el-drawer__body {
   padding: 0 !important;
-  overflow: hidden !important;
+  box-sizing: border-box;
+  overflow: auto !important;
 }
 
 .el-drawer__footer {
-  height: 56px;
-  padding: 8px !important;
+  padding: 0 !important;
   box-sizing: border-box;
 }

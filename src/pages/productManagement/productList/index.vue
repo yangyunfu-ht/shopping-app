@@ -1,8 +1,11 @@
 <template>
-  <div style="height: 100%">
+  <div
+    style="height: 100%"
+    v-loading="loading"
+  >
     <page-layout v-loading="false">
       <template #search>
-        <search-collapse>
+        <search-collapse @query="getTableData">
           <el-form label-width="100px">
             <el-row>
               <el-col v-bind="wrapperColSmall">
@@ -113,6 +116,11 @@
           @click="handleDelete"
           >删除</el-button
         >
+        <el-button
+          type="danger"
+          @click="handleOpen"
+          >打开modal</el-button
+        >
       </template>
 
       <template #table>
@@ -133,6 +141,8 @@
     </page-layout>
 
     <product-drawer ref="productRef" />
+
+    <product-modal ref="modalRef" />
   </div>
 </template>
 
@@ -144,17 +154,20 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { h, reactive, ref, shallowRef, useTemplateRef } from 'vue'
+import { h, reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
 import productDrawer from './productDrawer.vue'
+import productModal from './productModal.vue'
 import { useMessage } from '@/hooks/useMessage'
 import { useMessageBox } from '@/hooks/useMessageBox'
+import { useRequest } from '@/hooks/useRequest'
 
 defineOptions({
   name: 'dataPage',
 })
 
 const messageBox = useMessageBox()
+const { request, loading } = useRequest()
 
 const searchForm = reactive({
   value: '',
@@ -178,14 +191,30 @@ const onGridReady = (params: GridReadyEvent) => {
 const selectRow = ref([])
 const tableData = ref([])
 const getTableData = async () => {
-  setTotal(1000)
-  gridApi.value!.setFilterModel(null)
-  gridApi.value!.deselectAll()
+  try {
+    const response = await request({
+      url: '111',
+      method: 'post',
+      data: {
+        name: 'yyf',
+      },
+    })
+    console.log(response)
+    setTotal(1000)
+    gridApi.value!.setFilterModel(null)
+    gridApi.value!.deselectAll()
 
-  gridApi.value!.setRowData(tableData.value)
+    gridApi.value!.setRowData(tableData.value)
+  } catch (err: any) {
+    console.log(err)
+    useMessage({
+      message: err.message,
+      type: 'error',
+    })
+  }
 }
 
-const productRef = useTemplateRef('productRef')
+const productRef = ref<InstanceType<typeof productDrawer> | null>(null)
 const handleCreate = () => {
   productRef.value!.openDrawer()
 }
@@ -213,6 +242,11 @@ const handleDelete = () => {
     type: 'error',
     message: '这是一个搓搓',
   })
+}
+
+const modalRef = ref<InstanceType<typeof productModal> | null>(null)
+const handleOpen = () => {
+  modalRef.value!.openModal()
 }
 
 const columnDefs = ref<ColDef[]>([

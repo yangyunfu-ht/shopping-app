@@ -1,14 +1,14 @@
 <template>
-  <app-drawer
+  <app-modal
     v-model="visible"
-    title="title"
+    title="通知消息"
     @open="handleOpen"
     @close="handleClose"
     @confirm="handleConfirm"
-  ></app-drawer>
+  ></app-modal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 const visible = ref(false)
@@ -21,17 +21,16 @@ const handleClose = (v: boolean) => {
   console.log('close', v)
 }
 
-const handleConfirm = (v: boolean) => {
+const handleConfirm = () => {
   visible.value = false
-  console.log('confirm', v)
 }
 
-const openDrawer = () => {
+const openModal = () => {
   visible.value = true
 }
 
 defineExpose({
-  openDrawer,
+  openModal,
 })
 </script>
 
