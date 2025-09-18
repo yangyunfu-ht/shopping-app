@@ -29,7 +29,7 @@
   overflow: auto;
 
   .page-layout-search {
-    background-color: var(--theme-color);
+    background-color: var(--el-color-white);
     box-shadow: var(--box-shadow);
   }
 
@@ -38,7 +38,7 @@
     display: grid;
     grid-template-rows: auto 1fr;
     grid-template-columns: 1fr;
-    background-color: var(--theme-color);
+    background-color: var(--el-color-white);
     row-gap: 8px;
     padding: 8px;
     box-sizing: border-box;

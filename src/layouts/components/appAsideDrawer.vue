@@ -8,7 +8,7 @@
     @close="handleClose"
   >
     <template #header>
-      <div>
+      <div style="background-color: var(--el-menu-bg-color)">
         <appLogo :collapse="false" />
 
         <searchAppMenu
@@ -19,7 +19,10 @@
       </div>
     </template>
 
-    <div class="app-menu-data">
+    <div
+      class="app-menu-data"
+      style="height: 100%"
+    >
       <renderAppMen
         :menus="menus"
         :collapse="collapse"
@@ -63,13 +66,14 @@ const handleClose = () => {
   grid-template-rows: 56px 56px 1fr;
   grid-template-columns: 1fr;
   box-sizing: border-box;
-  background-color: var(--theme-color);
+  background-color: var(--el-menu-bg-color);
   transition: var(--el-transition-all);
   overflow: hidden;
 
   .app-menu-data {
     overflow-y: auto;
     overflow-x: hidden;
+    background-color: var(--el-menu-bg-color);
   }
 }
 </style>

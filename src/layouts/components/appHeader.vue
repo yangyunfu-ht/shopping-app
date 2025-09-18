@@ -24,7 +24,7 @@ import appSetting from './appSetting'
   column-gap: 8px;
   box-sizing: border-box;
   transition: var(--el-transition-all);
-  background-color: var(--theme-color);
+  background-color: var(--el-color-white);
   box-shadow: var(--box-shadow);
 
   .app-header-left {

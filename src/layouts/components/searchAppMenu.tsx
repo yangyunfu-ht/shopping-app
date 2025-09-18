@@ -101,7 +101,7 @@ export default defineComponent({
             >
               <ElIcon
                 size={16}
-                color={'#000000'}
+                color={'#bfcbd9'}
               >
                 <Search />
               </ElIcon>
@@ -118,6 +118,9 @@ export default defineComponent({
             style={{
               width: '100%',
               '--el-input-height': '36px',
+              '--el-input-bg-color': '#434f67',
+              '--el-input-border-color': 'none',
+              '--el-input-text-color': '#bfcbd9',
               padding: '0 4px',
               boxSize: 'border-box',
               transition: 'var(--el-transition-all)',
@@ -127,7 +130,7 @@ export default defineComponent({
               prefix: () => (
                 <ElIcon
                   size={16}
-                  color={'#000000'}
+                  color={'#bfcbd9'}
                 >
                   <Search />
                 </ElIcon>

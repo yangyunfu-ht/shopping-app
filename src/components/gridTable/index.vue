@@ -315,7 +315,7 @@ const emits = defineEmits<{
   /* 边框颜色 */
   --ag-border-color: #dcdfe6 !important;
   /* 偶数行背景颜色 */
-  --ag-odd-row-background-color: var(--theme-color) !important;
+  --ag-odd-row-background-color: var(--el-color-white) !important;
   /* 单元格左右padding */
   --ag-cell-horizontal-padding: 7px !important;
   /* 标题单元格字体样色 */

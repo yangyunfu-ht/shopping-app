@@ -3,13 +3,6 @@
 @use './messageBox.scss';
 @use './scrollbar.scss';
 
-:root {
-  --bg-color: #f2f3f5;
-  --theme-color: #ffffff;
-  --box-shadow: 0 0 4px rgba(0, 0, 0, 0.12);
-  --border-radius: 4px;
-}
-
 html,
 body,
 #app {
@@ -19,6 +12,33 @@ body,
     Cantarell, 'Helvetica Neue', sans-serif;
   color: var(--el-text-color-regular);
   font-size: 14px;
+}
+
+:root {
+  --bg-color: #f2f3f5;
+  --box-shadow: 0 0 4px rgba(0, 0, 0, 0.12);
+  --border-radius: 4px;
+
+  --el-menu-bg-color: #344058;
+  --el-menu-text-color: #bfcbd9;
+  --el-menu-hover-bg-color: #344058;
+}
+
+.el-sub-menu .el-menu-item {
+  background-color: #434f67;
+}
+
+.el-sub-menu__title:hover {
+  color: var(--el-color-white);
+}
+
+.el-menu-item:hover {
+  color: var(--el-color-white);
+}
+
+.el-menu-item.is-active {
+  background-color: var(--el-color-primary);
+  color: var(--el-color-white);
 }
 
 .flex-center {

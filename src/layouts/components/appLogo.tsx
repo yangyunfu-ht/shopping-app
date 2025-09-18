@@ -1,3 +1,4 @@
+import { ElImage } from 'element-plus'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -16,9 +17,16 @@ export default defineComponent({
           height: '56px',
           boxSizing: 'border-box',
           transition: 'var(--el-transition-all)',
+          backgroundColor: 'var(--el-menu-bg-color)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <div style={{ backgroundColor: '#f5f5f5', height: '100%' }}></div>
+        <ElImage
+          src="https://element-plus.org/images/element-plus-logo.svg"
+          style={{ height: '40px', width: '192px' }}
+        />
       </div>
     )
   },

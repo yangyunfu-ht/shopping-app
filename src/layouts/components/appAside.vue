@@ -39,7 +39,7 @@ const collapse = computed(() => menuStore.appMenuCollapse)
   grid-template-rows: 56px 56px 1fr;
   grid-template-columns: 1fr;
   box-sizing: border-box;
-  background-color: var(--theme-color);
+  background-color: var(--el-menu-bg-color);
   transition: var(--el-transition-all);
 
   .app-logo,

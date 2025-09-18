@@ -84,17 +84,22 @@ export default defineComponent({
           trigger="click"
           v-slots={{
             reference: () => (
-              <ElButton
-                text
-                circle
-                bg
-                size="large"
+              <div
+                role="button"
                 style={{
-                  '--el-fill-color-light': 'var(--el-menu-hover-bg-color)',
+                  height: 'var(--el-component-size-large)',
+                  width: 'var(--el-component-size-large)',
+                  backgroundColor: 'var(--el-color-primary)',
+                  color: 'var(--el-color-white)',
+                  borderRadius: 'var(--el-border-radius-circle)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <span>杨</span>
-              </ElButton>
+              </div>
             ),
             default: () => (
               <div
