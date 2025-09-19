@@ -13,13 +13,11 @@ export default defineComponent({
 
     return () => (
       <div>
-        {breadcrumbs.value.length >= 2 ? (
-          <ElBreadcrumb class={'flex-center'}>
-            {breadcrumbs.value.map((breadcrumb) => (
-              <ElBreadcrumbItem>{breadcrumb.meta?.title}</ElBreadcrumbItem>
-            ))}
-          </ElBreadcrumb>
-        ) : null}
+        <ElBreadcrumb class={'flex-center'}>
+          {breadcrumbs.value.map((breadcrumb) => (
+            <ElBreadcrumbItem>{breadcrumb.meta?.title}</ElBreadcrumbItem>
+          ))}
+        </ElBreadcrumb>
       </div>
     )
   },

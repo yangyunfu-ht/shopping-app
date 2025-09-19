@@ -20,37 +20,33 @@
 .page-layout {
   height: 100%;
   width: 100%;
-  overflow: hidden;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: 1fr;
-  row-gap: 8px;
+  display: flex;
+  flex-direction: column;
   transition: var(--el-transition-all);
-  overflow: auto;
+  background-color: var(--el-color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 
   .page-layout-search {
-    background-color: var(--el-color-white);
-    box-shadow: var(--box-shadow);
+    border-bottom: 2px solid var(--bg-color);
   }
 
   .page-layout-content {
+    flex-grow: 1;
     height: 100%;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 1fr;
-    background-color: var(--el-color-white);
+    display: flex;
+    flex-direction: column;
     row-gap: 8px;
     padding: 8px;
     box-sizing: border-box;
-    box-shadow: var(--box-shadow);
-  }
 
-  .page-layout-buttons {
-    padding: 4px 0;
-  }
+    .page-layout-buttons {
+      padding: 4px 0;
+    }
 
-  .page-layout-table {
-    height: 100%;
+    .page-layout-table {
+      flex-grow: 1;
+    }
   }
 }
 </style>

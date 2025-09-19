@@ -1,29 +1,131 @@
 <template>
-  <div class="page-container menu-management">
-    <!-- <div>
-      <h2>部门组织架构</h2>
-    </div> -->
+  <div style="height: 100%">
+    <page-layout>
+      <template #search>
+        <search-collapse style="background-color: #fff">
+          <el-form label-width="100px">
+            <el-row>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input v-model="searchForm.value"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColLarge">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col v-bind="wrapperColLarge">
+                <el-form-item label="查询条件">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <!-- <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col> -->
+            </el-row>
+          </el-form>
 
-    <div style="height: 100%">
-      <base-table
-        :table-data="treeData"
-        :columns="treeTableColumns"
-        row-key="id"
-        height="100%"
-        :default-expand-all="true"
-        :tree-props="{
-          children: 'children',
-          hasChildren: 'hasChildren',
-          checkStrictly: true,
-        }"
-      />
-    </div>
+          <template #collapse>
+            <el-form label-width="100px">
+              <el-row>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col v-bind="wrapperColSmall">
+                  <el-form-item label="查询条件">
+                    <el-input></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </template>
+        </search-collapse>
+      </template>
+
+      <template #buttons>
+        <el-button type="primary">新增</el-button>
+        <el-button type="warning">修改</el-button>
+        <el-button type="danger">删除</el-button>
+      </template>
+
+      <template #table>
+        <base-table
+          :table-data="treeData"
+          :columns="treeTableColumns"
+          v-model:selection="selectRow"
+          row-key="id"
+          height="100%"
+          :default-expand-all="true"
+          :tree-props="{
+            children: 'children',
+            hasChildren: 'hasChildren',
+            checkStrictly: true,
+          }"
+        />
+      </template>
+    </page-layout>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { TableColumn } from '@/components/baseTable/baseTable'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
+import type { TableColumn } from '#/column'
 
 interface Department {
   id: number
@@ -31,6 +133,11 @@ interface Department {
   manager: string
   children?: Department[]
 }
+
+const selectRow = ref<Department[]>([])
+const searchForm = reactive({
+  value: '',
+})
 
 const treeData = ref<Department[]>([
   {

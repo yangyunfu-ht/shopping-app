@@ -1,20 +1,7 @@
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, ref } from 'vue'
 import { ElTable, ElTableColumn, ElEmpty } from 'element-plus'
 import { type VNode } from 'vue'
-
-// 定义表格列的类型
-export interface TableColumn {
-  field: string
-  colId: string
-  headerName: string
-  width?: number | string
-  minWidth?: number | string
-  fixed?: boolean | 'left' | 'right'
-  sortable?: boolean | 'custom'
-  type?: 'selection' | 'index' // 新增 type 属性
-  slot?: string // 自定义列的插槽名
-  align?: 'left' | 'center' | 'right'
-}
+import type { TableColumn } from '#/column'
 
 export default defineComponent({
   name: 'BaseTable',
@@ -47,12 +34,46 @@ export default defineComponent({
       type: Object,
       default: () => ({ children: 'children' }), // 默认子节点字段为 'children'
     },
+    selection: {
+      type: Array,
+      default: () => [],
+    },
+    headerCellStyle: {
+      type: Object,
+      default: () => ({
+        backgroundColor: 'rgb(250, 250, 250)',
+      }),
+    },
+    rowStyle: {
+      type: Object,
+      default: () => ({
+        height: '32px',
+      }),
+    },
+    cellStyle: {
+      type: Object,
+      default: () => ({
+        color: '#303133',
+        fontSize: '13px',
+      }),
+    },
   },
-  emits: ['update:page', 'selection-change'],
+  emits: ['update:selection', 'onRowClick'],
   setup(props, { emit, slots, attrs }) {
+    const multipleTableRef = ref<InstanceType<typeof ElTable> | null>(null)
+
     // 处理选择行
     const handleSelectionChange = (selection: any[]) => {
-      emit('selection-change', selection)
+      emit('update:selection', selection)
+    }
+
+    // 处理行点击事件
+    const handleOnRowClick = (row: any, column: any) => {
+      if (multipleTableRef.value) {
+        multipleTableRef.value.clearSelection()
+        multipleTableRef.value?.toggleRowSelection(row, true)
+      }
+      emit('onRowClick', row, column)
     }
 
     // 渲染表格列
@@ -119,9 +140,6 @@ export default defineComponent({
           style: {
             height: '100%',
             width: '100%',
-            padding: '8px',
-            boxSizing: 'border-box',
-            backgroundColor: 'var(--el-color-white)',
           },
         },
         [
@@ -136,6 +154,11 @@ export default defineComponent({
               rowKey: props.rowKey,
               defaultExpandAll: props.defaultExpandAll,
               treeProps: props.treeProps,
+              headerCellStyle: props.headerCellStyle,
+              rowStyle: props.rowStyle,
+              cellStyle: props.cellStyle,
+              onRowClick: handleOnRowClick,
+              ref: multipleTableRef,
             },
             {
               // 动态渲染列

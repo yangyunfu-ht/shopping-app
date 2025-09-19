@@ -23,10 +23,12 @@ export default defineComponent({
           alignItems: 'center',
         }}
       >
-        <ElImage
-          src="https://element-plus.org/images/element-plus-logo.svg"
-          style={{ height: '40px', width: '192px' }}
-        />
+        {props.collapse ? null : (
+          <ElImage
+            src="https://element-plus.org/images/element-plus-logo.svg"
+            style={{ height: '40px', width: '192px' }}
+          />
+        )}
       </div>
     )
   },

@@ -6,6 +6,7 @@
     :show-close="false"
     direction="ltr"
     @close="handleClose"
+    style="background-color: var(--el-menu-bg-color)"
   >
     <template #header>
       <div style="background-color: var(--el-menu-bg-color)">
