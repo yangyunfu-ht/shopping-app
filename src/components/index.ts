@@ -1,10 +1,12 @@
 import type { App } from 'vue'
 import pageLayout from './pageLayout/index.vue'
 import gridTable from './gridTable/index.vue'
+import baseTable from './baseTable/baseTable'
 import svgIcon from './svgIcon/svgIcon'
 import searchCollapse from './searchCollapse/index.vue'
 import appDrawer from './appDrawer/index.vue'
 import appModal from './appModal/index.vue'
+import appEcharts from './appEcharts/appEcharts'
 
 const globalComponent = [
   {
@@ -14,6 +16,10 @@ const globalComponent = [
   {
     name: 'gridTable',
     component: gridTable,
+  },
+  {
+    name: 'baseTable',
+    component: baseTable,
   },
   {
     name: 'svgIcon',
@@ -30,6 +36,10 @@ const globalComponent = [
   {
     name: 'appModal',
     component: appModal,
+  },
+  {
+    name: 'appEcharts',
+    component: appEcharts,
   },
 ]
 

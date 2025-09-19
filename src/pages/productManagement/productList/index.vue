@@ -256,7 +256,6 @@ const columnDefs = ref<ColDef[]>([
     colId: 'rowIndex',
     filter: false,
     width: 60,
-
     cellClass: 'ag-grid__rowIndexCell',
     headerClass: 'ag-grid__rowIndexCell',
     resizable: false,

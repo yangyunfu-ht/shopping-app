@@ -1,35 +1,79 @@
 <template>
-  <div class="page">
-    <div class="page-menu__tree">菜单信息</div>
-    <div class="page-menu__table"></div>
+  <div class="page-container menu-management">
+    <!-- <div>
+      <h2>部门组织架构</h2>
+    </div> -->
+
+    <div style="height: 100%">
+      <base-table
+        :table-data="treeData"
+        :columns="treeTableColumns"
+        row-key="id"
+        height="100%"
+        :default-expand-all="true"
+        :tree-props="{
+          children: 'children',
+          hasChildren: 'hasChildren',
+          checkStrictly: true,
+        }"
+      />
+    </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { TableColumn } from '@/components/baseTable/baseTable'
+import { ref } from 'vue'
 
-<style lang="scss" scoped>
-.page {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 230px 1fr;
-  grid-template-rows: 1fr;
-  gap: 8px;
-  box-sizing: border-box;
-
-  .page-menu__tree {
-    padding: 8px;
-    box-sizing: border-box;
-    background-color: var(--el-color-white);
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-  }
-
-  .page-menu__table {
-    padding: 8px;
-    box-sizing: border-box;
-    background-color: var(--el-color-white);
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-  }
+interface Department {
+  id: number
+  name: string
+  manager: string
+  children?: Department[]
 }
-</style>
+
+const treeData = ref<Department[]>([
+  {
+    id: 1,
+    name: '总公司',
+    manager: '张三',
+    children: [
+      {
+        id: 2,
+        name: '技术部',
+        manager: '李四',
+        children: [
+          { id: 3, name: '前端组', manager: '王五' },
+          { id: 4, name: '后端组', manager: '赵六' },
+        ],
+      },
+      {
+        id: 5,
+        name: '销售部',
+        manager: '孙七',
+        children: [{ id: 6, name: '销售一组', manager: '周八' }],
+      },
+    ],
+  },
+])
+
+const treeTableColumns: TableColumn[] = [
+  {
+    colId: 'index',
+    field: 'index',
+    type: 'index',
+    headerName: '序号',
+    align: 'center',
+  },
+  {
+    colId: 'selection',
+    field: 'selection',
+    type: 'selection',
+    headerName: '',
+  },
+  { colId: 'name', field: 'name', headerName: '部门名称', minWidth: 100 },
+  { colId: 'manager', field: 'manager', headerName: '负责人', minWidth: 100 },
+]
+</script>
+
+<style lang="scss" scoped></style>
