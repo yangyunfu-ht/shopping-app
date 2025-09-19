@@ -3,7 +3,7 @@
     <div>
       <ag-grid-vue
         class="ag-theme-alpine"
-        style="width: 100%; height: 100%; min-height: 200px; overflow: hidden"
+        style="width: 100%; height: 100%; min-height: 300px; overflow: hidden"
         :header-height="32"
         :row-height="32"
         :grid-options="gridOptions"
@@ -94,11 +94,11 @@ const props = withDefaults(defineProps<Props>(), {
   usePagination: true, //是否使用分页
   defaultColDef: () =>
     ({
-      filter: true, //默认开启列过滤
+      filter: false, //默认开启列过滤
       sortable: true, //默认开启列排序
       resizable: true, //默认开启列宽拖拽
       minWidth: 30, //列最小宽度
-      floatingFilter: true, //默认开启列过滤行
+      floatingFilter: false, //默认开启列过滤行
       filterParams: {
         filterOptions: ['contains'], //默认列过选项为包含
       } as ITextFilterParams,
@@ -313,7 +313,7 @@ const emits = defineEmits<{
   /* 边框样式 */
   --ag-borders: 1px solid !important;
   /* 边框颜色 */
-  --ag-border-color: #dcdfe6 !important;
+  --ag-border-color: var(--el-border-color) !important;
   /* 偶数行背景颜色 */
   --ag-odd-row-background-color: var(--el-color-white) !important;
   /* 单元格左右padding */

@@ -38,16 +38,27 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
+    headerRowStyle: {
+      type: Object,
+      default: () => ({
+        height: '32px',
+        boxSizing: 'border-box',
+      }),
+    },
     headerCellStyle: {
       type: Object,
       default: () => ({
         backgroundColor: 'rgb(250, 250, 250)',
+        fontWeight: 700,
+        fontSize: '13px',
+        padding: '6px 0',
       }),
     },
     rowStyle: {
       type: Object,
       default: () => ({
         height: '32px',
+        boxSizing: 'border-box',
       }),
     },
     cellStyle: {
@@ -55,6 +66,7 @@ export default defineComponent({
       default: () => ({
         color: '#303133',
         fontSize: '13px',
+        padding: '6px 0',
       }),
     },
   },
@@ -140,6 +152,9 @@ export default defineComponent({
           style: {
             height: '100%',
             width: '100%',
+            minHeight: '300px',
+            // 表格高度撑满父元素关键
+            position: 'relative',
           },
         },
         [
@@ -159,6 +174,8 @@ export default defineComponent({
               cellStyle: props.cellStyle,
               onRowClick: handleOnRowClick,
               ref: multipleTableRef,
+              // 表格高度撑满父元素关键
+              style: { width: '100%', height: '100%' },
             },
             {
               // 动态渲染列
@@ -167,7 +184,8 @@ export default defineComponent({
                 slots.operation && slots.operation(),
               ],
               // 自定义空状态
-              empty: () => h(ElEmpty, { description: props.emptyText }),
+              empty: () =>
+                h(ElEmpty, { description: props.emptyText, imageSize: 120 }),
             }
           ),
         ]

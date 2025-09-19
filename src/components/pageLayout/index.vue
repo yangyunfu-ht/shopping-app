@@ -20,32 +20,38 @@
 .page-layout {
   height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: 8px;
+  grid-template-columns: 1fr;
   transition: var(--el-transition-all);
   background-color: var(--el-color-white);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
+  box-sizing: border-box;
+  overflow: auto;
 
   .page-layout-search {
+    box-sizing: border-box;
     border-bottom: 2px solid var(--bg-color);
   }
 
   .page-layout-content {
-    flex-grow: 1;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr;
     row-gap: 8px;
     padding: 8px;
     box-sizing: border-box;
 
     .page-layout-buttons {
+      box-sizing: border-box;
       padding: 4px 0;
     }
 
     .page-layout-table {
-      flex-grow: 1;
+      height: 100%;
     }
   }
 }

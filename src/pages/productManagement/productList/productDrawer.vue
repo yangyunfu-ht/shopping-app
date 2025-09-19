@@ -1,7 +1,7 @@
 <template>
   <app-drawer
     v-model="visible"
-    title="title"
+    title="新增商品"
     @open="handleOpen"
     @close="handleClose"
     @confirm="handleConfirm"
