@@ -12,11 +12,18 @@ export const useUserStore = defineStore(
       permissions.value = userPermissions
     }
 
+    const resetStore = () => {
+      username.value = ''
+      password.value = ''
+      permissions.value = []
+    }
+
     return {
       username,
       password,
       permissions,
       setPermissions,
+      resetStore,
     }
   },
   {

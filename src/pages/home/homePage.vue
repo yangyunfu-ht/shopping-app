@@ -1,17 +1,39 @@
 <template>
   <div>
-    <h2>首页</h2>
-    <div class="chart-wrapper">
-      <app-echarts
-        :options="barChartOption"
-        class="chart-item"
-      />
+    <el-row
+      :gutter="8"
+      style="height: 500px; box-sizing: border-box"
+    >
+      <el-col
+        :xl="12"
+        :lg="12"
+        :md="12"
+        :sm="24"
+        :xs="24"
+      >
+        <el-card :body-style="{ height: '300px' }">
+          <app-echarts
+            :options="barChartOption"
+            class="chart-item"
+          />
+        </el-card>
+      </el-col>
 
-      <app-echarts
-        :options="pieChartOption"
-        class="chart-item"
-      />
-    </div>
+      <el-col
+        :xl="12"
+        :lg="12"
+        :md="12"
+        :sm="24"
+        :xs="24"
+      >
+        <el-card :body-style="{ height: '300px' }">
+          <app-echarts
+            :options="pieChartOption"
+            class="chart-item"
+          />
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -54,10 +76,10 @@ const pieChartOption = reactive({
   tooltip: {
     trigger: 'item',
   },
-  legend: {
-    orient: 'vertical',
-    left: 'left',
-  },
+  // legend: {
+  //   orient: 'vertical',
+  //   left: 'left',
+  // },
   series: [
     {
       name: '销售来源',
@@ -82,21 +104,4 @@ const pieChartOption = reactive({
 })
 </script>
 
-<style lang="scss" scoped>
-.title {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.chart-wrapper {
-  height: 500px;
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-}
-.chart-item {
-  width: 500px;
-  height: 400px;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-</style>
+<style lang="scss" scoped></style>

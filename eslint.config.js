@@ -2,7 +2,6 @@ import js from '@eslint/js'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
-import eslintPluginPrettier from 'eslint-plugin-prettier'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import { defineConfig } from 'eslint/config'
 
@@ -18,6 +17,7 @@ export default defineConfig([
     ],
   },
   // JavaScript 和 TypeScript 通用配置
+  js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{js,jsx,ts,tsx,vue}'],
@@ -30,8 +30,6 @@ export default defineConfig([
         extraFileExtensions: ['.vue'],
       },
     },
-    plugins: { js },
-    extends: ['js/recommended'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
@@ -58,18 +56,4 @@ export default defineConfig([
   },
   // Prettier 配置
   eslintConfigPrettier,
-  {
-    plugins: {
-      prettier: eslintPluginPrettier,
-    },
-    rules: {
-      'prettier/prettier': [
-        'error',
-        {
-          // 在这里你可以覆盖 .prettierrc 中的特定规则
-          singleAttributePerLine: true,
-        },
-      ],
-    },
-  },
 ])

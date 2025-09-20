@@ -14,7 +14,7 @@
     .layout-app__content {
       min-height: 100%;
       display: grid;
-      grid-template-rows: 56px 1fr;
+      grid-template-rows: auto 1fr;
       row-gap: 8px;
       grid-template-columns: 1fr;
       box-sizing: border-box;
@@ -46,7 +46,7 @@
     .layout-app__content {
       height: 100%;
       display: grid;
-      grid-template-rows: 56px 1fr;
+      grid-template-rows: auto 1fr;
       row-gap: 8px;
       grid-template-columns: 1fr;
       box-sizing: border-box;

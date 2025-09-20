@@ -1,170 +1,151 @@
 <template>
-  <div class="tab-wrapper">
-    <div
-      v-if="showLeftButton"
-      class="scroll-btn left"
-      @click="scroll('left')"
-    >
-      &lt;
-    </div>
-
-    <div
-      ref="tabContainerRef"
-      class="tabs-container"
-    >
-      <TransitionGroup
-        name="tab"
-        tag="div"
-        class="tab-list"
+  <div
+    class="app-tag-element"
+    :key="appTagsHistory.length"
+  >
+    <div class="app-tag-element__left">
+      <div
+        class="app-tag-buttons"
+        v-show="showScrollButtons"
+        @click.stop="scroll('left')"
       >
-        <div
-          v-for="tab in tabs"
-          :key="tab.fullPath"
-          :class="['tab-item', { active: currentPath === tab.fullPath }]"
-          @click="goToTab(tab)"
-        >
-          <span>{{ tab.meta.title || '新标签' }}</span>
-          <span
-            v-if="tabs.length > 1"
-            class="close-btn"
-            @click.stop="closeTab(tab)"
-          >
-            &times;
-          </span>
-        </div>
-      </TransitionGroup>
+        <el-icon>
+          <DArrowLeft />
+        </el-icon>
+      </div>
     </div>
 
     <div
-      v-if="showRightButton"
-      class="scroll-btn right"
-      @click="scroll('right')"
+      class="app-tag-element__center"
+      ref="tabContainerRef"
     >
-      &gt;
+      <div
+        v-for="tab in appTagsHistory"
+        :key="tab.fullPath"
+        :class="['tag-item', { active: currentPath === tab.fullPath }]"
+        @click="goToTab(tab)"
+      >
+        <span>{{ tab.meta.title }}</span>
+        <span
+          v-if="appTagsHistory.length > 1"
+          class="close-btn"
+          @click.stop="closeTab(tab)"
+        >
+          &times;
+        </span>
+      </div>
+    </div>
+
+    <div class="app-tag-element__right">
+      <div
+        class="app-tag-buttons"
+        v-show="showScrollButtons"
+        @click.stop="scroll('right')"
+      >
+        <el-icon>
+          <DArrowRight />
+        </el-icon>
+      </div>
+
+      <el-popover
+        placement="bottom"
+        :width="120"
+        trigger="click"
+        v-if="appTagsHistory.length >= 2"
+      >
+        <template #reference>
+          <div class="app-tag-buttons">
+            <el-icon>
+              <More />
+            </el-icon>
+          </div>
+        </template>
+        <div style="width: 100%">
+          <el-button
+            text
+            style="margin: 0"
+            @click="
+              menuStore.closeOtherTags(
+                appTagsHistory.find((tab) => tab.fullPath === currentPath)
+              )
+            "
+          >
+            关闭其他标签
+          </el-button>
+          <el-button
+            text
+            style="margin: 0"
+            @click="menuStore.closeAllTags()"
+          >
+            关闭所有标签
+          </el-button>
+        </div>
+      </el-popover>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { DArrowLeft, DArrowRight, More } from '@element-plus/icons-vue'
+import { ref, watch, onMounted, nextTick, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useMenuStore } from '@/store/menuStore'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
+const menuStore = useMenuStore()
+const { appTagsHistory } = storeToRefs(menuStore)
+const showScrollButtons = ref(false)
 
-// 引入持久化存储功能
-const STORAGE_KEY = 'tab-history'
-const tabs = ref([])
 const currentPath = ref(route.fullPath)
-
-// DOM 引用
 const tabContainerRef = ref(null)
-// 按钮显示状态
-const showLeftButton = ref(false)
-const showRightButton = ref(false)
 
-// 1. 初始化时从 LocalStorage 读取数据
-const initializeTabs = () => {
-  const storedTabs = localStorage.getItem(STORAGE_KEY)
-  if (storedTabs) {
-    try {
-      tabs.value = JSON.parse(storedTabs)
-    } catch (e) {
-      console.error('Failed to parse tabs from localStorage', e)
-      tabs.value = []
-    }
-  }
-
-  // 确保当前路由在标签页列表中
-  const currentTab = tabs.value.find((tab) => tab.fullPath === route.fullPath)
-  if (!currentTab) {
-    // 如果当前路由不在列表中，则添加它
-    tabs.value.unshift({
-      fullPath: route.fullPath,
-      meta: route.meta,
-      name: route.name,
-    })
-  }
-
-  // 始终更新当前激活的路径
-  currentPath.value = route.fullPath
-}
-
-// 2. 监听路由变化，动态添加标签页
 watch(
   () => route.fullPath,
   async (newPath) => {
     currentPath.value = newPath
-    const existingTab = tabs.value.find((tab) => tab.fullPath === newPath)
+    const existingTab = appTagsHistory.value.find(
+      (tab) => tab.fullPath === newPath
+    )
     if (!existingTab) {
-      tabs.value.unshift({
+      menuStore.addAppTagsHistory({
         fullPath: route.fullPath,
         meta: route.meta,
         name: route.name,
       })
     }
-    // 等待 DOM 更新后计算按钮显示状态并保存
-    await nextTick()
-    updateButtonVisibility()
   },
   { immediate: true }
 )
 
-// 3. 监听标签页数组变化，更新按钮状态并保存数据
 watch(
-  tabs,
-  async (newTabs) => {
-    // 保存到 LocalStorage
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newTabs))
-    await nextTick()
-    updateButtonVisibility()
-  },
-  { deep: true }
+  () => appTagsHistory.value.length,
+  () => {
+    calculateScrollButton()
+  }
 )
 
-// 页面加载时或窗口大小改变时，更新按钮状态
-onMounted(() => {
-  // 在挂载时调用初始化函数
-  initializeTabs()
-  window.addEventListener('resize', updateButtonVisibility)
-  updateButtonVisibility()
-})
-
-// 计算是否显示滚动按钮
-const updateButtonVisibility = () => {
-  const container = tabContainerRef.value
-  if (container) {
-    // 检查是否有溢出内容
-    const isOverflow = container.scrollWidth > container.clientWidth
-    showLeftButton.value = isOverflow && container.scrollLeft > 0
-    showRightButton.value =
-      isOverflow &&
-      container.scrollLeft < container.scrollWidth - container.clientWidth
-  }
-}
-
-// 滚动功能
 const scroll = (direction) => {
   const container = tabContainerRef.value
   if (!container) return
+  if (container.scrollWidth > container.clientWidth) {
+    const scrollDistance = 200
+    const currentScrollLeft = container.scrollLeft
 
-  const scrollDistance = 200 // 每次滚动的距离
-  const currentScrollLeft = container.scrollLeft
-
-  if (direction === 'left') {
-    container.scrollTo({
-      left: currentScrollLeft - scrollDistance,
-      behavior: 'smooth',
-    })
-  } else if (direction === 'right') {
-    container.scrollTo({
-      left: currentScrollLeft + scrollDistance,
-      behavior: 'smooth',
-    })
+    if (direction === 'left') {
+      container.scrollTo({
+        left: currentScrollLeft - scrollDistance,
+        behavior: 'smooth',
+      })
+    }
+    if (direction === 'right') {
+      container.scrollTo({
+        left: currentScrollLeft + scrollDistance,
+        behavior: 'smooth',
+      })
+    }
   }
-
-  // 滚动后再次检查按钮状态
-  setTimeout(updateButtonVisibility, 300) // 延迟执行，等待滚动动画完成
 }
 
 const goToTab = (tab) => {
@@ -173,96 +154,130 @@ const goToTab = (tab) => {
 
 const closeTab = (tab) => {
   if (currentPath.value === tab.fullPath) {
-    const tabIndex = tabs.value.findIndex((t) => t.fullPath === tab.fullPath)
-    const nextTab = tabs.value[tabIndex + 1] || tabs.value[tabIndex - 1]
+    const tabIndex = appTagsHistory.value.findIndex(
+      (t) => t.fullPath === tab.fullPath
+    )
+    const nextTab =
+      appTagsHistory.value[tabIndex + 1] || appTagsHistory.value[tabIndex - 1]
     if (nextTab) {
       router.push(nextTab.fullPath)
     } else {
       router.push('/')
     }
   }
-  tabs.value = tabs.value.filter((t) => t.fullPath !== tab.fullPath)
+  appTagsHistory.value = appTagsHistory.value.filter(
+    (t) => t.fullPath !== tab.fullPath
+  )
 }
+
+const calculateScrollButton = () => {
+  nextTick(() => {
+    const container = tabContainerRef.value
+    if (!container) {
+      showScrollButtons.value = true
+      return
+    }
+
+    showScrollButtons.value = container.scrollWidth > container.clientWidth
+  })
+}
+
+onMounted(() => {
+  window.addEventListener('resize', calculateScrollButton)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', calculateScrollButton)
+})
 </script>
 
-<style scoped>
-/* 整个标签组件的包装器 */
-.tab-wrapper {
+<style lang="scss" scoped>
+.app-tag-element {
+  width: 100%;
+  height: 36px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr;
+  column-gap: 8px;
+  user-select: none;
+  transition: var(--el-transition-all);
+
+  .app-tag-element__left,
+  .app-tag-element__right {
+    display: flex;
+    align-items: center;
+  }
+
+  .app-tag-element__center {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: scroll;
+    height: 100%;
+    white-space: nowrap;
+    box-sizing: border-box;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    .tag-item {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      height: 32px;
+      background-color: var(--el-color-white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      cursor: pointer;
+      padding: 0 12px;
+      box-sizing: border-box;
+      font-size: 13px;
+      white-space: nowrap;
+      flex-shrink: 0;
+
+      &:hover {
+        color: var(--el-color-primary);
+      }
+
+      &.active {
+        background-color: var(--el-color-primary);
+        color: var(--el-color-white);
+      }
+
+      .close-btn {
+        cursor: pointer;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.app-tag-buttons {
+  width: 32px;
+  height: 32px;
   display: flex;
-  align-items: center;
-  position: relative;
-  background-color: #f0f2f5;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-/* 标签容器 - 隐藏溢出内容 */
-.tabs-container {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 8px;
-  overflow: hidden;
-  white-space: nowrap;
-  /* 允许平滑滚动 */
-  scroll-behavior: smooth;
-}
-
-/* 标签列表 - 确保其内容不换行 */
-.tab-list {
-  display: flex;
-  width: max-content;
-}
-
-/* 标签项 */
-.tab-item {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  box-sizing: border-box;
-  border-radius: 4px;
-  margin-right: 8px;
-  background-color: #fff;
-  cursor: pointer;
-  border-radius: var(--border-radius);
-}
-
-.tab-item.active {
-  color: var(--el-color-primary);
-}
-
-.close-btn {
-  margin-left: 8px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-/* 滚动按钮 */
-.scroll-btn {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  border: 1px solid #d9d9d9;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 18px;
-  color: #555;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  /* 防止标签被挡住 */
-  position: relative;
-}
+  align-items: center;
+  background-color: var(--el-color-white);
+  border-right: 1px solid var(--el-border-color-light);
+  font-size: 13px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 
-.scroll-btn.left {
-  margin-left: 8px;
-}
-
-.scroll-btn.right {
-  margin-right: 8px;
+  &:hover {
+    background-color: var(--el-fill-color-light);
+    color: var(--el-color-primary);
+    cursor: pointer;
+  }
 }
 
 /* 过渡动画样式 */

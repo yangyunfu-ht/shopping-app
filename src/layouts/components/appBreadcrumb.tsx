@@ -13,7 +13,10 @@ export default defineComponent({
 
     return () => (
       <div>
-        <ElBreadcrumb class={'flex-center'}>
+        <ElBreadcrumb
+          class={'flex-center'}
+          style={{ fontSize: '14px' }}
+        >
           {breadcrumbs.value.map((breadcrumb) => (
             <ElBreadcrumbItem>{breadcrumb.meta?.title}</ElBreadcrumbItem>
           ))}

@@ -1,3 +1,5 @@
+import type { RouteRecordNameGeneric } from 'vue-router'
+
 export interface Meta {
     keepAlive: boolean
     title: string
@@ -11,4 +13,10 @@ export interface DynamicRoute {
     component: string
     children?: DynamicRoute[]
     meta?: Meta
+}
+
+export interface Tag {
+    fullPath: string
+    meta: Meta
+    name: RouteRecordNameGeneric
 }

@@ -18,9 +18,9 @@ export const useTokenStore = defineStore(
 
     const removeToken = async () => {
       token.value = ''
-      globalStore.$reset()
-      menuStore.$reset()
-      userStore.$reset()
+      globalStore.resetStore()
+      menuStore.resetStore()
+      userStore.resetStore()
     }
 
     return {

@@ -21,6 +21,11 @@ export const useGlobalStore = defineStore(
       appMessageVisible.value = visible
     }
 
+    const resetStore = () => {
+      isRequestLocked.value = false
+      appMessageVisible.value = false
+    }
+
     return {
       isRequestLocked,
       appWidth,
@@ -28,6 +33,7 @@ export const useGlobalStore = defineStore(
       lockREquests,
       unlockRequests,
       setAppMessageVisible,
+      resetStore,
     }
   },
   {

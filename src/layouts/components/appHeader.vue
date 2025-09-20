@@ -1,55 +1,43 @@
 <template>
   <header class="app-header-element">
-    <div class="app-header-left">
-      <appHome class="app-header-home" />
-      <appBreadcrumb class="app-header-breadcrumb" />
+    <div class="app-header-element__top">
+      <appHome />
+      <appSetting />
     </div>
-
-    <appSetting class="app-header-setting" />
+    <div class="app-header-element__bottom">
+      <appTag />
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
 import appHome from './appHome'
-import appBreadcrumb from './appBreadcrumb'
 import appSetting from './appSetting'
+import appTag from './appTag.vue'
 </script>
 
 <style lang="scss" scoped>
 .app-header-element {
-  display: grid;
-  /* 默认布局：一行三列，左右固定宽度，中间自适应 */
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr;
-  column-gap: 8px;
-  box-sizing: border-box;
-  transition: var(--el-transition-all);
-  background-color: var(--el-color-white);
-  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
-  .app-header-left {
+  .app-header-element__top {
+    background-color: var(--el-color-white);
+    height: 56px;
     display: flex;
-    gap: 8px;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-  }
-
-  .app-header-home,
-  .app-header-setting {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 36px;
-    padding: 8px;
+    padding-right: 8px;
     box-sizing: border-box;
   }
 
-  .app-header-home {
-    justify-self: start;
-  }
-
-  .app-header-setting {
-    justify-self: end;
+  .app-header-element__bottom {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    box-sizing: border-box;
   }
 }
 </style>

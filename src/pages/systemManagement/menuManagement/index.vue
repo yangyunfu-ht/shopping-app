@@ -152,28 +152,28 @@ const handleChange = () => {
 }
 
 const treeData = ref<Department[]>([
-  // {
-  //   id: 1,
-  //   name: '总公司',
-  //   manager: '张三',
-  //   children: [
-  //     {
-  //       id: 2,
-  //       name: '技术部',
-  //       manager: '李四',
-  //       children: [
-  //         { id: 3, name: '前端组', manager: '王五' },
-  //         { id: 4, name: '后端组', manager: '赵六' },
-  //       ],
-  //     },
-  //     {
-  //       id: 5,
-  //       name: '销售部',
-  //       manager: '孙七',
-  //       children: [{ id: 6, name: '销售一组', manager: '周八' }],
-  //     },
-  //   ],
-  // },
+  {
+    id: 1,
+    name: '总公司',
+    manager: '张三',
+    children: [
+      {
+        id: 2,
+        name: '技术部',
+        manager: '李四',
+        children: [
+          { id: 3, name: '前端组', manager: '王五' },
+          { id: 4, name: '后端组', manager: '赵六' },
+        ],
+      },
+      {
+        id: 5,
+        name: '销售部',
+        manager: '孙七',
+        children: [{ id: 6, name: '销售一组', manager: '周八' }],
+      },
+    ],
+  },
 ])
 
 const treeTableColumns: TableColumn[] = [

@@ -1,6 +1,12 @@
 import { ElBadge, ElButton, ElIcon, ElPopover, ElTooltip } from 'element-plus'
 import { defineComponent } from 'vue'
-import { Bell, FullScreen } from '@element-plus/icons-vue'
+import {
+  ArrowRight,
+  Bell,
+  FullScreen,
+  SwitchButton,
+  Unlock,
+} from '@element-plus/icons-vue'
 import { useTokenStore } from '@/store/tokenStore'
 import { useGlobalStore } from '@/store/globalStore'
 import router from '@/router'
@@ -34,7 +40,15 @@ export default defineComponent({
     }
 
     return () => (
-      <div>
+      <div
+        style={{
+          transition: 'var(--el-transition-all)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '36px',
+        }}
+      >
         {isSupported.value ? (
           <ElTooltip
             effect="dark"
@@ -80,7 +94,7 @@ export default defineComponent({
 
         <ElPopover
           placement="bottom-start"
-          width={100}
+          width={200}
           trigger="click"
           v-slots={{
             reference: () => (
@@ -109,20 +123,35 @@ export default defineComponent({
                   gap: '8px',
                 }}
               >
-                <ElButton
-                  text
-                  style={{ width: '100%', margin: 0 }}
-                >
-                  修改密码
-                </ElButton>
-
-                <ElButton
-                  text
+                <div class="app-setting-row">
+                  <div class="app-setting-icon">
+                    <ElIcon size={16}>
+                      <Unlock />
+                    </ElIcon>
+                  </div>
+                  <div class="app-setting-label">修改密码</div>
+                  <div class="app-setting-icon">
+                    <ElIcon size={16}>
+                      <ArrowRight />
+                    </ElIcon>
+                  </div>
+                </div>
+                <div
+                  class="app-setting-row"
                   onClick={handleOnLoginOut}
-                  style={{ width: '100%', margin: 0 }}
                 >
-                  退出登录
-                </ElButton>
+                  <div class="app-setting-icon">
+                    <ElIcon size={16}>
+                      <SwitchButton />
+                    </ElIcon>
+                  </div>
+                  <div class="app-setting-label">退出登录</div>
+                  <div class="app-setting-icon">
+                    <ElIcon size={16}>
+                      <ArrowRight />
+                    </ElIcon>
+                  </div>
+                </div>
               </div>
             ),
           }}

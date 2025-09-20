@@ -5,9 +5,11 @@ import { useMenuStore } from '@/store/menuStore'
 import { storeToRefs } from 'pinia'
 import { screenSize } from '@/utils/enum'
 import { useGlobalStore } from '@/store/globalStore'
+import AppBreadcrumb from './appBreadcrumb'
 
 export default defineComponent({
   name: 'AppSetting',
+  components: { AppBreadcrumb },
   setup() {
     const menuStore = useMenuStore()
     const globalStore = useGlobalStore()
@@ -26,32 +28,41 @@ export default defineComponent({
     }
 
     return () => (
-      <div style={{ transition: 'var(--el-transition-all)' }}>
-        {isLarge.value ? (
-          <ElButton
-            text
-            circle
-            bg
-            size="large"
-            onClick={handleClickMenuCollapse}
-          >
-            <ElIcon size={20}>
-              {appMenuCollapse.value ? <Fold /> : <Expand />}
-            </ElIcon>
-          </ElButton>
-        ) : (
-          <ElButton
-            text
-            circle
-            bg
-            size="large"
-            onClick={handleClickDrawerCollapse}
-          >
-            <ElIcon size={20}>
-              {appMenuCollapse.value ? <Fold /> : <Expand />}
-            </ElIcon>
-          </ElButton>
-        )}
+      <div
+        style={{
+          transition: 'var(--el-transition-all)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '16px',
+          height: '100%',
+        }}
+      >
+        <div
+          style={{
+            cursor: 'pointer',
+            height: '100%',
+            width: '48px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {isLarge.value ? (
+            <div onClick={handleClickMenuCollapse}>
+              <ElIcon size={20}>
+                {appMenuCollapse.value ? <Fold /> : <Expand />}
+              </ElIcon>
+            </div>
+          ) : (
+            <div onClick={handleClickDrawerCollapse}>
+              <ElIcon size={20}>
+                {appMenuCollapse.value ? <Fold /> : <Expand />}
+              </ElIcon>
+            </div>
+          )}
+        </div>
+        <AppBreadcrumb />
       </div>
     )
   },
