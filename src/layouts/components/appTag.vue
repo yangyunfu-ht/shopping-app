@@ -23,7 +23,7 @@
         v-for="tab in appTagsHistory"
         :key="tab.fullPath"
         :class="['tag-item', { active: currentPath === tab.fullPath }]"
-        @click="goToTab(tab)"
+        @click="goToTab(tab.fullPath)"
       >
         <span>{{ tab.meta.title }}</span>
         <span
@@ -148,8 +148,8 @@ const scroll = (direction) => {
   }
 }
 
-const goToTab = (tab) => {
-  router.push(tab.fullPath)
+const goToTab = (fullPath) => {
+  router.push({ path: fullPath })
 }
 
 const closeTab = (tab) => {
