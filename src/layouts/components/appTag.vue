@@ -148,6 +148,7 @@ const scroll = (direction) => {
   }
 }
 
+// 跳转到指定标签页
 const goToTab = (fullPath) => {
   router.push({ path: fullPath })
 }
