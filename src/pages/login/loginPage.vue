@@ -275,23 +275,6 @@
             class="login-form"
             size="large"
           >
-            <el-form-item>
-              <el-select
-                v-model="form.role"
-                placeholder="超级管理员"
-                class="full-width"
-              >
-                <el-option
-                  label="超级管理员"
-                  value="admin"
-                />
-                <el-option
-                  label="普通用户"
-                  value="user"
-                />
-              </el-select>
-            </el-form-item>
-
             <el-form-item prop="username">
               <el-input
                 v-model="form.username"
@@ -338,17 +321,18 @@ import { type FormInstance, type FormRules } from 'element-plus'
 import { ref, reactive, computed } from 'vue'
 import { useTokenStore } from '@/store/tokenStore'
 import { useGlobalStore } from '@/store/globalStore'
-import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
+
+defineOptions({
+  name: 'loginPage',
+})
 
 const tokenStore = useTokenStore()
 const globalStore = useGlobalStore()
 const { appWidth } = storeToRefs(globalStore)
-const router = useRouter()
 
 const loginRef = ref<FormInstance>()
 const form = reactive({
-  role: 'admin',
   username: '',
   password: '',
   captcha: '',
@@ -378,9 +362,7 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid) => {
     if (valid) {
-      tokenStore.setToken('token')
-
-      router.replace({ path: '/home/homePage' })
+      tokenStore.setToken('Bearer 40c5315fac4848398c02be27ce0ee968')
     }
   })
 }

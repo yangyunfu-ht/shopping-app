@@ -134,6 +134,7 @@
 import { reactive, ref } from 'vue'
 import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
 import type { TableColumn } from '#/column'
+import { useRequest } from '@/hooks/useRequest'
 
 interface Department {
   id: number

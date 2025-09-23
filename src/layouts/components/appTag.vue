@@ -261,6 +261,7 @@ onUnmounted(() => {
       box-shadow: var(--box-shadow);
       cursor: pointer;
       padding: 0 12px;
+      border: 1px solid rgba(219, 223, 233, 0.3);
       box-sizing: border-box;
       font-size: 13px;
       white-space: nowrap;

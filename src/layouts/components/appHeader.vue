@@ -30,14 +30,21 @@ import appTag from './appTag.vue'
     align-items: center;
     padding-right: 8px;
     box-sizing: border-box;
+    border-bottom: 1px solid rgba(219, 223, 233, 0.3);
   }
 
   .app-header-element__bottom {
     height: 40px;
     display: flex;
     align-items: center;
-    padding: 0 8px;
+    padding-right: 8px;
     box-sizing: border-box;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .app-header-element__bottom {
+    padding-left: 8px;
   }
 }
 </style>

@@ -3,17 +3,21 @@ import { ref } from 'vue'
 import { useGlobalStore } from './globalStore'
 import { useMenuStore } from './menuStore'
 import { useUserStore } from './userStore'
+import { useRouter } from 'vue-router'
 
 export const useTokenStore = defineStore(
   'token',
   () => {
-    const token = ref('')
+    const token = ref('Bearer aa3773e4383e442388691d219d820a34')
+
+    const router = useRouter()
     const globalStore = useGlobalStore()
     const menuStore = useMenuStore()
     const userStore = useUserStore()
 
     const setToken = (newToken: string) => {
       token.value = newToken
+      router.replace({ path: '/home/homePage' })
     }
 
     const removeToken = async () => {

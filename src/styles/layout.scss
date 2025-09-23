@@ -1,10 +1,11 @@
 // 屏幕宽度大于768px
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .layout-app {
     height: 100%;
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: 1fr;
+    column-gap: 8px;
     background-color: var(--bg-color);
 
     .layout-app__aside {
@@ -26,7 +27,7 @@
 
       .layout-app__content__main {
         height: 100%;
-        padding: 0 8px 8px 8px;
+        padding: 0 8px 8px 0;
         box-sizing: border-box;
         overflow-y: auto;
         scroll-behavior: smooth;
@@ -37,7 +38,7 @@
 }
 
 // 屏幕宽度小于769px
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .layout-app {
     height: 100%;
     background-color: var(--bg-color);

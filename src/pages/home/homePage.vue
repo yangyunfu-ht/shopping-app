@@ -1,18 +1,21 @@
 <template>
   <div>
-    <el-row :gutter="8">
+    <el-row :gutter="16">
       <el-col
         :xl="12"
         :lg="12"
         :md="12"
         :sm="24"
         :xs="24"
-        style="margin-bottom: 8px"
+        style="margin-bottom: 16px"
       >
         <el-card
           :body-style="{ height: '300px' }"
-          shadow="never"
-          style="border: none"
+          style="
+            border: none;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(219, 223, 233, 0.3);
+          "
         >
           <app-echarts
             :options="barChartOption"
@@ -27,12 +30,16 @@
         :md="12"
         :sm="24"
         :xs="24"
-        style="margin-bottom: 8px"
+        style="margin-bottom: 16px"
       >
         <el-card
           :body-style="{ height: '300px' }"
           shadow="never"
-          style="border: none"
+          style="
+            border: none;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(219, 223, 233, 0.3);
+          "
         >
           <app-echarts
             :options="pieChartOption"
@@ -42,19 +49,23 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="8">
+    <el-row :gutter="16">
       <el-col
         :xl="12"
         :lg="12"
         :md="12"
         :sm="24"
         :xs="24"
-        style="margin-bottom: 8px"
+        style="margin-bottom: 16px"
       >
         <el-card
           :body-style="{ height: '300px' }"
           shadow="never"
-          style="border: none"
+          style="
+            border: none;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(219, 223, 233, 0.3);
+          "
         >
           <app-echarts
             :options="barChartOption"
@@ -69,12 +80,16 @@
         :md="12"
         :sm="24"
         :xs="24"
-        style="margin-bottom: 8px"
+        style="margin-bottom: 16px"
       >
         <el-card
           :body-style="{ height: '300px' }"
           shadow="never"
-          style="border: none"
+          style="
+            border: none;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(219, 223, 233, 0.3);
+          "
         >
           <app-echarts
             :options="pieChartOption"

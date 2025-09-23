@@ -68,6 +68,7 @@ import type {
   GridOptions,
   SelectionChangedEvent,
 } from 'ag-grid-community'
+import { useClipboard } from '@vueuse/core'
 
 interface Props {
   rowData?: any[]
@@ -94,6 +95,9 @@ const props = withDefaults(defineProps<Props>(), {
   usePagination: true, //是否使用分页
   defaultColDef: () =>
     ({
+      cellStyle: {
+        textAlign: 'center',
+      },
       filter: false, //默认开启列过滤
       sortable: true, //默认开启列排序
       resizable: true, //默认开启列宽拖拽
@@ -170,14 +174,14 @@ const onRowDoubleClicked = (params: RowDoubleClickedEvent) => {
   emits('row-double-click', params)
 }
 
-// const { copy, isSupported } = useClipboard()
+const { copy, isSupported } = useClipboard()
 const onCellClicked = (params: CellClickedEvent) => {
-  //   if (
-  //     !['rowIndex', 'rowSelection'].includes(params.column!.getColId()) &&
-  //     isSupported.value
-  //   ) {
-  //     copy(params.value)
-  //   }
+  if (
+    !['rowIndex', 'rowSelection'].includes(params.column!.getColId()) &&
+    isSupported.value
+  ) {
+    copy(params.value)
+  }
   emits('cell-click', params)
 }
 

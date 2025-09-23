@@ -20,7 +20,7 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
   const controllerMap = new Map<string, AbortController>()
   const globalStore = useGlobalStore()
 
-  const request = async (config: AxiosRequestConfig) => {
+  const request = async <D = any>(config: AxiosRequestConfig): Promise<D> => {
     const { url } = config
     if (!url) {
       throw new Error('缺少请求必要参数url')
@@ -50,7 +50,7 @@ export function useRequest<T = any>(): UseRequestReturn<T> {
         ...config,
         signal: abortController.signal,
       })
-      data.value = response as T
+      return response.data
     } catch (err: any) {
       if (axios.isCancel(err)) {
         console.log('请求已取消', err.message)

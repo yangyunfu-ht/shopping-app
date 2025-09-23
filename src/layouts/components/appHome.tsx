@@ -40,22 +40,37 @@ export default defineComponent({
       >
         <div
           style={{
-            cursor: 'pointer',
             height: '100%',
-            width: '48px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
           }}
         >
           {isLarge.value ? (
-            <div onClick={handleClickMenuCollapse}>
+            <div
+              style={{
+                cursor: 'pointer',
+                height: '100%',
+                width: '48px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onClick={handleClickMenuCollapse}
+            >
               <ElIcon size={20}>
                 {appMenuCollapse.value ? <Fold /> : <Expand />}
               </ElIcon>
             </div>
           ) : (
-            <div onClick={handleClickDrawerCollapse}>
+            <div
+              style={{
+                cursor: 'pointer',
+                height: '100%',
+                width: '48px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onClick={handleClickDrawerCollapse}
+            >
               <ElIcon size={20}>
                 {appMenuCollapse.value ? <Fold /> : <Expand />}
               </ElIcon>

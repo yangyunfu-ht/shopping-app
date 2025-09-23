@@ -20,7 +20,7 @@ service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = tokenStore.token
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = token
     }
     return config
   },
@@ -32,13 +32,10 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response: AxiosResponse) => {
-    const { code, data, msg } = response.data
-    if (code !== 200) {
-      return Promise.reject(new Error(msg || '请求失败'))
-    }
-    return data
+    return response
   },
   (error: any) => {
+    console.log(error, 'error')
     let message = ''
     if (axios.isCancel(error)) {
       console.warn('Request canceled:', error.message)

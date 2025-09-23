@@ -28,6 +28,7 @@
   background-color: var(--el-color-white);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
+  border: 1px solid rgba(219, 223, 233, 0.3);
   box-sizing: border-box;
   overflow: auto;
 
