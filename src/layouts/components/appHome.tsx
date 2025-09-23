@@ -1,4 +1,4 @@
-import { ElButton, ElIcon } from 'element-plus'
+import { ElIcon } from 'element-plus'
 import { computed, defineComponent } from 'vue'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { useMenuStore } from '@/store/menuStore'

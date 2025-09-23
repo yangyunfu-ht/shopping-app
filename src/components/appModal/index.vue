@@ -136,6 +136,7 @@ const handleCancel = () => {
   min-height: 48px;
   display: grid;
   grid-template-columns: 1fr 32px;
+  grid-template-rows: 1fr;
 
   .app-dialog__header__title {
     display: flex;

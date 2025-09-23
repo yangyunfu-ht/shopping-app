@@ -35,10 +35,13 @@ export default defineComponent({
               v-slots={{
                 title: () => (
                   <>
-                    <svgIcon
-                      icon={'expand'}
-                      size={16}
-                    />
+                    {menu.meta?.icon ? (
+                      <svgIcon
+                        icon={menu.meta?.icon}
+                        size={18}
+                        color="#BFCBD9"
+                      />
+                    ) : null}
 
                     <span>{menu.meta?.title}</span>
                   </>
@@ -57,12 +60,7 @@ export default defineComponent({
             v-slots={{
               title: () => (
                 <>
-                  <span
-                    class={'ellipsis-text'}
-                    style={{ paddingLeft: '8px' }}
-                  >
-                    {menu.meta?.title}
-                  </span>
+                  <span class={'ellipsis-text'}>{menu.meta?.title}</span>
                 </>
               ),
             }}
@@ -89,9 +87,11 @@ export default defineComponent({
           index={'/home/homePage'}
           v-slots={{
             default: () => (
-              <ElIcon size={16}>
-                <House />
-              </ElIcon>
+              <svgIcon
+                size={18}
+                icon="home"
+                color="#BFCBD9"
+              />
             ),
             title: () => <span>首页</span>,
           }}

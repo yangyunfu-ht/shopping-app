@@ -33,7 +33,7 @@
 
   .page-layout-search {
     box-sizing: border-box;
-    border-bottom: 2px solid var(--bg-color);
+    border-bottom: 2px solid #f2f3f5;
   }
 
   .page-layout-content {

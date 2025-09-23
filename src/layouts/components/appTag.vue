@@ -8,6 +8,7 @@
         class="app-tag-buttons"
         v-show="showScrollButtons"
         @click.stop="scroll('left')"
+        style="margin-right: 8px"
       >
         <el-icon>
           <DArrowLeft />
@@ -41,9 +42,19 @@
         class="app-tag-buttons"
         v-show="showScrollButtons"
         @click.stop="scroll('right')"
+        style="margin-left: 8px"
       >
         <el-icon>
           <DArrowRight />
+        </el-icon>
+      </div>
+
+      <div
+        class="app-tag-buttons"
+        @click.stop="handleRefresh"
+      >
+        <el-icon>
+          <RefreshRight />
         </el-icon>
       </div>
 
@@ -86,7 +97,13 @@
 </template>
 
 <script setup>
-import { DArrowLeft, DArrowRight, More } from '@element-plus/icons-vue'
+import {
+  ArrowRight,
+  DArrowLeft,
+  DArrowRight,
+  More,
+  RefreshRight,
+} from '@element-plus/icons-vue'
 import { ref, watch, onMounted, nextTick, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useMenuStore } from '@/store/menuStore'
@@ -148,6 +165,10 @@ const scroll = (direction) => {
   }
 }
 
+const handleRefresh = () => {
+  window.location.reload()
+}
+
 // 跳转到指定标签页
 const goToTab = (fullPath) => {
   router.push({ path: fullPath })
@@ -184,6 +205,7 @@ const calculateScrollButton = () => {
 }
 
 onMounted(() => {
+  calculateScrollButton()
   window.addEventListener('resize', calculateScrollButton)
 })
 
@@ -199,7 +221,6 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: 1fr;
-  column-gap: 8px;
   user-select: none;
   transition: var(--el-transition-all);
 

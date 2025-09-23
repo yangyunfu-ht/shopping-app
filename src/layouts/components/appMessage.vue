@@ -2,6 +2,7 @@
   <app-drawer
     v-model="visible"
     :footer="false"
+    closeOnClickModal
     title="通知消息"
   >
     通知消息

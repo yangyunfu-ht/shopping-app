@@ -36,7 +36,7 @@ const collapse = computed(() => menuStore.appMenuCollapse)
 .app-aside-element {
   min-height: 100%;
   display: grid;
-  grid-template-rows: 56px 56px 1fr;
+  grid-template-rows: 72px 56px 1fr;
   grid-template-columns: 1fr;
   box-sizing: border-box;
   background-color: var(--el-menu-bg-color);

@@ -27,7 +27,7 @@ const transformRoute = (
           ? transformRoute(route.children, fullPath)
           : [],
       meta: route.meta,
-    }
+    } as RouteRecordRaw
   })
 }
 

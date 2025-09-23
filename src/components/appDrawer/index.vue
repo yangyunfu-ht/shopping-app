@@ -35,6 +35,7 @@
     </template>
     <template #default>
       <main
+        v-loading="loading"
         class="app-drawer__main"
         style="
           height: 100%;
@@ -110,6 +111,10 @@ const props = defineProps({
     type: String,
     default: '确定',
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const {
@@ -123,21 +128,22 @@ const {
   footer,
   cancelText,
   confirmText,
+  loading,
 } = toRefs(props)
 
 const visible = defineModel({ type: Boolean, default: false })
 
 const emits = defineEmits<{
-  open: [value: boolean]
-  close: [value: boolean]
+  open: []
+  close: []
   confirm: []
 }>()
 
 const handleOpen = () => {
-  emits('open', visible.value)
+  emits('open')
 }
 const handleClose = () => {
-  emits('close', visible.value)
+  emits('close')
 }
 const handleConfirm = () => {
   emits('confirm')
@@ -155,6 +161,7 @@ const handleCancel = () => {
   min-height: 56px;
   display: grid;
   grid-template-columns: 1fr 32px;
+  grid-template-rows: 1fr;
   background-color: var(--bg-color);
 
   .app-drawer__header__title {

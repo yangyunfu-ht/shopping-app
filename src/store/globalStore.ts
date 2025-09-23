@@ -6,7 +6,7 @@ export const useGlobalStore = defineStore(
   'global',
   () => {
     const isRequestLocked = ref(false)
-    const { width: appWidth } = useWindowSize()
+    const { width: appWidth, height: appHeight } = useWindowSize()
     const appMessageVisible = ref(false)
 
     const lockREquests = () => {
@@ -29,6 +29,7 @@ export const useGlobalStore = defineStore(
     return {
       isRequestLocked,
       appWidth,
+      appHeight,
       appMessageVisible,
       lockREquests,
       unlockRequests,

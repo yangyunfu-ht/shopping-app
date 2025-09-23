@@ -6,6 +6,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: false,
       title: '商品管理',
+      icon: 'goods',
     },
     children: [
       {
@@ -53,6 +54,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: true,
       title: '订单管理',
+      icon: 'order',
     },
     children: [
       {
@@ -91,6 +93,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: false,
       title: '营销管理',
+      icon: 'marketing',
     },
     children: [
       {
@@ -236,6 +239,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: false,
       title: '统计中心',
+      icon: 'statistics',
     },
     children: [
       {
@@ -284,6 +288,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: false,
       title: '支付管理',
+      icon: 'pay',
     },
     children: [
       {
@@ -313,6 +318,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: false,
       title: '商场管理',
+      icon: 'mall',
     },
     children: [
       {
@@ -333,6 +339,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: false,
       title: '会员管理',
+      icon: 'memberShip',
     },
     children: [
       {
@@ -353,36 +360,24 @@ export const mockRoutes = [
           title: '会员积分',
         },
       },
+
       {
-        path: 'memberSign',
-        name: 'memberSign',
-        component: '/src/layouts/subLayout.vue',
+        path: 'signConfig',
+        name: 'signConfig',
+        component: '/src/pages/membershipManagement/signConfig/index.vue',
         meta: {
           keepAlive: false,
-          title: '会员签到',
+          title: '签到配置',
         },
-        children: [
-          {
-            path: 'signConfig',
-            name: 'signConfig',
-            component:
-              '/src/pages/membershipManagement/memberSign/signConfig/index.vue',
-            meta: {
-              keepAlive: false,
-              title: '签到配置',
-            },
-          },
-          {
-            path: 'signRecord',
-            name: 'signRecord',
-            component:
-              '/src/pages/membershipManagement/memberSign/signRecord/index.vue',
-            meta: {
-              keepAlive: false,
-              title: '签到记录',
-            },
-          },
-        ],
+      },
+      {
+        path: 'signRecord',
+        name: 'signRecord',
+        component: '/src/pages/membershipManagement/signRecord/index.vue',
+        meta: {
+          keepAlive: false,
+          title: '签到记录',
+        },
       },
     ],
   },
@@ -393,6 +388,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: false,
       title: '客服中心',
+      icon: 'customerService',
     },
     children: [
       {
@@ -414,6 +410,7 @@ export const mockRoutes = [
     meta: {
       keepAlive: false,
       title: '系统管理',
+      icon: 'system',
     },
     children: [
       {
@@ -479,36 +476,24 @@ export const mockRoutes = [
           title: '地区管理',
         },
       },
+
       {
-        path: 'logManagement',
-        name: 'logManagement',
-        component: '/src/layouts/subLayout.vue',
+        path: 'loginLog',
+        name: 'loginLog',
+        component: '/src/pages/systemManagement/loginLog/index.vue',
         meta: {
           keepAlive: false,
-          title: '日志管理',
+          title: '登录日志',
         },
-        children: [
-          {
-            path: 'loginLog',
-            name: 'loginLog',
-            component:
-              '/src/pages/systemManagement/logManagement/loginLog/index.vue',
-            meta: {
-              keepAlive: false,
-              title: '登录日志',
-            },
-          },
-          {
-            path: 'operationLog',
-            name: 'operationLog',
-            component:
-              '/src/pages/systemManagement/logManagement/operationLog/index.vue',
-            meta: {
-              keepAlive: false,
-              title: '操作日志',
-            },
-          },
-        ],
+      },
+      {
+        path: 'operationLog',
+        name: 'operationLog',
+        component: '/src/pages/systemManagement/operationLog/index.vue',
+        meta: {
+          keepAlive: false,
+          title: '操作日志',
+        },
       },
     ],
   },

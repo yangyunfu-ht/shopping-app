@@ -1,17 +1,19 @@
 <template>
   <div>
-    <el-row
-      :gutter="8"
-      style="height: 500px; box-sizing: border-box"
-    >
+    <el-row :gutter="8">
       <el-col
         :xl="12"
         :lg="12"
         :md="12"
         :sm="24"
         :xs="24"
+        style="margin-bottom: 8px"
       >
-        <el-card :body-style="{ height: '300px' }">
+        <el-card
+          :body-style="{ height: '300px' }"
+          shadow="never"
+          style="border: none"
+        >
           <app-echarts
             :options="barChartOption"
             class="chart-item"
@@ -25,8 +27,55 @@
         :md="12"
         :sm="24"
         :xs="24"
+        style="margin-bottom: 8px"
       >
-        <el-card :body-style="{ height: '300px' }">
+        <el-card
+          :body-style="{ height: '300px' }"
+          shadow="never"
+          style="border: none"
+        >
+          <app-echarts
+            :options="pieChartOption"
+            class="chart-item"
+          />
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="8">
+      <el-col
+        :xl="12"
+        :lg="12"
+        :md="12"
+        :sm="24"
+        :xs="24"
+        style="margin-bottom: 8px"
+      >
+        <el-card
+          :body-style="{ height: '300px' }"
+          shadow="never"
+          style="border: none"
+        >
+          <app-echarts
+            :options="barChartOption"
+            class="chart-item"
+          />
+        </el-card>
+      </el-col>
+
+      <el-col
+        :xl="12"
+        :lg="12"
+        :md="12"
+        :sm="24"
+        :xs="24"
+        style="margin-bottom: 8px"
+      >
+        <el-card
+          :body-style="{ height: '300px' }"
+          shadow="never"
+          style="border: none"
+        >
           <app-echarts
             :options="pieChartOption"
             class="chart-item"
