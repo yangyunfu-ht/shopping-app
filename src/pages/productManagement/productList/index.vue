@@ -163,7 +163,7 @@ import { useMessageBox } from '@/hooks/useMessageBox'
 import { useRequest } from '@/hooks/useRequest'
 
 defineOptions({
-  name: 'dataPage',
+  name: 'productList',
 })
 
 const messageBox = useMessageBox()

@@ -14,7 +14,7 @@ export const mockRoutes = [
         name: 'productList',
         component: '/src/pages/productManagement/productList/index.vue',
         meta: {
-          keepAlive: false,
+          keepAlive: true,
           title: '商品列表',
         },
       },
@@ -445,7 +445,7 @@ export const mockRoutes = [
         name: 'postManagement',
         component: '/src/pages/systemManagement/postManagement/index.vue',
         meta: {
-          keepAlive: false,
+          keepAlive: true,
           title: '岗位管理',
         },
       },

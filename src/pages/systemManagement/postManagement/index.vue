@@ -109,7 +109,7 @@ import { Api } from './api'
 import { dayjs } from 'element-plus'
 
 defineOptions({
-  name: 'post-management',
+  name: 'postManagement',
 })
 
 const messageBox = useMessageBox()
