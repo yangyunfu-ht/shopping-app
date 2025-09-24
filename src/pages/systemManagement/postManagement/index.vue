@@ -5,7 +5,10 @@
   >
     <page-layout>
       <template #search>
-        <search-collapse @query="getTableData">
+        <search-collapse
+          :use-collapse="false"
+          @query="getTableData"
+        >
           <el-form label-width="100px">
             <el-row>
               <el-col v-bind="wrapperColSmall">
@@ -99,7 +102,7 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { reactive, ref, shallowRef } from 'vue'
+import { onMounted, reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall } from '@/utils/layout'
 import postDrawer from './postDrawer.vue'
 import { useMessage } from '@/hooks/useMessage'
@@ -110,6 +113,10 @@ import { dayjs } from 'element-plus'
 
 defineOptions({
   name: 'postManagement',
+})
+
+onMounted(() => {
+  getTableData()
 })
 
 const messageBox = useMessageBox()
@@ -140,14 +147,10 @@ const selectRow = ref([])
 const tableData = ref([])
 const getTableData = async () => {
   try {
-    const {
-      data: { total = 0, list = [] },
-      code,
-      msg,
-    } = await request<{
+    const { data, code, msg } = await request<{
       total: number
       list: Array<any>
-    }>({
+    } | null>({
       url: Api.list,
       method: 'get',
       params: {
@@ -157,8 +160,8 @@ const getTableData = async () => {
       },
     })
     if (code === 0) {
-      gridApi.value!.setRowData(list)
-      setTotal(total)
+      gridApi.value!.setRowData(data?.list ?? [])
+      setTotal(data?.total ?? 0)
     } else {
       gridApi.value!.setRowData([])
       setTotal(0)

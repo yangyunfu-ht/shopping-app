@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppDrawer: typeof import('./src/components/appDrawer/index.vue')['default']
     AppModal: typeof import('./src/components/appModal/index.vue')['default']
+    BranchTree: typeof import('./src/components/branchTree/branchTree.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -29,6 +30,8 @@ declare module 'vue' {
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElTree: typeof import('element-plus/es')['ElTree']
+    ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     GridTable: typeof import('./src/components/gridTable/index.vue')['default']
     PageLayout: typeof import('./src/components/pageLayout/index.vue')['default']

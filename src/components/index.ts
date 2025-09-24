@@ -7,6 +7,7 @@ import searchCollapse from './searchCollapse/index.vue'
 import appDrawer from './appDrawer/index.vue'
 import appModal from './appModal/index.vue'
 import appEcharts from './appEcharts/appEcharts'
+import branchTree from './branchTree/branchTree.vue'
 
 const globalComponent = [
   {
@@ -40,6 +41,10 @@ const globalComponent = [
   {
     name: 'appEcharts',
     component: appEcharts,
+  },
+  {
+    name: 'branchTree',
+    component: branchTree,
   },
 ]
 

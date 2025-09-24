@@ -1,216 +1,153 @@
 <template>
-  <div class="page">
-    <div class="page-menu__tree">
-      <branch-tree />
-    </div>
-
-    <div class="page-menu__table">
-      <page-layout v-loading="loading">
-        <template #search>
-          <search-collapse @query="getTableData">
-            <el-form label-width="100px">
-              <el-row>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input v-model="searchForm.value"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColLarge">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColLarge">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <!-- <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
+  <div style="height: 100%">
+    <page-layout v-loading="loading">
+      <template #search>
+        <search-collapse
+          :use-collapse="false"
+          @query="getTableData"
+        >
+          <el-form label-width="100px">
+            <el-row>
+              <el-col v-bind="wrapperColSmall">
+                <el-form-item label="部门名称">
+                  <el-input
+                    v-model.trim="searchForm.name"
+                    placeholder="请输入部门名称"
+                    clearable
+                  />
                 </el-form-item>
               </el-col>
               <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
+                <el-form-item label="部门状态">
+                  <el-select
+                    v-model="searchForm.status"
+                    placeholder="请选择部门状态"
+                    clearable
+                  >
+                    <el-option
+                      :value="0"
+                      label="开启"
+                    />
+                    <el-option
+                      :value="1"
+                      label="关闭"
+                    />
+                  </el-select>
                 </el-form-item>
-              </el-col> -->
-              </el-row>
-            </el-form>
+              </el-col>
+            </el-row>
+          </el-form>
+        </search-collapse>
+      </template>
 
-            <template #collapse>
-              <el-form label-width="100px">
-                <el-row>
-                  <el-col v-bind="wrapperColSmall">
-                    <el-form-item label="查询条件">
-                      <el-input></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col v-bind="wrapperColSmall">
-                    <el-form-item label="查询条件">
-                      <el-input></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col v-bind="wrapperColSmall">
-                    <el-form-item label="查询条件">
-                      <el-input></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col v-bind="wrapperColSmall">
-                    <el-form-item label="查询条件">
-                      <el-input></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col v-bind="wrapperColSmall">
-                    <el-form-item label="查询条件">
-                      <el-input></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col v-bind="wrapperColSmall">
-                    <el-form-item label="查询条件">
-                      <el-input></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col v-bind="wrapperColSmall">
-                    <el-form-item label="查询条件">
-                      <el-input></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col v-bind="wrapperColSmall">
-                    <el-form-item label="查询条件">
-                      <el-input></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </el-form>
-            </template>
-          </search-collapse>
-        </template>
+      <template #buttons>
+        <el-button
+          type="primary"
+          @click="handleCreate"
+          >新增</el-button
+        >
+        <el-button
+          type="warning"
+          @click="handleChange"
+          >修改</el-button
+        >
+        <el-button
+          type="danger"
+          @click="handleDelete"
+          >删除</el-button
+        >
+      </template>
 
-        <template #buttons>
-          <el-button
-            type="primary"
-            @click="handleCreate"
-            >新增</el-button
-          >
-          <el-button
-            type="warning"
-            @click="handleChange"
-            >修改</el-button
-          >
-          <el-button
-            type="danger"
-            @click="handleDelete"
-            >删除</el-button
-          >
-          <el-button
-            type="danger"
-            @click="handleOpen"
-            >打开modal</el-button
-          >
-        </template>
-
-        <template #table>
-          <grid-table
-            :row-data="tableData"
-            :columnDefs="columnDefs"
+      <template #table>
+        <div style="height: 100%">
+          <base-table
+            :table-data="treeData"
+            :columns="columnDefs"
             v-model:selection="selectRow"
-            v-model:page="currentPage"
-            v-model:sizes="pageSize"
-            :pageSizes="pageSizes"
-            :total="total"
-            @grid-ready="onGridReady"
-            @current-change="changeCurrent"
-            @size-change="changePageSize"
-            @sort-change="getTableData"
-          ></grid-table>
-        </template>
-      </page-layout>
+            row-key="id"
+            height="100%"
+            max-height="100%"
+            :default-expand-all="true"
+            :reserve-selection="true"
+            :tree-props="{
+              children: 'children',
+              hasChildren: 'hasChildren',
+              checkStrictly: true,
+            }"
+          >
+            <template #statusSlot="{ row }">
+              <span>
+                {{ row.status === 0 ? '开启' : '关闭' }}
+              </span>
+            </template>
+            <template #createTimeSlot="{ row }">
+              <span>
+                {{ dayjs(row.createTime).format('YYYY-MM-DD HH:MM:ss') }}
+              </span>
+            </template>
+          </base-table>
+        </div>
+      </template>
+    </page-layout>
 
-      <product-drawer ref="productRef" />
-
-      <product-modal ref="modalRef" />
-    </div>
+    <branch-drawer
+      ref="branchRef"
+      :tree-data="treeData"
+      @submit="getTableData"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { usePagination } from '@/hooks/usePagination'
-import type {
-  ColDef,
-  ValueGetterParams,
-  GridApi,
-  GridReadyEvent,
-} from 'ag-grid-community'
-import { h, reactive, ref, shallowRef } from 'vue'
-import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
-import branchTree from './branchTree.vue'
-import productDrawer from './productDrawer.vue'
-import productModal from './productModal.vue'
+import { onMounted, reactive, ref } from 'vue'
+import { wrapperColSmall } from '@/utils/layout'
+import branchDrawer from './branchDrawer.vue'
 import { useMessage } from '@/hooks/useMessage'
 import { useMessageBox } from '@/hooks/useMessageBox'
 import { useRequest } from '@/hooks/useRequest'
+import type { TableColumn } from '#/column'
+import { Api } from './api'
+import { dayjs } from 'element-plus'
+import { buildTree, type TreeNode } from '@/utils/array'
 
 defineOptions({
-  name: 'dataPage',
+  name: 'branchManagement',
+})
+
+onMounted(() => {
+  getTableData()
 })
 
 const messageBox = useMessageBox()
 const { request, loading } = useRequest()
 
 const searchForm = reactive({
-  value: '',
+  name: '',
+  status: null,
 })
 
-const {
-  currentPage,
-  pageSize,
-  pageSizes,
-  total,
-  setTotal,
-  changeCurrent,
-  changePageSize,
-} = usePagination({ callback: () => getTableData() })
-
-const gridApi = shallowRef<GridApi<any> | null>(null)
-const onGridReady = (params: GridReadyEvent) => {
-  gridApi.value = params!.api
-}
-
 const selectRow = ref([])
-const tableData = ref([])
+const treeData = ref<TreeNode[]>([])
 const getTableData = async () => {
   try {
-    const response = await request({
-      url: '111',
-      method: 'post',
-      data: {
-        name: 'yyf',
+    const { code, data, msg } = await request({
+      url: Api.list,
+      method: 'get',
+      params: {
+        pageNo: 1,
+        pageSize: 1000,
+        ...searchForm,
       },
     })
-    console.log(response)
-    setTotal(1000)
-    gridApi.value!.setFilterModel(null)
-    gridApi.value!.deselectAll()
-
-    gridApi.value!.setRowData(tableData.value)
+    if (code === 0) {
+      treeData.value = buildTree(data ?? [], 'id', 'parentId')
+    } else {
+      useMessage({
+        message: msg,
+        type: 'error',
+      })
+    }
   } catch (err: any) {
-    console.log(err)
     useMessage({
       message: err.message,
       type: 'error',
@@ -218,196 +155,150 @@ const getTableData = async () => {
   }
 }
 
-const productRef = ref<InstanceType<typeof productDrawer> | null>(null)
+const branchRef = ref<InstanceType<typeof branchDrawer> | null>()
 const handleCreate = () => {
-  productRef.value!.openDrawer()
+  branchRef.value!.openDrawer()
 }
 
+//修改
 const handleChange = () => {
-  messageBox
-    .confirm({
-      message: h('p', '这是一个拍标签'),
+  if (selectRow.value.length !== 1) {
+    messageBox.confirm({
+      message: '请选择一条需要修改的部门信息数据',
       title: '提示',
-      options: {},
+      options: {
+        showCancelButton: false,
+        showConfirmButton: false,
+        type: 'warning',
+      },
     })
-    .then(() => {
-      console.log('确定')
-    })
-    .catch(() => {
-      console.log('取消')
-    })
-    .finally(() => {
-      console.log('关闭')
-    })
+    return
+  }
+  const [{ id }] = selectRow.value
+  branchRef.value!.changeOpen(id)
 }
 
 const handleDelete = () => {
-  useMessage({
-    type: 'error',
-    message: '这是一个搓搓',
-  })
-}
-
-const modalRef = ref<InstanceType<typeof productModal> | null>(null)
-const handleOpen = () => {
-  modalRef.value!.openModal()
-}
-
-const columnDefs = ref<ColDef[]>([
-  {
-    headerName: '序号',
-    field: 'rowIndex',
-    colId: 'rowIndex',
-    filter: false,
-    width: 60,
-    cellClass: 'ag-grid__rowIndexCell',
-    headerClass: 'ag-grid__rowIndexCell',
-    resizable: false,
-    sortable: false,
-    suppressNavigable: false,
-    valueGetter: (params: ValueGetterParams) => {
-      if (params.node!.rowPinned === 'bottom') {
-        return '合计'
-      } else {
-        return (params.node!.rowIndex as number) + 1
+  if (selectRow.value.length !== 1) {
+    messageBox.confirm({
+      message: '请选择一条需要删除的部门信息数据',
+      title: '提示',
+      options: {
+        showCancelButton: false,
+        showConfirmButton: false,
+        type: 'warning',
+      },
+    })
+    return
+  }
+  const [{ name, id }] = selectRow.value
+  messageBox
+    .confirm({
+      message: `确认删除部门名称为${name}的数据？`,
+      title: '提示',
+      options: {
+        type: 'warning',
+      },
+    })
+    .then(async () => {
+      try {
+        const { code, msg } = await request({
+          url: Api.delete,
+          method: 'delete',
+          params: {
+            id,
+          },
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+          },
+        })
+        if (code === 0) {
+          useMessage({
+            message: msg,
+            type: 'success',
+          })
+          getTableData()
+        } else {
+          useMessage({
+            message: msg,
+            type: 'error',
+          })
+        }
+      } catch (err: any) {
+        useMessage({
+          message: err.message,
+          type: 'error',
+        })
       }
-    },
+    })
+}
+
+const columnDefs = ref<TableColumn[]>([
+  {
+    colId: 'index',
+    field: 'index',
+    type: 'index',
+    headerName: '序号',
+    align: 'center',
   },
   {
+    colId: 'selection',
+    field: 'selection',
+    type: 'selection',
     headerName: '',
-    field: 'rowSelection',
-    colId: 'rowSelection',
-    cellClass: 'ag-grid__rowSelectionCell',
-    headerClass: 'ag-grid__rowSelectionCell',
-    checkboxSelection: true,
-    headerCheckboxSelection: true,
-    headerCheckboxSelectionCurrentPageOnly: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    suppressNavigable: false,
-    width: 30,
-    filter: false,
   },
   {
-    headerName: '通知编号',
-    field: 'no',
-    colId: 'no',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
+    colId: 'name',
+    field: 'name',
+    headerName: '部门名称',
+    minWidth: 100,
+    align: 'center',
+  },
+  // {
+  //   colId: 'manager',
+  //   field: 'manager',
+  //   headerName: '负责人',
+  //   minWidth: 100,
+  //   align: 'center',
+  // },
+  {
+    colId: 'phone',
+    field: 'phone',
+    headerName: '联系电话',
+    minWidth: 100,
+    align: 'center',
   },
   {
-    headerName: '运单号',
-    field: 'orderNo',
-    colId: 'orderNo',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
+    colId: 'email',
+    field: 'email',
+    headerName: '邮箱',
+    minWidth: 100,
+    align: 'center',
   },
   {
-    headerName: '通知状态',
-    field: 'statusText',
-    colId: 'statusText',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
+    colId: 'sort',
+    field: 'sort',
+    headerName: '排序',
+    minWidth: 100,
+    align: 'center',
   },
   {
-    headerName: '通知金额(元)',
-    field: 'penaltyAmount',
-    colId: 'penaltyAmount',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
+    colId: 'status',
+    field: 'status',
+    headerName: '部门状态',
+    minWidth: 100,
+    align: 'center',
+    slot: 'statusSlot',
   },
   {
-    headerName: '通知部门',
-    field: 'penaltyNetworkName',
-    colId: 'penaltyNetworkName',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '通知时间',
-    field: 'createDate',
-    colId: 'createDate',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '通知原因',
-    field: 'penaltyReason',
-    colId: 'penaltyReason',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '业务类型',
-    field: 'penaltyTypeName',
-    colId: 'penaltyTypeName',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '责任类型',
-    field: 'dutyTypeText',
-    colId: 'dutyTypeText',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '理赔方式',
-    field: 'claimWayText',
-    colId: 'claimWayText',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '缴款截止时间',
-    field: 'deadline',
-    colId: 'deadline',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '缴款时间',
-    field: 'payDate',
-    colId: 'payDate',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
+    colId: 'createTime',
+    field: 'createTime',
+    headerName: '创建时间',
+    minWidth: 100,
+    align: 'center',
+    slot: 'createTimeSlot',
   },
 ])
 </script>
 
-<style lang="scss" scoped>
-.page {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  grid-template-rows: 1fr;
-  column-gap: 8px;
-
-  .page-menu__tree {
-    height: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    background-color: #fff;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-  }
-
-  .page-menu__table {
-    height: 100%;
-    background-color: #fff;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-  }
-}
-</style>
+<style lang="scss" scoped></style>

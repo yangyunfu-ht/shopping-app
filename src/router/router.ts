@@ -418,7 +418,7 @@ export const mockRoutes = [
         name: 'userManagement',
         component: '/src/pages/systemManagement/userManagement/index.vue',
         meta: {
-          keepAlive: false,
+          keepAlive: true,
           title: '用户管理',
         },
       },
@@ -427,7 +427,7 @@ export const mockRoutes = [
         name: 'roleManagement',
         component: '/src/pages/systemManagement/roleManagement/index.vue',
         meta: {
-          keepAlive: false,
+          keepAlive: true,
           title: '角色管理',
         },
       },
@@ -436,7 +436,7 @@ export const mockRoutes = [
         name: 'branchManagement',
         component: '/src/pages/systemManagement/branchManagement/index.vue',
         meta: {
-          keepAlive: false,
+          keepAlive: true,
           title: '部门管理',
         },
       },

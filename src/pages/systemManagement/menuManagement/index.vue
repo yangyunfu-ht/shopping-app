@@ -1,110 +1,43 @@
 <template>
   <div style="height: 100%">
-    <page-layout>
+    <page-layout v-loading="loading">
       <template #search>
-        <search-collapse style="background-color: #fff">
+        <search-collapse
+          :use-collapse="false"
+          @query="getTableData"
+        >
           <el-form label-width="100px">
             <el-row>
               <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input v-model="searchForm.value"></el-input>
+                <el-form-item label="菜单名">
+                  <el-input
+                    v-model.trim="searchForm.name"
+                    clearable
+                    placeholder="请输入菜单名称"
+                  />
                 </el-form-item>
               </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColLarge">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColLarge">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <!-- <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col> -->
             </el-row>
           </el-form>
-
-          <template #collapse>
-            <el-form label-width="100px">
-              <el-row>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </template>
         </search-collapse>
       </template>
 
       <template #buttons>
-        <el-button type="primary">新增</el-button>
+        <el-button
+          type="primary"
+          @click="handleCreate"
+          >新增</el-button
+        >
         <el-button
           type="warning"
           @click="handleChange"
           >修改</el-button
         >
-        <el-button type="danger">删除</el-button>
+        <el-button
+          type="danger"
+          @click="handleDelete"
+          >删除</el-button
+        >
       </template>
 
       <template #table>
@@ -116,25 +49,49 @@
             row-key="id"
             height="100%"
             max-height="100%"
-            :default-expand-all="true"
             :reserve-selection="true"
             :tree-props="{
               children: 'children',
               hasChildren: 'hasChildren',
               checkStrictly: true,
             }"
-          />
+          >
+            <template #typeSlot="{ row }">
+              {{ row.type === 1 ? '目录' : row.type === 2 ? '菜单' : '按钮' }}
+            </template>
+            <template #keepAliveSlot="{ row }">
+              {{ row.keepAlive ? '是' : '否' }}
+            </template>
+            <template #visibleSlot="{ row }">
+              {{ row.visible ? '是' : '否' }}
+            </template>
+          </base-table>
         </div>
       </template>
     </page-layout>
+
+    <menu-drawer
+      ref="menuRef"
+      :menu-data="treeData"
+      @submit="getTableData"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
+import { onMounted, reactive, ref } from 'vue'
+import { wrapperColSmall } from '@/utils/layout'
 import type { TableColumn } from '#/column'
 import { useRequest } from '@/hooks/useRequest'
+import { buildTree, type TreeNode } from '@/utils/array'
+import { Api } from './api'
+import { useMessage } from '@/hooks/useMessage'
+import { useMessageBox } from '@/hooks/useMessageBox'
+import menuDrawer from './menuDrawer.vue'
+
+onMounted(() => {
+  getTableData()
+})
 
 interface Department {
   id: number
@@ -143,39 +100,120 @@ interface Department {
   children?: Department[]
 }
 
-const selectRow = ref<Department[]>([])
+const { request, loading } = useRequest()
+const messageBox = useMessageBox()
+
 const searchForm = reactive({
-  value: '',
+  name: '',
 })
 
-const handleChange = () => {
-  console.log('修改', selectRow.value, selectRow.value.length)
+const selectRow = ref<Department[]>([])
+const treeData = ref<TreeNode[]>([])
+
+const getTableData = async () => {
+  try {
+    const { code, data, msg } = await request({
+      url: Api.list,
+      method: 'get',
+      params: {
+        pageNo: 1,
+        pageSize: 1000,
+        ...searchForm,
+      },
+    })
+    if (code === 0) {
+      treeData.value = buildTree(data ?? [], 'id', 'parentId')
+    } else {
+      useMessage({
+        message: msg,
+        type: 'error',
+      })
+    }
+  } catch (err: any) {
+    useMessage({
+      message: err.message,
+      type: 'error',
+    })
+  }
 }
 
-const treeData = ref<Department[]>([
-  {
-    id: 1,
-    name: '总公司',
-    manager: '张三',
-    children: [
-      {
-        id: 2,
-        name: '技术部',
-        manager: '李四',
-        children: [
-          { id: 3, name: '前端组', manager: '王五' },
-          { id: 4, name: '后端组', manager: '赵六' },
-        ],
+const menuRef = ref<InstanceType<typeof menuDrawer>>()
+const handleCreate = () => {
+  menuRef.value!.openDrawer()
+}
+
+//修改
+const handleChange = () => {
+  if (selectRow.value.length !== 1) {
+    messageBox.confirm({
+      message: '请选择一条需要修改的用户信息数据',
+      title: '提示',
+      options: {
+        showCancelButton: false,
+        showConfirmButton: false,
+        type: 'warning',
       },
-      {
-        id: 5,
-        name: '销售部',
-        manager: '孙七',
-        children: [{ id: 6, name: '销售一组', manager: '周八' }],
+    })
+    return
+  }
+  const [{ id }] = selectRow.value
+  menuRef.value!.changeOpen(id)
+}
+
+const handleDelete = () => {
+  if (selectRow.value.length !== 1) {
+    messageBox.confirm({
+      message: '请选择一条需要删除的用户信息数据',
+      title: '提示',
+      options: {
+        showCancelButton: false,
+        showConfirmButton: false,
+        type: 'warning',
       },
-    ],
-  },
-])
+    })
+    return
+  }
+  const [{ name, id }] = selectRow.value
+  messageBox
+    .confirm({
+      message: `确认删除用户名称为${name}的数据？`,
+      title: '提示',
+      options: {
+        type: 'warning',
+      },
+    })
+    .then(async () => {
+      try {
+        const { code, msg } = await request({
+          url: Api.delete,
+          method: 'delete',
+          params: {
+            id,
+          },
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+          },
+        })
+        if (code === 0) {
+          useMessage({
+            message: msg,
+            type: 'success',
+          })
+          getTableData()
+        } else {
+          useMessage({
+            message: msg,
+            type: 'error',
+          })
+        }
+      } catch (err: any) {
+        useMessage({
+          message: err.message,
+          type: 'error',
+        })
+      }
+    })
+}
 
 const treeTableColumns: TableColumn[] = [
   {
@@ -191,8 +229,63 @@ const treeTableColumns: TableColumn[] = [
     type: 'selection',
     headerName: '',
   },
-  { colId: 'name', field: 'name', headerName: '部门名称', minWidth: 100 },
-  { colId: 'manager', field: 'manager', headerName: '负责人', minWidth: 100 },
+  {
+    colId: 'name',
+    field: 'name',
+    headerName: '菜单名称',
+    minWidth: 100,
+  },
+  {
+    colId: 'type',
+    field: 'type',
+    headerName: '菜单类型',
+    minWidth: 100,
+    slot: 'typeSlot',
+  },
+  {
+    colId: 'sort',
+    field: 'sort',
+    headerName: '排序值',
+    minWidth: 100,
+  },
+  {
+    colId: 'icon',
+    field: 'icon',
+    headerName: '菜单图标',
+    minWidth: 100,
+  },
+  {
+    colId: 'path',
+    field: 'path',
+    headerName: '菜单路径',
+    minWidth: 100,
+  },
+  {
+    colId: 'component',
+    field: 'component',
+    headerName: '组件路径',
+    minWidth: 100,
+  },
+  {
+    colId: 'componentName',
+    field: 'componentName',
+    headerName: '组件名称',
+    minWidth: 100,
+  },
+  {
+    colId: 'keepAlive',
+    field: 'keepAlive',
+    headerName: '菜单缓存',
+    minWidth: 100,
+    slot: 'keepAliveSlot',
+  },
+  {
+    colId: 'visible',
+    field: 'visible',
+    headerName: '菜单显示',
+    minWidth: 100,
+    slot: 'visibleSlot',
+  },
 ]
 </script>
 

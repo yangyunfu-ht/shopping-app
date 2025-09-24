@@ -142,6 +142,7 @@ const handleCancel = () => {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    font-size: 18px;
     font-weight: 550;
   }
 

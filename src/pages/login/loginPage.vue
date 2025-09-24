@@ -362,7 +362,7 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid) => {
     if (valid) {
-      tokenStore.setToken('Bearer 40c5315fac4848398c02be27ce0ee968')
+      tokenStore.setToken('Bearer bfb0e808c0a849d2ba369ac0d1f1e2dd')
     }
   })
 }

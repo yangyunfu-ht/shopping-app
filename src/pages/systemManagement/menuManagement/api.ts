@@ -1,3 +1,7 @@
 export const Api = {
-  list: '/system/menu/list',
+  list: '/admin-api/system/menu/list',
+  create: '',
+  detail: '',
+  change: '',
+  delete: '',
 } as const

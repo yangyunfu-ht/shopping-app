@@ -169,7 +169,7 @@ const handleCancel = () => {
     justify-content: flex-start;
     align-items: center;
     color: var(--el-text-color-regular);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 550;
   }
 

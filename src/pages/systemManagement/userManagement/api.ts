@@ -1,0 +1,13 @@
+export const Api = {
+  list: '/admin-api/system/user/page',
+  create: '/admin-api/system/user/create',
+  detail: '/admin-api/system/user/get',
+  change: '/admin-api/system/user/update',
+  delete: '/admin-api/system/user/delete',
+  branchList: '/admin-api/system/dept/list',
+  postList: '/admin-api/system/post/simple-list',
+  marketList: '/admin-api/trade/delivery/pick-up-store/simple-list',
+  downloadTemplate: '/admin-api/system/user/get-import-template',
+  importFile: '/admin-api/system/user/import',
+  exportFile: '/admin-api/system/user/export-excel',
+} as const
