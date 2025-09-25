@@ -482,7 +482,7 @@ export const mockRoutes = [
         name: 'loginLog',
         component: '/src/pages/systemManagement/loginLog/index.vue',
         meta: {
-          keepAlive: false,
+          keepAlive: true,
           title: '登录日志',
         },
       },

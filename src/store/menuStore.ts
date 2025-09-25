@@ -14,8 +14,15 @@ export const useMenuStore = defineStore(
     const appDrawerAside = ref(false)
     const appTagsHistory = ref<Tag[]>([])
 
-    const setAppMenus = (menus: RouteRecordRaw[]) => {
-      appMenus.value = menus
+    const setAppMenus = (menus: RouteRecordRaw[]): Promise<boolean> => {
+      return new Promise((resolve, reject) => {
+        if (menus.length) {
+          appMenus.value = menus
+          resolve(true)
+        } else {
+          reject(false)
+        }
+      })
     }
 
     const setAppMenuCollapse = (expand: boolean) => {

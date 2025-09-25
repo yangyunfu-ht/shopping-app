@@ -4,6 +4,7 @@ import router from '@/router'
 
 const appLayoutsMap = import.meta.glob('@/layouts/**/**.{vue,tsx}')
 const appPagesMap = import.meta.glob('@/pages/**/**.{vue,tsx}')
+export const iconsModules = import.meta.glob('@/assets/icons/*.svg')
 
 const loadComponent = (componentPath: string) => {
   return appLayoutsMap[componentPath] || appPagesMap[componentPath]

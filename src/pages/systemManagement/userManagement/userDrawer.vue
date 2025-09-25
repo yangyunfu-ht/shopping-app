@@ -26,12 +26,13 @@
         </el-form-item>
 
         <el-form-item
-          label="密码"
+          label="用户密码"
           prop="password"
+          v-if="!ruleForm.id"
         >
           <el-input
             v-model.trim="ruleForm.password"
-            placeholder="请输入密码"
+            placeholder="请输入用户密码"
           />
         </el-form-item>
 

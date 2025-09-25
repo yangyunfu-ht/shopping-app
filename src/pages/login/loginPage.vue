@@ -265,34 +265,37 @@
         <div class="form-container">
           <div class="title-section">
             <h1 class="welcome-text">欢迎回来</h1>
-            <span class="subtitle-text">输入您的账号和密码登录</span>
+            <span class="subtitle-text">输入您的用户名和密码登录</span>
           </div>
 
           <el-form
             ref="loginRef"
-            :model="form"
+            :model="loginForm"
             :rules="rules"
             class="login-form"
             size="large"
           >
             <el-form-item prop="username">
               <el-input
-                v-model="form.username"
-                placeholder="请输入账号"
+                v-model="loginForm.username"
+                placeholder="请输入用户名"
               />
             </el-form-item>
 
             <el-form-item prop="password">
               <el-input
-                v-model="form.password"
+                v-model="loginForm.password"
                 type="password"
+                show-password
                 placeholder="请输入密码"
               />
             </el-form-item>
 
             <el-form-item>
               <div class="remember-and-forgot">
-                <el-checkbox v-model="form.rememberMe">记住密码</el-checkbox>
+                <el-checkbox v-model="loginForm.rememberMe"
+                  >记住密码</el-checkbox
+                >
                 <el-link
                   type="primary"
                   :underline="false"
@@ -303,6 +306,7 @@
 
             <el-form-item>
               <el-button
+                v-loading="loading"
                 type="primary"
                 class="login-button"
                 @click="handleLogin(loginRef)"
@@ -320,26 +324,38 @@
 import { type FormInstance, type FormRules } from 'element-plus'
 import { ref, reactive, computed } from 'vue'
 import { useTokenStore } from '@/store/tokenStore'
+import { useMenuStore } from '@/store/menuStore'
+import { useUserStore } from '@/store/userStore'
 import { useGlobalStore } from '@/store/globalStore'
 import { storeToRefs } from 'pinia'
+import { useMessage } from '@/hooks/useMessage'
+import { useRequest } from '@/hooks/useRequest'
+import { Api } from './api'
+import { useRouter } from 'vue-router'
+import type { LoginReturn, permissionReturn } from '#/user'
 
 defineOptions({
   name: 'loginPage',
 })
 
+const { request, loading } = useRequest()
+const router = useRouter()
 const tokenStore = useTokenStore()
+const menuStore = useMenuStore()
+const userStore = useUserStore()
 const globalStore = useGlobalStore()
 const { appWidth } = storeToRefs(globalStore)
 
 const loginRef = ref<FormInstance>()
-const form = reactive({
-  username: '',
-  password: '',
-  captcha: '',
-  rememberMe: false,
+const loginForm = reactive({
+  username: 'admin',
+  password: 'admin123',
+  rememberMe: true,
+  captchaVerification:
+    'BozEoNGTc1W5veC1iEf4+bu8kjPqj/j4bDxtrRwSZEwObGIOBYNFkUeZ1W55jQBHso7Qty/ZeHOLV4UQ2sM7lw==',
 })
 
-const rules = reactive<FormRules<typeof form>>({
+const rules = reactive<FormRules<typeof loginForm>>({
   username: [
     {
       required: true,
@@ -362,7 +378,73 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid) => {
     if (valid) {
-      tokenStore.setToken('Bearer bfb0e808c0a849d2ba369ac0d1f1e2dd')
+      tokenStore.setToken({
+        accessToken: 'Bearer 5ecee4e4f4794034926bc2dc2eeb6974',
+        expiresTime: 1,
+        refreshToken: '1',
+        userId: 1,
+      })
+      router.push({ path: '/home/homePage' })
+      // try {
+      //   const { data, code, msg } = await request<LoginReturn>({
+      //     url: Api.login,
+      //     method: 'post',
+      //     data: {
+      //       username: loginForm.username,
+      //       password: loginForm.password,
+      //       rememberMe: loginForm.rememberMe,
+      //       captchaVerification: loginForm.captchaVerification,
+      //     },
+      //   })
+
+      //   if (code === 0) {
+      //     const loginReturn = await tokenStore.setToken(data)
+      //     if (loginReturn) {
+      //       try {
+      //         const permission = await request<permissionReturn>({
+      //           url: Api.permission,
+      //           method: 'get',
+      //         })
+      //         if (permission.code === 0) {
+      //           const hasPermission = await userStore.setPermissions(
+      //             permission.data
+      //           )
+      //           const hasMenu = await menuStore.setAppMenus(
+      //             permission.data.menus
+      //           )
+      //           if (hasPermission && hasMenu) {
+      //             router.push({ path: '/home/homePage' })
+      //           }
+      //         } else {
+      //           useMessage({
+      //             message: permission.msg,
+      //             type: 'error',
+      //           })
+      //         }
+      //       } catch (err: any) {
+      //         useMessage({
+      //           message: err.message,
+      //           type: 'error',
+      //         })
+      //       }
+      //     } else {
+      //       useMessage({
+      //         message: '登录接口信息返回不完整',
+      //         type: 'error',
+      //       })
+      //     }
+      //   } else {
+      //     useMessage({
+      //       message: msg,
+      //       type: 'error',
+      //     })
+      //   }
+      // } catch (err: any) {
+      //   useMessage({
+      //     message: err.message,
+      //     type: 'error',
+      //   })
+      // }
     }
   })
 }

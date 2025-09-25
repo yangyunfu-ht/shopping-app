@@ -3,210 +3,71 @@
     style="height: 100%"
     v-loading="loading"
   >
-    <page-layout v-loading="false">
-      <template #search>
-        <search-collapse @query="getTableData">
-          <el-form label-width="100px">
-            <el-row>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input v-model="searchForm.value"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColLarge">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColLarge">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <!-- <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col> -->
-            </el-row>
-          </el-form>
-
-          <template #collapse>
-            <el-form label-width="100px">
-              <el-row>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </template>
-        </search-collapse>
-      </template>
-
-      <template #buttons>
-        <el-button
-          type="primary"
-          @click="handleCreate"
-          >新增</el-button
-        >
-        <el-button
-          type="warning"
-          @click="handleChange"
-          >修改</el-button
-        >
-        <el-button
-          type="danger"
-          @click="handleDelete"
-          >删除</el-button
-        >
-        <el-button
-          type="danger"
-          @click="handleOpen"
-          >打开modal</el-button
-        >
-      </template>
-
-      <template #table>
-        <grid-table
-          :row-data="tableData"
-          :columnDefs="columnDefs"
-          v-model:selection="selectRow"
-          v-model:page="currentPage"
-          v-model:sizes="pageSize"
-          :pageSizes="pageSizes"
-          :total="total"
-          @grid-ready="onGridReady"
-          @current-change="changeCurrent"
-          @size-change="changePageSize"
-          @sort-change="getTableData"
-        ></grid-table>
-      </template>
-    </page-layout>
-
-    <product-drawer ref="productRef" />
-
-    <product-modal ref="modalRef" />
+    <div class="area-tree">
+      <el-input
+        v-model="query"
+        style="width: 100%; margin-bottom: 8px"
+        placeholder="请输入地区名称"
+        clearable
+        @input="onQueryChanged"
+      />
+      <el-tree-v2
+        ref="treeRef"
+        style="max-width: 600px"
+        :data="treeData"
+        :props="treeProps"
+        :filter-method="filterMethod"
+        :height="appHeight - 190"
+      />
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { usePagination } from '@/hooks/usePagination'
-import type {
-  ColDef,
-  ValueGetterParams,
-  GridApi,
-  GridReadyEvent,
-} from 'ag-grid-community'
-import { h, reactive, ref, shallowRef } from 'vue'
-import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
-import productDrawer from './productDrawer.vue'
-import productModal from './productModal.vue'
-import { useMessage } from '@/hooks/useMessage'
-import { useMessageBox } from '@/hooks/useMessageBox'
+<script lang="ts" setup>
+import { shallowRef, ref, onMounted } from 'vue'
+import {
+  type FilterNodeMethodFunction,
+  type TreeInstance,
+  type TreeNodeData,
+} from 'element-plus'
+import { useGlobalStore } from '@/store/globalStore'
+import { storeToRefs } from 'pinia'
 import { useRequest } from '@/hooks/useRequest'
+import { Api } from './api'
+import { useMessage } from '@/hooks/useMessage'
 
-defineOptions({
-  name: 'dataPage',
+onMounted(() => {
+  getTreeData()
 })
 
-const messageBox = useMessageBox()
 const { request, loading } = useRequest()
+const globalStore = useGlobalStore()
+const { appHeight } = storeToRefs(globalStore)
 
-const searchForm = reactive({
-  value: '',
-})
-
-const {
-  currentPage,
-  pageSize,
-  pageSizes,
-  total,
-  setTotal,
-  changeCurrent,
-  changePageSize,
-} = usePagination({ callback: () => getTableData() })
-
-const gridApi = shallowRef<GridApi<any> | null>(null)
-const onGridReady = (params: GridReadyEvent) => {
-  gridApi.value = params!.api
+const query = ref('')
+const treeRef = ref<TreeInstance>()
+const treeData = shallowRef<TreeNodeData[]>([])
+const treeProps = {
+  value: 'id',
+  label: 'name',
+  children: 'children',
 }
 
-const selectRow = ref([])
-const tableData = ref([])
-const getTableData = async () => {
+const getTreeData = async () => {
   try {
-    const response = await request({
-      url: '111',
-      method: 'post',
-      data: {
-        name: 'yyf',
-      },
+    const { data, code, msg } = await request({
+      url: Api.areaTree,
+      method: 'get',
     })
-    console.log(response)
-    setTotal(1000)
-    gridApi.value!.setFilterModel(null)
-    gridApi.value!.deselectAll()
-
-    gridApi.value!.setRowData(tableData.value)
+    if (code === 0) {
+      treeData.value = data
+    } else {
+      useMessage({
+        message: msg,
+        type: 'error',
+      })
+    }
   } catch (err: any) {
-    console.log(err)
     useMessage({
       message: err.message,
       type: 'error',
@@ -214,172 +75,24 @@ const getTableData = async () => {
   }
 }
 
-const productRef = ref<InstanceType<typeof productDrawer> | null>(null)
-const handleCreate = () => {
-  productRef.value!.openDrawer()
+const onQueryChanged = (query: string) => {
+  treeRef.value!.filter(query)
 }
 
-const handleChange = () => {
-  messageBox
-    .confirm({
-      message: h('p', '这是一个拍标签'),
-      title: '提示',
-      options: {},
-    })
-    .then(() => {
-      console.log('确定')
-    })
-    .catch(() => {
-      console.log('取消')
-    })
-    .finally(() => {
-      console.log('关闭')
-    })
-}
-
-const handleDelete = () => {
-  useMessage({
-    type: 'error',
-    message: '这是一个搓搓',
-  })
-}
-
-const modalRef = ref<InstanceType<typeof productModal> | null>(null)
-const handleOpen = () => {
-  modalRef.value!.openModal()
-}
-
-const columnDefs = ref<ColDef[]>([
-  {
-    headerName: '序号',
-    field: 'rowIndex',
-    colId: 'rowIndex',
-    filter: false,
-    width: 60,
-    cellClass: 'ag-grid__rowIndexCell',
-    headerClass: 'ag-grid__rowIndexCell',
-    resizable: false,
-    sortable: false,
-    suppressNavigable: false,
-    valueGetter: (params: ValueGetterParams) => {
-      if (params.node!.rowPinned === 'bottom') {
-        return '合计'
-      } else {
-        return (params.node!.rowIndex as number) + 1
-      }
-    },
-  },
-  {
-    headerName: '',
-    field: 'rowSelection',
-    colId: 'rowSelection',
-    cellClass: 'ag-grid__rowSelectionCell',
-    headerClass: 'ag-grid__rowSelectionCell',
-    checkboxSelection: true,
-    headerCheckboxSelection: true,
-    headerCheckboxSelectionCurrentPageOnly: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    suppressNavigable: false,
-    width: 30,
-    filter: false,
-  },
-  {
-    headerName: '通知编号',
-    field: 'no',
-    colId: 'no',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '运单号',
-    field: 'orderNo',
-    colId: 'orderNo',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '通知状态',
-    field: 'statusText',
-    colId: 'statusText',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '通知金额(元)',
-    field: 'penaltyAmount',
-    colId: 'penaltyAmount',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '通知部门',
-    field: 'penaltyNetworkName',
-    colId: 'penaltyNetworkName',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '通知时间',
-    field: 'createDate',
-    colId: 'createDate',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '通知原因',
-    field: 'penaltyReason',
-    colId: 'penaltyReason',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '业务类型',
-    field: 'penaltyTypeName',
-    colId: 'penaltyTypeName',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '责任类型',
-    field: 'dutyTypeText',
-    colId: 'dutyTypeText',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '理赔方式',
-    field: 'claimWayText',
-    colId: 'claimWayText',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '缴款截止时间',
-    field: 'deadline',
-    colId: 'deadline',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '缴款时间',
-    field: 'payDate',
-    colId: 'payDate',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-])
+const filterMethod: FilterNodeMethodFunction = (
+  value: string,
+  data: TreeNodeData
+) => data.name!.includes(value)
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.area-tree {
+  height: 100%;
+  width: 485px;
+  background-color: var(--el-color-white);
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+}
+</style>

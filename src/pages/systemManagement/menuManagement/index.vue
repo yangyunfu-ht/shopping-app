@@ -6,7 +6,7 @@
           :use-collapse="false"
           @query="getTableData"
         >
-          <el-form label-width="100px">
+          <el-form label-width="80px">
             <el-row>
               <el-col v-bind="wrapperColSmall">
                 <el-form-item label="菜单名">
@@ -146,7 +146,7 @@ const handleCreate = () => {
 const handleChange = () => {
   if (selectRow.value.length !== 1) {
     messageBox.confirm({
-      message: '请选择一条需要修改的用户信息数据',
+      message: '请选择一条需要修改的菜单信息数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -163,7 +163,7 @@ const handleChange = () => {
 const handleDelete = () => {
   if (selectRow.value.length !== 1) {
     messageBox.confirm({
-      message: '请选择一条需要删除的用户信息数据',
+      message: '请选择一条需要删除的菜单信息数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -176,7 +176,7 @@ const handleDelete = () => {
   const [{ name, id }] = selectRow.value
   messageBox
     .confirm({
-      message: `确认删除用户名称为${name}的数据？`,
+      message: `确认删除菜单名称为${name}的数据？`,
       title: '提示',
       options: {
         type: 'warning',

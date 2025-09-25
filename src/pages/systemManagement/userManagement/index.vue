@@ -133,6 +133,13 @@
         :tree-data="treeData"
         :post-data="postData"
         :market-data="marketData"
+        @submit="getTableData"
+      />
+
+      <assign-roles
+        ref="assignRef"
+        :tree-data="treeData"
+        :role-data="rolesData"
       />
     </div>
   </div>
@@ -156,6 +163,7 @@ import { dayjs } from 'element-plus'
 import { Api } from './api'
 import { buildTree, type TreeNode } from '@/utils/array'
 import { chooseFile, downloadFile } from '@/utils/file'
+import assignRoles from './assignRoles.vue'
 
 defineOptions({
   name: 'userManagement',
@@ -165,6 +173,7 @@ onMounted(() => {
   getTreeData()
   getPostData()
   getMarketData()
+  getRolesData()
   getTableData()
 })
 
@@ -227,6 +236,29 @@ const getMarketData = async () => {
     })
     if (code === 0) {
       marketData.value = data
+    } else {
+      useMessage({
+        message: msg,
+        type: 'error',
+      })
+    }
+  } catch (err: any) {
+    useMessage({
+      message: err.message,
+      type: 'error',
+    })
+  }
+}
+
+const rolesData = ref([])
+const getRolesData = async () => {
+  try {
+    const { data, code, msg } = await request({
+      url: Api.roleList,
+      method: 'get',
+    })
+    if (code === 0) {
+      rolesData.value = data
     } else {
       useMessage({
         message: msg,
@@ -409,8 +441,50 @@ const handleResetPassword = () => {
     })
     return
   }
+  const [{ username, id, mobile }] = selectRow.value
+  const password = (mobile as string) ? (mobile as string).slice(-6) : '123456'
+  messageBox
+    .confirm({
+      message: `确认重置用户名称为${username}的登录密码吗? 确认重置后新密码为手机号码后6位!`,
+      title: '提示',
+      options: {
+        type: 'warning',
+      },
+    })
+    .then(async () => {
+      try {
+        const { code, msg } = await request({
+          url: Api.resetPassword,
+          method: 'put',
+          data: {
+            id,
+            password,
+          },
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+          },
+        })
+        if (code === 0) {
+          useMessage({
+            message: msg,
+            type: 'success',
+          })
+        } else {
+          useMessage({
+            message: msg,
+            type: 'error',
+          })
+        }
+      } catch (err: any) {
+        useMessage({
+          message: err.message,
+          type: 'error',
+        })
+      }
+    })
 }
 
+const assignRef = ref<InstanceType<typeof assignRoles>>()
 const handleAssignRoles = () => {
   if (selectRow.value.length !== 1) {
     messageBox.confirm({
@@ -424,6 +498,8 @@ const handleAssignRoles = () => {
     })
     return
   }
+  const [{ username, id, deptId }] = selectRow.value
+  assignRef.value!.openDrawer(username, id, deptId)
 }
 
 const columnDefs = ref<ColDef[]>([
@@ -492,14 +568,14 @@ const columnDefs = ref<ColDef[]>([
     flex: 1,
     sortable: false,
   },
-  {
-    headerName: '用户密码',
-    field: 'createDate',
-    colId: 'createDate',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
+  // {
+  //   headerName: '用户密码',
+  //   field: 'createDate',
+  //   colId: 'createDate',
+  //   minWidth: 150,
+  //   flex: 1,
+  //   sortable: false,
+  // },
   {
     headerName: '用户状态',
     field: 'status',

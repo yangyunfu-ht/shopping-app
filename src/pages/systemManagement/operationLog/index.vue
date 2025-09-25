@@ -1,149 +1,75 @@
 <template>
-  <div
-    style="height: 100%"
-    v-loading="loading"
-  >
-    <page-layout v-loading="false">
-      <template #search>
-        <search-collapse @query="getTableData">
-          <el-form label-width="100px">
-            <el-row>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input v-model="searchForm.value"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColLarge">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColLarge">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <!-- <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="查询条件">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col> -->
-            </el-row>
-          </el-form>
+  <page-layout v-loading="loading">
+    <template #search>
+      <search-collapse
+        :use-collapse="false"
+        @query="getTableData"
+      >
+        <el-form label-width="100px">
+          <el-row>
+            <el-col v-bind="wrapperColSmall">
+              <el-form-item label="操作人">
+                <el-input
+                  v-model="searchForm.userName"
+                  placeholder="请输入"
+                  clearable
+                />
+              </el-form-item>
+            </el-col>
 
-          <template #collapse>
-            <el-form label-width="100px">
-              <el-row>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col v-bind="wrapperColSmall">
-                  <el-form-item label="查询条件">
-                    <el-input></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </template>
-        </search-collapse>
-      </template>
+            <el-col v-bind="wrapperColSmall">
+              <el-form-item label="操作模块">
+                <el-input
+                  v-model="searchForm.type"
+                  placeholder="请输入"
+                  clearable
+                />
+              </el-form-item>
+            </el-col>
 
-      <template #buttons>
-        <el-button
-          type="primary"
-          @click="handleCreate"
-          >新增</el-button
-        >
-        <el-button
-          type="warning"
-          @click="handleChange"
-          >修改</el-button
-        >
-        <el-button
-          type="danger"
-          @click="handleDelete"
-          >删除</el-button
-        >
-        <el-button
-          type="danger"
-          @click="handleOpen"
-          >打开modal</el-button
-        >
-      </template>
+            <el-col v-bind="wrapperColLarge">
+              <el-form-item label="登录时间">
+                <el-date-picker
+                  v-model="searchForm.createTime"
+                  type="datetimerange"
+                  range-separator="至"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  date-format="YYYY-MM-DD"
+                  time-format="HH:mm:ss"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </search-collapse>
+    </template>
 
-      <template #table>
-        <grid-table
-          :row-data="tableData"
-          :columnDefs="columnDefs"
-          v-model:selection="selectRow"
-          v-model:page="currentPage"
-          v-model:sizes="pageSize"
-          :pageSizes="pageSizes"
-          :total="total"
-          @grid-ready="onGridReady"
-          @current-change="changeCurrent"
-          @size-change="changePageSize"
-          @sort-change="getTableData"
-        ></grid-table>
-      </template>
-    </page-layout>
+    <template #buttons>
+      <el-button
+        type="success"
+        @click="handleExport"
+        >导出</el-button
+      >
+    </template>
 
-    <product-drawer ref="productRef" />
-
-    <product-modal ref="modalRef" />
-  </div>
+    <template #table>
+      <grid-table
+        :row-data="tableData"
+        :columnDefs="columnDefs"
+        v-model:selection="selectRow"
+        v-model:page="currentPage"
+        v-model:sizes="pageSize"
+        :pageSizes="pageSizes"
+        :total="total"
+        @grid-ready="onGridReady"
+        @current-change="changeCurrent"
+        @size-change="changePageSize"
+        @sort-change="getTableData"
+      ></grid-table>
+    </template>
+  </page-layout>
 </template>
 
 <script setup lang="ts">
@@ -154,23 +80,28 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { h, reactive, ref, shallowRef } from 'vue'
+import { onMounted, reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
-import productDrawer from './productDrawer.vue'
-import productModal from './productModal.vue'
 import { useMessage } from '@/hooks/useMessage'
-import { useMessageBox } from '@/hooks/useMessageBox'
 import { useRequest } from '@/hooks/useRequest'
+import { Api } from './api'
+import { dayjs } from 'element-plus'
+import { downloadFile } from '@/utils/file'
 
 defineOptions({
-  name: 'dataPage',
+  name: 'loginLog',
 })
 
-const messageBox = useMessageBox()
+onMounted(() => {
+  getTableData()
+})
+
 const { request, loading } = useRequest()
 
 const searchForm = reactive({
-  value: '',
+  userName: '',
+  type: '',
+  createTime: [],
 })
 
 const {
@@ -189,22 +120,31 @@ const onGridReady = (params: GridReadyEvent) => {
 }
 
 const selectRow = ref([])
-const tableData = ref([])
+const tableData = ref<any>([])
 const getTableData = async () => {
   try {
-    const response = await request({
-      url: '111',
-      method: 'post',
-      data: {
-        name: 'yyf',
+    const { data, code, msg } = await request<{
+      total: number
+      list: Array<any>
+    } | null>({
+      url: Api.list,
+      method: 'get',
+      params: {
+        ...searchForm,
+        pageNo: currentPage.value,
+        pageSize: pageSize.value,
       },
     })
-    console.log(response)
-    setTotal(1000)
-    gridApi.value!.setFilterModel(null)
-    gridApi.value!.deselectAll()
-
-    gridApi.value!.setRowData(tableData.value)
+    if (code === 0) {
+      setTotal(data?.total ?? 0)
+      tableData.value = data?.list ?? []
+      gridApi.value!.setRowData(tableData.value)
+    } else {
+      useMessage({
+        message: msg,
+        type: 'error',
+      })
+    }
   } catch (err: any) {
     console.log(err)
     useMessage({
@@ -214,39 +154,19 @@ const getTableData = async () => {
   }
 }
 
-const productRef = ref<InstanceType<typeof productDrawer> | null>(null)
-const handleCreate = () => {
-  productRef.value!.openDrawer()
-}
-
-const handleChange = () => {
-  messageBox
-    .confirm({
-      message: h('p', '这是一个拍标签'),
-      title: '提示',
-      options: {},
-    })
-    .then(() => {
-      console.log('确定')
-    })
-    .catch(() => {
-      console.log('取消')
-    })
-    .finally(() => {
-      console.log('关闭')
-    })
-}
-
-const handleDelete = () => {
-  useMessage({
-    type: 'error',
-    message: '这是一个搓搓',
-  })
-}
-
-const modalRef = ref<InstanceType<typeof productModal> | null>(null)
-const handleOpen = () => {
-  modalRef.value!.openModal()
+const handleExport = () => {
+  downloadFile(
+    {
+      url: Api.export,
+      method: 'get',
+      params: {
+        ...searchForm,
+        pageNo: currentPage.value,
+        pageSize: pageSize.value,
+      },
+    },
+    '操作日志.xlsx'
+  )
 }
 
 const columnDefs = ref<ColDef[]>([
@@ -284,97 +204,67 @@ const columnDefs = ref<ColDef[]>([
     filter: false,
   },
   {
-    headerName: '通知编号',
-    field: 'no',
-    colId: 'no',
+    headerName: '操作人',
+    field: 'userName',
+    colId: 'userName',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '运单号',
-    field: 'orderNo',
-    colId: 'orderNo',
+    headerName: '操作模块',
+    field: 'type',
+    colId: 'type',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '通知状态',
-    field: 'statusText',
-    colId: 'statusText',
+    headerName: '操作内容',
+    field: 'subType',
+    colId: 'subType',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '通知金额(元)',
-    field: 'penaltyAmount',
-    colId: 'penaltyAmount',
+    headerName: '内容信息',
+    field: 'action',
+    colId: 'action',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '通知部门',
-    field: 'penaltyNetworkName',
-    colId: 'penaltyNetworkName',
+    headerName: '操作时间',
+    field: 'createTime',
+    colId: 'createTime',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+    valueGetter: (params: ValueGetterParams) =>
+      dayjs(params.data.createTime).format('YYYY-MM-DD HH:MM:ss'),
+  },
+  {
+    headerName: '业务编号',
+    field: 'bizId',
+    colId: 'bizId',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '通知时间',
-    field: 'createDate',
-    colId: 'createDate',
+    headerName: '操作IP',
+    field: 'userIp',
+    colId: 'userIp',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '通知原因',
-    field: 'penaltyReason',
-    colId: 'penaltyReason',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '业务类型',
-    field: 'penaltyTypeName',
-    colId: 'penaltyTypeName',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '责任类型',
-    field: 'dutyTypeText',
-    colId: 'dutyTypeText',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '理赔方式',
-    field: 'claimWayText',
-    colId: 'claimWayText',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '缴款截止时间',
-    field: 'deadline',
-    colId: 'deadline',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '缴款时间',
-    field: 'payDate',
-    colId: 'payDate',
+    headerName: '日志编号',
+    field: 'id',
+    colId: 'id',
     minWidth: 150,
     flex: 1,
     sortable: false,

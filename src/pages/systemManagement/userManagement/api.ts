@@ -10,4 +10,8 @@ export const Api = {
   downloadTemplate: '/admin-api/system/user/get-import-template',
   importFile: '/admin-api/system/user/import',
   exportFile: '/admin-api/system/user/export-excel',
+  resetPassword: '/admin-api/system/user/update-password',
+  roleList: '/admin-api/system/role/simple-list',
+  queryUserRoles: '/admin-api/system/permission/list-user-roles',
+  assignRoles: '/admin-api/system/permission/assign-user-role',
 } as const

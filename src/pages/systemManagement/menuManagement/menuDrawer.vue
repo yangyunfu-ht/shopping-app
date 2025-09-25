@@ -16,25 +16,25 @@
         label-width="100px"
       >
         <el-form-item
-          label="上级菜单"
-          prop="parentId"
+          label="菜单类型"
+          prop="name"
         >
-          <el-tree-select
-            v-model="ruleForm.parentId"
-            :data="menuData"
-            check-strictly
-            node-key="id"
-            :render-after-expand="false"
-            :props="{
-              label: 'name',
-              children: 'children',
-            }"
-            filterable
-            clearable
-            style="width: 100%"
-            placeholder="请选择上级菜单"
-          />
+          <el-radio-group v-model="ruleForm.type">
+            <el-radio-button
+              label="目录"
+              :value="1"
+            />
+            <el-radio-button
+              label="菜单"
+              :value="2"
+            />
+            <el-radio-button
+              label="按钮"
+              :value="3"
+            />
+          </el-radio-group>
         </el-form-item>
+
         <el-form-item
           label="菜单名称"
           prop="name"
@@ -44,53 +44,257 @@
             placeholder="请输入菜单名称"
           />
         </el-form-item>
-        <el-form-item
-          label="联系电话"
-          prop="phone"
-        >
-          <el-input
-            v-model.trim="ruleForm.phone"
-            placeholder="请输入联系电话"
-          />
-        </el-form-item>
-        <el-form-item
-          label="邮箱"
-          prop="email"
-        >
-          <el-input
-            v-model.trim="ruleForm.email"
-            placeholder="请输入邮箱"
-          />
-        </el-form-item>
-        <el-form-item
-          label="排序"
-          prop="sort"
-        >
-          <el-input-number
-            v-model="ruleForm.sort"
-            placeholder=""
-            :min="0"
-            style="width: 100%"
-          />
-        </el-form-item>
-        <el-form-item
-          label="菜单状态"
-          prop="status"
-        >
-          <el-select
-            v-model="ruleForm.status"
-            placeholder="请选择菜单状态"
+
+        <!-- 目录 -->
+        <template v-if="ruleForm.type === 1">
+          <el-form-item
+            label="上级菜单"
+            prop="parentId"
           >
-            <el-option
-              :value="0"
-              label="开启"
+            <el-tree-select
+              v-model="ruleForm.parentId"
+              :data="menuData"
+              check-strictly
+              node-key="id"
+              :render-after-expand="false"
+              :props="{
+                label: 'name',
+                children: 'children',
+              }"
+              filterable
+              clearable
+              style="width: 100%"
+              placeholder="请选择上级菜单"
             />
-            <el-option
-              :value="1"
-              label="关闭"
+          </el-form-item>
+
+          <el-form-item
+            label="菜单图标"
+            prop="icon"
+          >
+            <icon-picker
+              v-model="ruleForm.icon"
+              placeholder="请选择菜单图标"
             />
-          </el-select>
-        </el-form-item>
+          </el-form-item>
+
+          <el-form-item
+            label="菜单路径"
+            prop="path"
+          >
+            <el-input
+              v-model.trim="ruleForm.path"
+              placeholder="请输入菜单路径"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="组件路径"
+            prop="component"
+          >
+            <el-input
+              v-model.trim="ruleForm.component"
+              placeholder="请输入组件路径"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="排序值"
+            prop="sort"
+          >
+            <el-input-number
+              v-model="ruleForm.sort"
+              placeholder=""
+              :min="0"
+              style="width: 100%"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="菜单状态"
+            prop="status"
+          >
+            <el-select
+              v-model="ruleForm.status"
+              placeholder="请选择菜单状态"
+            >
+              <el-option
+                :value="0"
+                label="开启"
+              />
+              <el-option
+                :value="1"
+                label="关闭"
+              />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            label="菜单显示"
+            prop="visible"
+          >
+            <el-select
+              v-model="ruleForm.visible"
+              placeholder="请选择"
+            >
+              <el-option
+                :value="0"
+                label="显示"
+              />
+              <el-option
+                :value="1"
+                label="隐藏"
+              />
+            </el-select>
+          </el-form-item>
+        </template>
+
+        <!-- 菜单 -->
+        <template v-if="ruleForm.type === 2">
+          <el-form-item
+            label="上级菜单"
+            prop="parentId"
+          >
+            <el-tree-select
+              v-model="ruleForm.parentId"
+              :data="menuData"
+              check-strictly
+              node-key="id"
+              :render-after-expand="false"
+              :props="{
+                label: 'name',
+                children: 'children',
+              }"
+              filterable
+              clearable
+              style="width: 100%"
+              placeholder="请选择上级菜单"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="菜单图标"
+            prop="icon"
+          >
+            <icon-picker
+              v-model="ruleForm.icon"
+              placeholder="请选择菜单图标"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="菜单路径"
+            prop="path"
+          >
+            <el-input
+              v-model.trim="ruleForm.path"
+              placeholder="请输入菜单路径"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="组件路径"
+            prop="component"
+          >
+            <el-input
+              v-model.trim="ruleForm.component"
+              placeholder="请输入组件路径"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="排序值"
+            prop="sort"
+          >
+            <el-input-number
+              v-model="ruleForm.sort"
+              placeholder=""
+              :min="0"
+              style="width: 100%"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="菜单状态"
+            prop="status"
+          >
+            <el-select
+              v-model="ruleForm.status"
+              placeholder="请选择菜单状态"
+            >
+              <el-option
+                :value="0"
+                label="开启"
+              />
+              <el-option
+                :value="1"
+                label="关闭"
+              />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            label="菜单显示"
+            prop="visible"
+          >
+            <el-select
+              v-model="ruleForm.visible"
+              placeholder="请选择"
+            >
+              <el-option
+                :value="0"
+                label="显示"
+              />
+              <el-option
+                :value="1"
+                label="隐藏"
+              />
+            </el-select>
+          </el-form-item>
+        </template>
+
+        <!-- 按钮 -->
+        <template v-if="ruleForm.type === 3">
+          <el-form-item
+            label="权限标识"
+            prop="permission"
+          >
+            <el-input
+              v-model.trim="ruleForm.permission"
+              placeholder="请输入权限标识"
+            />
+          </el-form-item>
+          <el-form-item
+            label="排序值"
+            prop="sort"
+          >
+            <el-input-number
+              v-model="ruleForm.sort"
+              placeholder=""
+              :min="0"
+              style="width: 100%"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="菜单状态"
+            prop="status"
+          >
+            <el-select
+              v-model="ruleForm.status"
+              placeholder="请选择菜单状态"
+            >
+              <el-option
+                :value="0"
+                label="开启"
+              />
+              <el-option
+                :value="1"
+                label="关闭"
+              />
+            </el-select>
+          </el-form-item>
+        </template>
       </el-form>
     </div>
   </app-drawer>
@@ -102,7 +306,6 @@ import { reactive, ref, toRefs, type PropType } from 'vue'
 import { useRequest } from '@/hooks/useRequest'
 import { Api } from './api'
 import { useMessage } from '@/hooks/useMessage'
-import { validPhone } from '@/utils/validator'
 import type { TreeNode } from '@/utils/array'
 
 const props = defineProps({
@@ -125,12 +328,16 @@ const emits = defineEmits<{
 
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
-  parentId: null,
+  type: 2,
   name: '',
-  phone: '',
-  email: '',
+  parentId: null,
+  icon: '',
+  path: '',
+  component: '',
   sort: 0,
   status: 0,
+  visible: 0,
+  permission: '',
   id: '',
 })
 
@@ -139,19 +346,6 @@ const rules = reactive<FormRules<typeof ruleForm>>({
     {
       required: true,
       message: '请输入菜单名称',
-      trigger: 'blur',
-    },
-  ],
-  phone: [
-    {
-      required: true,
-      validator: (_rule: any, value: string, callback: any) => {
-        if (validPhone(value)) {
-          callback()
-        } else {
-          callback(new Error('请输入联系电话'))
-        }
-      },
       trigger: 'blur',
     },
   ],
@@ -215,11 +409,16 @@ const changeOpen = async (id: any) => {
       },
     })
     if (code === 0) {
-      ruleForm.parentId = data.parentId
+      ruleForm.type = data.type
       ruleForm.name = data.name
-      ruleForm.phone = data.phone
+      ruleForm.parentId = data.parentId
+      ruleForm.icon = data.icon
+      ruleForm.component = data.component
+      ruleForm.path = data.path
       ruleForm.sort = data.sort
       ruleForm.status = data.status
+      ruleForm.visible = data.visible
+      ruleForm.permission = data.permission
     } else {
       useMessage({
         type: 'error',

@@ -8,6 +8,7 @@ import appDrawer from './appDrawer/index.vue'
 import appModal from './appModal/index.vue'
 import appEcharts from './appEcharts/appEcharts'
 import branchTree from './branchTree/branchTree.vue'
+import iconPicker from './iconPicker/iconPicker.vue'
 
 const globalComponent = [
   {
@@ -45,6 +46,10 @@ const globalComponent = [
   {
     name: 'branchTree',
     component: branchTree,
+  },
+  {
+    name: 'iconPicker',
+    component: iconPicker,
   },
 ]
 
