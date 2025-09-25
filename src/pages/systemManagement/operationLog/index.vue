@@ -89,7 +89,7 @@ import { dayjs } from 'element-plus'
 import { downloadFile } from '@/utils/file'
 
 defineOptions({
-  name: 'loginLog',
+  name: 'operationLog',
 })
 
 onMounted(() => {
