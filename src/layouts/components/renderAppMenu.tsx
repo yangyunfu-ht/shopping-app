@@ -1,5 +1,4 @@
-import { House } from '@element-plus/icons-vue'
-import { ElIcon, ElMenu, ElMenuItem, ElSubMenu } from 'element-plus'
+import { ElMenu, ElMenuItem, ElSubMenu } from 'element-plus'
 import { defineComponent, type PropType } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { useRoute } from 'vue-router'
