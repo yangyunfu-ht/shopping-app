@@ -3,7 +3,7 @@
     class="attribute-page"
     v-loading="loading"
   >
-    <!-- 商品属性 -->
+    <!-- 商品参数 -->
     <div class="attribute-page__left">
       <page-layout>
         <template #search>
@@ -14,11 +14,11 @@
             <el-form label-width="100px">
               <el-row>
                 <el-col v-bind="wrapperColLarge">
-                  <el-form-item label="属性名称">
+                  <el-form-item label="参数名称">
                     <el-input
                       v-model.trim="searchForm.name"
                       clearable
-                      placeholder="请输入属性名称"
+                      placeholder="请输入参数名称"
                     />
                   </el-form-item>
                 </el-col>
@@ -68,7 +68,7 @@
       />
     </div>
 
-    <!-- 商品属性值 -->
+    <!-- 商品参数值 -->
     <div class="attribute-page__right">
       <page-layout>
         <template #search>
@@ -79,11 +79,11 @@
             <el-form label-width="100px">
               <el-row>
                 <el-col v-bind="wrapperColLarge">
-                  <el-form-item label="属性值名称">
+                  <el-form-item label="参数值名称">
                     <el-input
                       v-model.trim="rightSearchForm.name"
                       clearable
-                      placeholder="请输入属性名称"
+                      placeholder="请输入参数名称"
                     />
                   </el-form-item>
                 </el-col>
@@ -155,7 +155,7 @@ import { Api, ApiValue } from './api'
 import { dayjs } from 'element-plus'
 
 defineOptions({
-  name: 'productAttributes',
+  name: 'productParameters',
 })
 
 onMounted(() => {
@@ -229,7 +229,7 @@ const handleCreate = () => {
 const handleChange = () => {
   if (selectRow.value.length !== 1) {
     messageBox.confirm({
-      message: '请选择一条需要修改的属性信息数据',
+      message: '请选择一条需要修改的参数信息数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -246,7 +246,7 @@ const handleChange = () => {
 const handleDelete = () => {
   if (selectRow.value.length !== 1) {
     messageBox.confirm({
-      message: '请选择一条需要删除的属性信息数据',
+      message: '请选择一条需要删除的参数信息数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -259,7 +259,7 @@ const handleDelete = () => {
   const [{ name, id }] = selectRow.value
   messageBox
     .confirm({
-      message: `确认删除属性名称为${name}的数据？`,
+      message: `确认删除参数名称为${name}的数据？`,
       title: '提示',
       options: {
         type: 'warning',
@@ -333,7 +333,7 @@ const columnDefs = ref<ColDef[]>([
     filter: false,
   },
   {
-    headerName: '属性名称',
+    headerName: '参数名称',
     field: 'name',
     colId: 'name',
     minWidth: 150,
@@ -341,7 +341,7 @@ const columnDefs = ref<ColDef[]>([
     sortable: false,
   },
   {
-    headerName: '属性编号',
+    headerName: '参数编号',
     field: 'id',
     colId: 'id',
     minWidth: 150,
@@ -349,7 +349,7 @@ const columnDefs = ref<ColDef[]>([
     sortable: false,
   },
   {
-    headerName: '属性备注',
+    headerName: '参数备注',
     field: 'remark',
     colId: 'remark',
     minWidth: 150,
@@ -368,7 +368,7 @@ const columnDefs = ref<ColDef[]>([
   },
 ])
 
-// 属性值
+// 参数值
 
 const rightSearchForm = reactive({
   name: '',
@@ -395,7 +395,7 @@ const rightTableData = ref<any>([])
 const getRightTableData = async () => {
   if (!rightSearchForm.propertyId) {
     messageBox.confirm({
-      message: '请在左侧表格选择一条商品属性数据',
+      message: '请在左侧表格选择一条商品参数数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -461,7 +461,7 @@ const attributeValueRef = ref<InstanceType<
 const handleCreateRight = () => {
   if (!rightSearchForm.propertyId) {
     messageBox.confirm({
-      message: '请在左侧表格选择一条商品属性数据',
+      message: '请在左侧表格选择一条商品参数数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -478,7 +478,7 @@ const handleCreateRight = () => {
 const handleChangeRight = () => {
   if (rightSelectRow.value.length !== 1) {
     messageBox.confirm({
-      message: '请选择一条需要修改的属性信息数据',
+      message: '请选择一条需要修改的参数信息数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -495,7 +495,7 @@ const handleChangeRight = () => {
 const handleDeleteRight = () => {
   if (rightSelectRow.value.length !== 1) {
     messageBox.confirm({
-      message: '请选择一条需要删除的属性信息数据',
+      message: '请选择一条需要删除的参数信息数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -508,7 +508,7 @@ const handleDeleteRight = () => {
   const [{ name, id }] = rightSelectRow.value
   messageBox
     .confirm({
-      message: `确认删除属性名称为${name}的数据？`,
+      message: `确认删除参数名称为${name}的数据？`,
       title: '提示',
       options: {
         type: 'warning',
@@ -582,7 +582,7 @@ const rightColumnDefs = ref<ColDef[]>([
     filter: false,
   },
   {
-    headerName: '属性值名称',
+    headerName: '参数值名称',
     field: 'name',
     colId: 'name',
     minWidth: 150,
@@ -590,7 +590,7 @@ const rightColumnDefs = ref<ColDef[]>([
     sortable: false,
   },
   {
-    headerName: '属性值编号',
+    headerName: '参数值编号',
     field: 'id',
     colId: 'id',
     minWidth: 150,
@@ -598,7 +598,7 @@ const rightColumnDefs = ref<ColDef[]>([
     sortable: false,
   },
   {
-    headerName: '属性值备注',
+    headerName: '参数值备注',
     field: 'remark',
     colId: 'remark',
     minWidth: 150,

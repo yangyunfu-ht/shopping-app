@@ -49,7 +49,7 @@ export const useTokenStore = defineStore(
   {
     persist: {
       key: 'token',
-      pick: ['token'],
+      pick: ['token', 'refreshToken', 'expiresTime'],
       storage: sessionStorage,
     },
   }

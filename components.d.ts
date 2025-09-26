@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppDrawer: typeof import('./src/components/appDrawer/index.vue')['default']
     AppModal: typeof import('./src/components/appModal/index.vue')['default']
+    AppUpload: typeof import('./src/components/appUpload/appUpload.vue')['default']
     BranchTree: typeof import('./src/components/branchTree/branchTree.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -23,6 +24,7 @@ declare module 'vue' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElImage: typeof import('element-plus/es')['ElImage']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElLink: typeof import('element-plus/es')['ElLink']

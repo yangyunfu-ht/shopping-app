@@ -40,7 +40,7 @@ export const useGlobalStore = defineStore(
   {
     persist: {
       key: 'global',
-      pick: ['isRequestLocked', 'appWidth', 'appMessageVisible'],
+      pick: ['isRequestLocked', 'appWidth', 'appHeight', 'appMessageVisible'],
       storage: sessionStorage,
     },
   }

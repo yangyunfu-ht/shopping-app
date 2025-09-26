@@ -9,6 +9,7 @@ import appModal from './appModal/index.vue'
 import appEcharts from './appEcharts/appEcharts'
 import branchTree from './branchTree/branchTree.vue'
 import iconPicker from './iconPicker/iconPicker.vue'
+import appUpload from './appUpload/appUpload.vue'
 
 const globalComponent = [
   {
@@ -50,6 +51,10 @@ const globalComponent = [
   {
     name: 'iconPicker',
     component: iconPicker,
+  },
+  {
+    name: 'appUpload',
+    component: appUpload,
   },
 ]
 

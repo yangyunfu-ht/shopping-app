@@ -45,6 +45,15 @@ export const mockRoutes = [
           title: '商品属性',
         },
       },
+      {
+        path: 'productParameters',
+        name: 'productParameters',
+        component: '/src/pages/productManagement/productParameters/index.vue',
+        meta: {
+          keepAlive: false,
+          title: '商品参数',
+        },
+      },
     ],
   },
   {

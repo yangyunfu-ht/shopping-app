@@ -1,0 +1,170 @@
+<template>
+  <app-drawer
+    v-model="visible"
+    :title="title"
+    @close="handleClose(ruleFormRef)"
+    @confirm="handleConfirm(ruleFormRef)"
+  >
+    <div
+      style="height: 100%"
+      v-loading="loading"
+    >
+      <el-form
+        ref="ruleFormRef"
+        :model="ruleForm"
+        :rules="rules"
+        label-width="100px"
+      >
+        <el-form-item
+          label="属性值名称"
+          prop="name"
+        >
+          <el-input
+            v-model.trim="ruleForm.name"
+            placeholder="请输入属性值名称"
+          />
+        </el-form-item>
+        <el-form-item
+          label="属性值备注"
+          prop="remark"
+        >
+          <el-input
+            v-model.trim="ruleForm.remark"
+            type="textarea"
+            :rows="3"
+            show-word-limit
+            :maxlength="50"
+            placeholder="请输入属性值备注"
+          />
+        </el-form-item>
+      </el-form>
+    </div>
+  </app-drawer>
+</template>
+
+<script setup lang="ts">
+import type { FormInstance, FormRules } from 'element-plus'
+import { reactive, ref, toRefs } from 'vue'
+import { useRequest } from '@/hooks/useRequest'
+import { ApiValue } from './api'
+import { useMessage } from '@/hooks/useMessage'
+
+const props = defineProps({
+  propertyId: {
+    type: [String, null],
+    default: '',
+  },
+})
+
+const { propertyId } = toRefs(props)
+
+const { request, loading } = useRequest()
+
+const visible = ref(false)
+const title = ref('')
+
+const emits = defineEmits<{
+  submit: []
+}>()
+
+const ruleFormRef = ref<FormInstance>()
+const ruleForm = reactive({
+  name: '',
+  remark: '',
+  id: '',
+})
+
+const rules = reactive<FormRules<typeof ruleForm>>({
+  name: [
+    {
+      required: true,
+      message: '请输入属性值名称',
+      trigger: 'blur',
+    },
+  ],
+})
+
+const handleClose = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
+  ruleForm.id = ''
+}
+
+const handleConfirm = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate(async (valid) => {
+    if (valid) {
+      try {
+        const { code, msg } = await request({
+          url: ruleForm.id ? ApiValue.change : ApiValue.create,
+          method: ruleForm.id ? 'put' : 'post',
+          data: {
+            ...ruleForm,
+            propertyId: propertyId.value,
+          },
+        })
+        if (code === 0) {
+          visible.value = false
+          emits('submit')
+          useMessage({
+            type: 'success',
+            message: msg,
+          })
+        } else {
+          useMessage({
+            type: 'error',
+            message: msg,
+          })
+        }
+      } catch (err: any) {
+        useMessage({
+          type: 'error',
+          message: err.message,
+        })
+      }
+    }
+  })
+}
+
+const openDrawer = () => {
+  title.value = '新增属性值'
+  visible.value = true
+}
+
+const changeOpen = async (id: string) => {
+  if (!id) return
+  ruleForm.id = id
+  title.value = '修改属性值'
+  visible.value = true
+  try {
+    const { data, code, msg } = await request({
+      url: ApiValue.detail,
+      method: 'get',
+      params: {
+        id,
+      },
+    })
+    if (code === 0) {
+      ruleForm.name = data.name
+      ruleForm.remark = data.remark
+    } else {
+      useMessage({
+        type: 'error',
+        message: msg,
+      })
+    }
+  } catch (err: any) {
+    useMessage({
+      type: 'error',
+      message: err.message,
+    })
+  }
+}
+
+defineExpose({
+  openDrawer,
+  changeOpen,
+})
+</script>
+
+<style lang="scss" scoped></style>

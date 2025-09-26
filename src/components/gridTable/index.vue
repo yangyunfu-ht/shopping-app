@@ -4,8 +4,8 @@
       <ag-grid-vue
         class="ag-theme-alpine"
         style="width: 100%; height: 100%; min-height: 300px; overflow: hidden"
-        :header-height="32"
-        :row-height="32"
+        :header-height="36"
+        :row-height="36"
         :grid-options="gridOptions"
         :get-row-id="getRowId"
         :get-row-style="getRowStyle"
@@ -40,6 +40,7 @@
         :page-sizes="pageSizes"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
+        background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
