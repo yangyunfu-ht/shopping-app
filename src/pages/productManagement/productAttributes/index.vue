@@ -144,7 +144,7 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { onMounted, reactive, ref, shallowRef, watch } from 'vue'
+import { reactive, ref, shallowRef, watch } from 'vue'
 import { wrapperColLarge } from '@/utils/layout'
 import attributeDrawer from './attributeDrawer.vue'
 import attributeValueDrawer from './attributeValueDrawer.vue'
@@ -156,10 +156,6 @@ import { dayjs } from 'element-plus'
 
 defineOptions({
   name: 'productAttributes',
-})
-
-onMounted(() => {
-  getTableData()
 })
 
 const messageBox = useMessageBox()
@@ -184,9 +180,10 @@ const onGridReady = (params: GridReadyEvent) => {
   gridApi.value = params!.api
 }
 
-const selectRow = ref([])
-const tableData = ref([])
+const selectRow = ref<any[]>([])
+const tableData = ref<any[]>([])
 const getTableData = async () => {
+  gridApi.value!.deselectAll()
   try {
     const { data, code, msg } = await request<{
       total: number
@@ -201,11 +198,13 @@ const getTableData = async () => {
       },
     })
     if (code === 0) {
-      gridApi.value!.setRowData(data?.list ?? [])
       setTotal(data?.total ?? 0)
+      tableData.value = data?.list ?? []
+      gridApi.value!.setRowData(tableData.value)
     } else {
-      gridApi.value!.setRowData([])
       setTotal(0)
+      tableData.value = []
+      gridApi.value!.setRowData(tableData.value)
       useMessage({
         message: msg,
         type: 'error',

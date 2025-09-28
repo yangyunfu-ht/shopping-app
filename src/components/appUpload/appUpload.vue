@@ -170,16 +170,12 @@ const handleExceed = () => {
 
 // 上传前的校验
 const beforeUpload = (rawFile: any) => {
-  const isJPGorPNG = ['image/jpeg', 'image/png'].includes(rawFile.type)
   const isLt2M = rawFile.size / 1024 / 1024 < 2
 
-  if (!isJPGorPNG) {
-    ElMessage.error('上传图片只能是 JPG/PNG 格式!')
-  }
   if (!isLt2M) {
     ElMessage.error('上传图片大小不能超过 2MB!')
   }
-  return isJPGorPNG && isLt2M
+  return isLt2M
 }
 </script>
 

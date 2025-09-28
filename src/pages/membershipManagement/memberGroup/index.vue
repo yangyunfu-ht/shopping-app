@@ -9,24 +9,33 @@
           :use-collapse="false"
           @query="getTableData"
         >
-          <el-form label-width="100px">
-            <el-row>
+          <el-form label-width="80px">
+            <el-row :gutter="8">
               <el-col v-bind="wrapperColSmall">
-                <el-form-item label="会员名称">
+                <el-form-item label="分组名称">
                   <el-input
-                    v-model.trim="searchForm.nickname"
+                    v-model.trim="searchForm.name"
                     clearable
-                    placeholder="请输入会员名称"
+                    placeholder="请输入分组名称"
                   />
                 </el-form-item>
               </el-col>
               <el-col v-bind="wrapperColSmall">
-                <el-form-item label="手机号">
-                  <el-input
-                    v-model.trim="searchForm.mobile"
+                <el-form-item label="分组状态">
+                  <el-select
+                    v-model="searchForm.status"
                     clearable
-                    placeholder="请输入角色编码"
-                  />
+                    placeholder="请选择分组状态"
+                  >
+                    <el-option
+                      :value="0"
+                      label="开启"
+                    />
+                    <el-option
+                      :value="1"
+                      label="关闭"
+                    />
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -34,7 +43,23 @@
         </search-collapse>
       </template>
 
-      <template #buttons> </template>
+      <template #buttons>
+        <el-button
+          type="primary"
+          @click="handleCreate"
+          >新增</el-button
+        >
+        <el-button
+          type="warning"
+          @click="handleChange"
+          >修改</el-button
+        >
+        <el-button
+          type="danger"
+          @click="handleDelete"
+          >删除</el-button
+        >
+      </template>
 
       <template #table>
         <grid-table
@@ -52,6 +77,11 @@
         ></grid-table>
       </template>
     </page-layout>
+
+    <group-drawer
+      ref="groupRef"
+      @submit="getTableData"
+    />
   </div>
 </template>
 
@@ -65,21 +95,23 @@ import type {
 } from 'ag-grid-community'
 import { reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall } from '@/utils/layout'
+import groupDrawer from './groupDrawer.vue'
 import { useMessage } from '@/hooks/useMessage'
 import { useRequest } from '@/hooks/useRequest'
 import { Api } from './api'
 import { dayjs } from 'element-plus'
-import pointCellRender from './pointCellRender'
+import { useMessageBox } from '@/hooks/useMessageBox'
 
 defineOptions({
-  name: 'memberPoints',
+  name: 'memberGroup',
 })
 
+const messageBox = useMessageBox()
 const { request, loading } = useRequest()
 
 const searchForm = reactive({
-  nickname: '',
-  mobile: '',
+  name: '',
+  status: null,
 })
 
 const {
@@ -136,6 +168,85 @@ const getTableData = async () => {
   }
 }
 
+//新增
+const groupRef = ref<InstanceType<typeof groupDrawer> | null>()
+const handleCreate = () => {
+  groupRef.value!.openDrawer()
+}
+
+//修改
+const handleChange = () => {
+  if (selectRow.value.length !== 1) {
+    messageBox.confirm({
+      message: '请选择一条需要修改的分组信息数据',
+      title: '提示',
+      options: {
+        showCancelButton: false,
+        showConfirmButton: false,
+        type: 'warning',
+      },
+    })
+    return
+  }
+  const [{ id }] = selectRow.value
+  groupRef.value!.changeOpen(id)
+}
+
+const handleDelete = () => {
+  if (selectRow.value.length !== 1) {
+    messageBox.confirm({
+      message: '请选择一条需要删除的分组信息数据',
+      title: '提示',
+      options: {
+        showCancelButton: false,
+        showConfirmButton: false,
+        type: 'warning',
+      },
+    })
+    return
+  }
+  const [{ name, id }] = selectRow.value
+  messageBox
+    .confirm({
+      message: `确认删除分组名称为${name}的数据？`,
+      title: '提示',
+      options: {
+        type: 'warning',
+      },
+    })
+    .then(async () => {
+      try {
+        const { code, msg } = await request({
+          url: Api.delete,
+          method: 'delete',
+          params: {
+            id,
+          },
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+          },
+        })
+        if (code === 0) {
+          useMessage({
+            message: msg,
+            type: 'success',
+          })
+          getTableData()
+        } else {
+          useMessage({
+            message: msg,
+            type: 'error',
+          })
+        }
+      } catch (err: any) {
+        useMessage({
+          message: err.message,
+          type: 'error',
+        })
+      }
+    })
+}
+
 const columnDefs = ref<ColDef[]>([
   {
     headerName: '序号',
@@ -171,32 +282,31 @@ const columnDefs = ref<ColDef[]>([
     filter: false,
   },
   {
-    headerName: '会员名称',
-    field: 'nickname',
-    colId: 'nickname',
+    headerName: '分组名称',
+    field: 'name',
+    colId: 'name',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '签到天数',
-    field: 'day',
-    colId: 'day',
+    headerName: '分组编码',
+    field: 'id',
+    colId: 'id',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '获得积分',
-    field: 'point',
-    colId: 'point',
+    headerName: '分组备注',
+    field: 'remark',
+    colId: 'remark',
     minWidth: 150,
     flex: 1,
     sortable: false,
-    cellRenderer: pointCellRender,
   },
   {
-    headerName: '签到时间',
+    headerName: '创建时间',
     field: 'createTime',
     colId: 'createTime',
     minWidth: 150,

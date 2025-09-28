@@ -9,32 +9,23 @@
           :use-collapse="false"
           @query="getTableData"
         >
-          <el-form label-width="100px">
-            <el-row>
+          <el-form label-width="80px">
+            <el-row :gutter="8">
               <el-col v-bind="wrapperColSmall">
-                <el-form-item label="岗位名称">
+                <el-form-item label="等级名称">
                   <el-input
                     v-model.trim="searchForm.name"
                     clearable
-                    placeholder="请输入岗位名称"
+                    placeholder="请输入等级名称"
                   />
                 </el-form-item>
               </el-col>
               <el-col v-bind="wrapperColSmall">
-                <el-form-item label="岗位编码">
-                  <el-input
-                    v-model.trim="searchForm.code"
-                    clearable
-                    placeholder="请输入岗位编码"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col v-bind="wrapperColSmall">
-                <el-form-item label="岗位状态">
+                <el-form-item label="等级状态">
                   <el-select
                     v-model="searchForm.status"
                     clearable
-                    placeholder="请选择岗位状态"
+                    placeholder="请选择等级状态"
                   >
                     <el-option
                       :value="0"
@@ -75,27 +66,21 @@
           :row-data="tableData"
           :columnDefs="columnDefs"
           v-model:selection="selectRow"
-          v-model:page="currentPage"
-          v-model:sizes="pageSize"
-          :pageSizes="pageSizes"
-          :total="total"
+          :use-pagination="false"
           @grid-ready="onGridReady"
-          @current-change="changeCurrent"
-          @size-change="changePageSize"
           @sort-change="getTableData"
         ></grid-table>
       </template>
     </page-layout>
 
-    <post-drawer
-      ref="postRef"
+    <level-drawer
+      ref="levelRef"
       @submit="getTableData"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { usePagination } from '@/hooks/usePagination'
 import type {
   ColDef,
   ValueGetterParams,
@@ -104,15 +89,17 @@ import type {
 } from 'ag-grid-community'
 import { reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall } from '@/utils/layout'
-import postDrawer from './postDrawer.vue'
+import levelDrawer from './levelDrawer.vue'
 import { useMessage } from '@/hooks/useMessage'
-import { useMessageBox } from '@/hooks/useMessageBox'
 import { useRequest } from '@/hooks/useRequest'
 import { Api } from './api'
 import { dayjs } from 'element-plus'
+import { useMessageBox } from '@/hooks/useMessageBox'
+import iconCellRender from './iconCellRender'
+import backgroundCellRender from './backgroundCellRender'
 
 defineOptions({
-  name: 'postManagement',
+  name: 'memberLevel',
 })
 
 const messageBox = useMessageBox()
@@ -120,19 +107,8 @@ const { request, loading } = useRequest()
 
 const searchForm = reactive({
   name: '',
-  code: '',
   status: null,
 })
-
-const {
-  currentPage,
-  pageSize,
-  pageSizes,
-  total,
-  setTotal,
-  changeCurrent,
-  changePageSize,
-} = usePagination({ callback: () => getTableData() })
 
 const gridApi = shallowRef<GridApi<any> | null>(null)
 const onGridReady = (params: GridReadyEvent) => {
@@ -145,26 +121,20 @@ const tableData = ref<any[]>([])
 const getTableData = async () => {
   gridApi.value!.deselectAll()
   try {
-    const { data, code, msg } = await request<{
-      total: number
-      list: Array<any>
-    } | null>({
+    const { data, code, msg } = await request({
       url: Api.list,
       method: 'get',
       params: {
-        pageNo: currentPage.value,
-        pageSize: pageSize.value,
         ...searchForm,
       },
     })
     if (code === 0) {
-      setTotal(data?.total ?? 0)
-      tableData.value = data?.list ?? []
+      tableData.value = data
       gridApi.value!.setRowData(tableData.value)
     } else {
-      setTotal(data?.total ?? 0)
       tableData.value = []
       gridApi.value!.setRowData(tableData.value)
+
       useMessage({
         message: msg,
         type: 'error',
@@ -179,16 +149,16 @@ const getTableData = async () => {
 }
 
 //新增
-const postRef = ref<InstanceType<typeof postDrawer> | null>()
+const levelRef = ref<InstanceType<typeof levelDrawer> | null>()
 const handleCreate = () => {
-  postRef.value!.openDrawer()
+  levelRef.value!.openDrawer()
 }
 
 //修改
 const handleChange = () => {
   if (selectRow.value.length !== 1) {
     messageBox.confirm({
-      message: '请选择一条需要修改的岗位信息数据',
+      message: '请选择一条需要修改的等级信息数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -199,13 +169,13 @@ const handleChange = () => {
     return
   }
   const [{ id }] = selectRow.value
-  postRef.value!.changeOpen(id)
+  levelRef.value!.changeOpen(id)
 }
 
 const handleDelete = () => {
   if (selectRow.value.length !== 1) {
     messageBox.confirm({
-      message: '请选择一条需要删除的岗位信息数据',
+      message: '请选择一条需要删除的等级信息数据',
       title: '提示',
       options: {
         showCancelButton: false,
@@ -218,7 +188,7 @@ const handleDelete = () => {
   const [{ name, id }] = selectRow.value
   messageBox
     .confirm({
-      message: `确认删除岗位名称为${name}的数据？`,
+      message: `确认删除等级名称为${name}的数据？`,
       title: '提示',
       options: {
         type: 'warning',
@@ -292,7 +262,7 @@ const columnDefs = ref<ColDef[]>([
     filter: false,
   },
   {
-    headerName: '岗位名称',
+    headerName: '等级名称',
     field: 'name',
     colId: 'name',
     minWidth: 150,
@@ -300,23 +270,49 @@ const columnDefs = ref<ColDef[]>([
     sortable: false,
   },
   {
-    headerName: '岗位编码',
-    field: 'code',
-    colId: 'code',
+    headerName: '等级',
+    field: 'level',
+    colId: 'level',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '岗位顺序',
-    field: 'sort',
-    colId: 'sort',
+    headerName: '等级图标',
+    field: 'icon',
+    colId: 'icon',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+    cellRenderer: iconCellRender,
+  },
+  {
+    headerName: '等级背景图',
+    field: 'backgroundUrl',
+    colId: 'backgroundUrl',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+    cellRenderer: backgroundCellRender,
+  },
+  {
+    headerName: '升级经验',
+    field: 'experience',
+    colId: 'experience',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '岗位状态',
+    headerName: '享受折扣(%)',
+    field: 'discountPercent',
+    colId: 'discountPercent',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+  },
+  {
+    headerName: '等级状态',
     field: 'status',
     colId: 'status',
     minWidth: 150,
@@ -324,14 +320,6 @@ const columnDefs = ref<ColDef[]>([
     sortable: false,
     valueGetter: (params: ValueGetterParams) =>
       params.data.status === 0 ? '开启' : '关闭',
-  },
-  {
-    headerName: '岗位备注',
-    field: 'remark',
-    colId: 'remark',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
   },
   {
     headerName: '创建时间',

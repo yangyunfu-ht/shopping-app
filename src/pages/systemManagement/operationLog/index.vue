@@ -80,7 +80,7 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { onMounted, reactive, ref, shallowRef } from 'vue'
+import { reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
 import { useMessage } from '@/hooks/useMessage'
 import { useRequest } from '@/hooks/useRequest'
@@ -90,10 +90,6 @@ import { downloadFile } from '@/utils/file'
 
 defineOptions({
   name: 'operationLog',
-})
-
-onMounted(() => {
-  getTableData()
 })
 
 const { request, loading } = useRequest()
@@ -117,10 +113,11 @@ const {
 const gridApi = shallowRef<GridApi<any> | null>(null)
 const onGridReady = (params: GridReadyEvent) => {
   gridApi.value = params!.api
+  getTableData()
 }
 
-const selectRow = ref([])
-const tableData = ref<any>([])
+const selectRow = ref<any[]>([])
+const tableData = ref<any[]>([])
 const getTableData = async () => {
   try {
     const { data, code, msg } = await request<{
@@ -140,6 +137,9 @@ const getTableData = async () => {
       tableData.value = data?.list ?? []
       gridApi.value!.setRowData(tableData.value)
     } else {
+      setTotal(0)
+      tableData.value = []
+      gridApi.value!.setRowData(tableData.value)
       useMessage({
         message: msg,
         type: 'error',
@@ -188,20 +188,6 @@ const columnDefs = ref<ColDef[]>([
         return (params.node!.rowIndex as number) + 1
       }
     },
-  },
-  {
-    headerName: '',
-    field: 'rowSelection',
-    colId: 'rowSelection',
-    cellClass: 'ag-grid__rowSelectionCell',
-    headerClass: 'ag-grid__rowSelectionCell',
-    checkboxSelection: true,
-    headerCheckboxSelection: true,
-    headerCheckboxSelectionCurrentPageOnly: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    suppressNavigable: false,
-    width: 30,
-    filter: false,
   },
   {
     headerName: '操作人',

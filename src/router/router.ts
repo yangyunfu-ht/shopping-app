@@ -361,6 +361,33 @@ export const mockRoutes = [
         },
       },
       {
+        path: 'memberTag',
+        name: 'memberTag',
+        component: '/src/pages/membershipManagement/memberTag/index.vue',
+        meta: {
+          keepAlive: false,
+          title: '会员标签',
+        },
+      },
+      {
+        path: 'memberLevel',
+        name: 'memberLevel',
+        component: '/src/pages/membershipManagement/memberLevel/index.vue',
+        meta: {
+          keepAlive: false,
+          title: '会员等级',
+        },
+      },
+      {
+        path: 'memberGroup',
+        name: 'memberGroup',
+        component: '/src/pages/membershipManagement/memberGroup/index.vue',
+        meta: {
+          keepAlive: false,
+          title: '会员分组',
+        },
+      },
+      {
         path: 'memberPoints',
         name: 'memberPoints',
         component: '/src/pages/membershipManagement/memberPoints/index.vue',
@@ -369,7 +396,6 @@ export const mockRoutes = [
           title: '会员积分',
         },
       },
-
       {
         path: 'signConfig',
         name: 'signConfig',

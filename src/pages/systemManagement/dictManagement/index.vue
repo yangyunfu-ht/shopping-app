@@ -103,7 +103,7 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { onMounted, ref, shallowRef, watch } from 'vue'
+import { ref, shallowRef, watch } from 'vue'
 import { useMessage } from '@/hooks/useMessage'
 import { useMessageBox } from '@/hooks/useMessageBox'
 import { useRequest } from '@/hooks/useRequest'
@@ -115,10 +115,6 @@ import dictDataDrawer from './dictDataDrawer.vue'
 
 defineOptions({
   name: 'dictManagement',
-})
-
-onMounted(() => {
-  getLeftTableData()
 })
 
 const messageBox = useMessageBox()
@@ -138,11 +134,13 @@ const {
 const leftGridApi = shallowRef<GridApi<any> | null>(null)
 const onLeftGridReady = (params: GridReadyEvent) => {
   leftGridApi.value = params!.api
+  getLeftTableData()
 }
 
-const leftTableData = ref<any>([])
-const leftSelectRow = ref<any>([])
+const leftTableData = ref<any[]>([])
+const leftSelectRow = ref<any[]>([])
 const getLeftTableData = async () => {
+  leftGridApi.value!.deselectAll()
   try {
     const leftResponse = await request<{
       total: number
@@ -160,6 +158,9 @@ const getLeftTableData = async () => {
       leftTableData.value = leftResponse.data?.list ?? []
       leftGridApi.value!.setRowData(leftTableData.value)
     } else {
+      setTotal(0)
+      leftTableData.value = []
+      leftGridApi.value!.setRowData(leftTableData.value)
       useMessage({
         message: leftResponse.msg,
         type: 'error',
@@ -283,9 +284,10 @@ watch(
   }
 )
 
-const rightTableData = ref<any>([])
-const rightSelectRow = ref([])
+const rightTableData = ref<any[]>([])
+const rightSelectRow = ref<any[]>([])
 const getRightTableData = async () => {
+  rightGridApi.value!.deselectAll()
   try {
     const rightResponse = await request<{
       total: number
@@ -304,6 +306,9 @@ const getRightTableData = async () => {
       rightTableData.value = rightResponse.data?.list ?? []
       rightGridApi.value!.setRowData(rightTableData.value)
     } else {
+      setRightTotal(0)
+      rightTableData.value = []
+      rightGridApi.value!.setRowData(rightTableData.value)
       useMessage({
         message: rightResponse.msg,
         type: 'error',
