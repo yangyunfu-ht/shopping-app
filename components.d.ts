@@ -47,6 +47,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     GridTable: typeof import('./src/components/gridTable/index.vue')['default']
     IconPicker: typeof import('./src/components/iconPicker/iconPicker.vue')['default']
+    JsonEditor: typeof import('./src/components/jsonEditor/jsonEditor.vue')['default']
     PageLayout: typeof import('./src/components/pageLayout/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
