@@ -6,7 +6,7 @@
       :md="12"
       :sm="24"
       :xs="24"
-      style="margin-bottom: 16px"
+      style="margin-bottom: 8px"
     >
       <el-card
         :body-style="{ height: '300px' }"
@@ -29,7 +29,7 @@
       :md="12"
       :sm="24"
       :xs="24"
-      style="margin-bottom: 16px"
+      style="margin-bottom: 8px"
     >
       <el-card
         :body-style="{ height: '300px' }"
