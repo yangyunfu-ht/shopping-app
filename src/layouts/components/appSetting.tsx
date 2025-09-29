@@ -1,22 +1,18 @@
 import { ElBadge, ElButton, ElIcon, ElPopover, ElTooltip } from 'element-plus'
 import { defineComponent } from 'vue'
-import {
-  ArrowRight,
-  Bell,
-  FullScreen,
-  SwitchButton,
-  Unlock,
-} from '@element-plus/icons-vue'
+import { Bell, FullScreen, SwitchButton, Unlock } from '@element-plus/icons-vue'
 import { useTokenStore } from '@/store/tokenStore'
 import { useGlobalStore } from '@/store/globalStore'
 import router from '@/router'
 import { useFullscreen } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import AppMessage from './appMessage.vue'
+import { useMessageBox } from '@/hooks/useMessageBox'
 
 export default defineComponent({
   name: 'AppSetting',
   setup() {
+    const messageBox = useMessageBox()
     const tokenStore = useTokenStore()
     const globalStore = useGlobalStore()
     const { appMessageVisible } = storeToRefs(globalStore)
@@ -31,12 +27,22 @@ export default defineComponent({
     }
 
     const handleOnLoginOut = () => {
-      tokenStore.removeToken().finally(() => {
-        router.replace({
-          path: '/login',
+      messageBox
+        .confirm({
+          title: '温馨提示',
+          message: '是否退出本系统',
+          options: {
+            type: 'warning',
+          },
         })
-        window.location.reload()
-      })
+        .then(() => {
+          tokenStore.removeToken().finally(() => {
+            router.replace({
+              path: '/login',
+            })
+            window.location.reload()
+          })
+        })
     }
 
     return () => (
@@ -94,8 +100,9 @@ export default defineComponent({
 
         <ElPopover
           placement="bottom-start"
-          width={200}
+          width={80}
           trigger="click"
+          popperClass={'user-settings'}
           v-slots={{
             reference: () => (
               <div
@@ -118,6 +125,7 @@ export default defineComponent({
             default: () => (
               <div
                 style={{
+                  width: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '8px',
@@ -130,11 +138,6 @@ export default defineComponent({
                     </ElIcon>
                   </div>
                   <div class="app-setting-label">修改密码</div>
-                  <div class="app-setting-icon">
-                    <ElIcon size={16}>
-                      <ArrowRight />
-                    </ElIcon>
-                  </div>
                 </div>
                 <div
                   class="app-setting-row"
@@ -146,11 +149,6 @@ export default defineComponent({
                     </ElIcon>
                   </div>
                   <div class="app-setting-label">退出登录</div>
-                  <div class="app-setting-icon">
-                    <ElIcon size={16}>
-                      <ArrowRight />
-                    </ElIcon>
-                  </div>
                 </div>
               </div>
             ),

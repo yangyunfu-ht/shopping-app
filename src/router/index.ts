@@ -88,7 +88,8 @@ router.beforeEach((to, _from, next) => {
       .catch(() => {
         // 如果添加失败，则移除 token 并重定向到登录页
         menuStore.setAppMenus([])
-        localStorage.removeItem('token')
+        tokenStore.removeToken()
+        hasAddedDynamicRoutes = false
         return next('/login')
       })
   } else {

@@ -14,15 +14,16 @@ export const useMenuStore = defineStore(
     const appDrawerAside = ref(false)
     const appTagsHistory = ref<Tag[]>([])
 
-    const setAppMenus = (menus: RouteRecordRaw[]): Promise<boolean> => {
-      return new Promise((resolve, reject) => {
-        if (menus.length) {
-          appMenus.value = menus
-          resolve(true)
-        } else {
-          reject(false)
-        }
-      })
+    const setAppMenus = async (menus: RouteRecordRaw[]): Promise<boolean> => {
+      if (menus.length) {
+        appMenus.value = menus
+
+        return true
+      } else {
+        appMenus.value = []
+
+        return false
+      }
     }
 
     const setAppMenuCollapse = (expand: boolean) => {
@@ -80,7 +81,13 @@ export const useMenuStore = defineStore(
   {
     persist: {
       key: 'menu',
-      pick: ['appMenus', 'appMenuCollapse', 'appDrawerAside', 'appTagsHistory'],
+      pick: [
+        'appMenus',
+        'hasAddedDynamicRoutes',
+        'appMenuCollapse',
+        'appDrawerAside',
+        'appTagsHistory',
+      ],
       storage: sessionStorage,
     },
   }

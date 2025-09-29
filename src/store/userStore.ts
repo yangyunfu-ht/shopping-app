@@ -1,49 +1,65 @@
-import type { permissionReturn, User } from '#/user'
+import type { permissionReturn } from '#/user'
+import { ElNotification } from 'element-plus'
 import { defineStore } from 'pinia'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 
 export const useUserStore = defineStore(
   'user',
   () => {
+    const avatar = ref('')
+    const deptId = ref<null | number>(null)
+    const email = ref('')
+    const userId = ref<null | number>(null)
+    const nickname = ref('')
+    const username = ref('')
     const permissions = ref<string[]>([])
-    const user = reactive<User>({
-      avatar: '',
-      deptId: null,
-      email: '',
-      id: null,
-      nickname: '',
-      username: '',
-    })
+    const roles = ref<string[]>([])
 
-    const setPermissions = (params: permissionReturn): Promise<boolean> => {
-      return new Promise((resolve, reject) => {
-        if (params.permissions.length && params.user) {
-          permissions.value = params.permissions
-          user.avatar = params.user.avatar
-          user.deptId = params.user.deptId
-          user.email = params.user.email
-          user.id = params.user.id
-          user.nickname = params.user.nickname
-          user.username = params.user.username
-          resolve(true)
-        } else {
-          reject(false)
-        }
-      })
+    const setPermissions = async (
+      params: permissionReturn
+    ): Promise<boolean> => {
+      if (params.permissions.length && params.user?.id) {
+        avatar.value = params.user.avatar
+        deptId.value = params.user.deptId
+        email.value = params.user.email
+        userId.value = params.user.id
+        nickname.value = params.user.nickname
+        username.value = params.user.username
+        permissions.value = params.permissions
+        roles.value = params.roles
+
+        ElNotification({
+          title: '登陆成功',
+          message: `欢迎回来${nickname.value}`,
+          type: 'success',
+          offset: 40,
+        })
+
+        return true
+      } else {
+        return false
+      }
     }
 
     const resetStore = () => {
       permissions.value = []
-      user.avatar = ''
-      user.deptId = null
-      user.email = ''
-      user.id = null
-      user.nickname = ''
-      user.username = ''
+      avatar.value = ''
+      deptId.value = null
+      email.value = ''
+      userId.value = null
+      nickname.value = ''
+      username.value = ''
     }
 
     return {
+      avatar,
+      deptId,
+      email,
+      userId,
+      nickname,
+      username,
       permissions,
+      roles,
       setPermissions,
       resetStore,
     }
@@ -51,7 +67,16 @@ export const useUserStore = defineStore(
   {
     persist: {
       key: 'user',
-      pick: ['permissions', 'user'],
+      pick: [
+        'avatar',
+        'deptId',
+        'email',
+        'userId',
+        'nickname',
+        'username',
+        'permissions',
+        'roles',
+      ],
       storage: sessionStorage,
     },
   }

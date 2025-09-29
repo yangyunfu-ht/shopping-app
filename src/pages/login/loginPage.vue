@@ -322,7 +322,7 @@
 
 <script lang="ts" setup>
 import { type FormInstance, type FormRules } from 'element-plus'
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import { useTokenStore } from '@/store/tokenStore'
 import { useMenuStore } from '@/store/menuStore'
 import { useUserStore } from '@/store/userStore'
@@ -351,8 +351,6 @@ const loginForm = reactive({
   username: 'admin',
   password: 'admin123',
   rememberMe: true,
-  captchaVerification:
-    'BozEoNGTc1W5veC1iEf4+bu8kjPqj/j4bDxtrRwSZEwObGIOBYNFkUeZ1W55jQBHso7Qty/ZeHOLV4UQ2sM7lw==',
 })
 
 const rules = reactive<FormRules<typeof loginForm>>({
@@ -378,76 +376,82 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid) => {
     if (valid) {
-      tokenStore.setToken({
-        accessToken: 'Bearer 6594a3be8d1d490bae96b5208d344d87',
-        expiresTime: 1,
-        refreshToken: '1',
-        userId: 1,
-      })
-      router.push({ path: '/home/homePage' })
-      // try {
-      //   const { data, code, msg } = await request<LoginReturn>({
-      //     url: Api.login,
-      //     method: 'post',
-      //     data: {
-      //       username: loginForm.username,
-      //       password: loginForm.password,
-      //       rememberMe: loginForm.rememberMe,
-      //       captchaVerification: loginForm.captchaVerification,
-      //     },
-      //   })
+      try {
+        const { data, code, msg } = await request<LoginReturn>({
+          url: Api.login,
+          method: 'post',
+          data: {
+            username: loginForm.username,
+            password: loginForm.password,
+          },
+        })
 
-      //   if (code === 0) {
-      //     const loginReturn = await tokenStore.setToken(data)
-      //     if (loginReturn) {
-      //       try {
-      //         const permission = await request<permissionReturn>({
-      //           url: Api.permission,
-      //           method: 'get',
-      //         })
-      //         if (permission.code === 0) {
-      //           const hasPermission = await userStore.setPermissions(
-      //             permission.data
-      //           )
-      //           const hasMenu = await menuStore.setAppMenus(
-      //             permission.data.menus
-      //           )
-      //           if (hasPermission && hasMenu) {
-      //             router.push({ path: '/home/homePage' })
-      //           }
-      //         } else {
-      //           useMessage({
-      //             message: permission.msg,
-      //             type: 'error',
-      //           })
-      //         }
-      //       } catch (err: any) {
-      //         useMessage({
-      //           message: err.message,
-      //           type: 'error',
-      //         })
-      //       }
-      //     } else {
-      //       useMessage({
-      //         message: '登录接口信息返回不完整',
-      //         type: 'error',
-      //       })
-      //     }
-      //   } else {
-      //     useMessage({
-      //       message: msg,
-      //       type: 'error',
-      //     })
-      //   }
-      // } catch (err: any) {
-      //   useMessage({
-      //     message: err.message,
-      //     type: 'error',
-      //   })
-      // }
+        if (code === 0) {
+          const loginReturn = await tokenStore.setToken(data)
+          if (loginReturn) {
+            try {
+              const permission = await request<permissionReturn>({
+                url: Api.permission,
+                method: 'get',
+              })
+              if (permission.code === 0) {
+                const hasPermission = await userStore.setPermissions(
+                  permission.data
+                )
+                const hasMenu = await menuStore.setAppMenus(
+                  permission.data.menus
+                )
+                if (hasPermission && hasMenu) {
+                  router.push({ path: '/home/homePage' })
+                }
+              } else {
+                useMessage({
+                  message: permission.msg,
+                  type: 'error',
+                })
+              }
+            } catch (err: any) {
+              useMessage({
+                message: err.message,
+                type: 'error',
+              })
+            }
+          } else {
+            useMessage({
+              message: '登录接口信息返回不完整',
+              type: 'error',
+            })
+          }
+        } else {
+          useMessage({
+            message: msg,
+            type: 'error',
+          })
+        }
+      } catch (err: any) {
+        useMessage({
+          message: err.message,
+          type: 'error',
+        })
+      }
     }
   })
 }
+
+const handleEnterKey = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    event.preventDefault()
+    handleLogin(loginRef.value)
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('keyup', handleEnterKey)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keyup', handleEnterKey)
+})
 </script>
 
 <style lang="scss" scoped>

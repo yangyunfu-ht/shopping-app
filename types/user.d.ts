@@ -9,7 +9,7 @@ export interface User {
     id: number | null
     username: string
     nickname: string
-    deptId: string | null
+    deptId: number | null
     avatar: string
     email: string
 }
