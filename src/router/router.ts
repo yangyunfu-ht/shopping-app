@@ -1,4 +1,18 @@
-export const mockRoutes = [
+type Meat = {
+  keepAlive: boolean
+  title: string
+  icon: string
+}
+
+export type RealMenuItem = {
+  path: string
+  name: string
+  component: string
+  meta?: Partial<Meat>
+  children?: Array<RealMenuItem>
+}
+
+export const mockRoutes: Array<RealMenuItem> = [
   {
     path: '/productManagement',
     name: 'productManagement',
@@ -252,8 +266,8 @@ export const mockRoutes = [
     },
     children: [
       {
-        path: 'dataPage',
-        name: 'dataPage',
+        path: 'couponStatistics',
+        name: 'couponStatistics',
         component: '/src/pages/statisticsCenter/couponStatistics/index.vue',
         meta: {
           keepAlive: false,

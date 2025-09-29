@@ -26,7 +26,7 @@
         :class="['tag-item', { active: currentPath === tab.fullPath }]"
         @click="goToTab(tab.fullPath)"
       >
-        <span>{{ tab.meta.title }}</span>
+        <span>{{ tab.meta.name }}</span>
         <span
           v-if="appTagsHistory.length > 1"
           class="close-btn"

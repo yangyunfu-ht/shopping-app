@@ -321,7 +321,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type FormInstance, type FormRules } from 'element-plus'
+import { type FormInstance, type FormRules, ElNotification } from 'element-plus'
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import { useTokenStore } from '@/store/tokenStore'
 import { useMenuStore } from '@/store/menuStore'
@@ -333,6 +333,7 @@ import { useRequest } from '@/hooks/useRequest'
 import { Api } from './api'
 import { useRouter } from 'vue-router'
 import type { LoginReturn, permissionReturn } from '#/user'
+import { getTimeBasedGreeting } from '@/utils/date'
 
 defineOptions({
   name: 'loginPage',
@@ -402,7 +403,14 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
                   permission.data.menus
                 )
                 if (hasPermission && hasMenu) {
-                  router.push({ path: '/home/homePage' })
+                  router.push({ path: '/home/homePage' }).then(() => {
+                    ElNotification({
+                      title: '登陆成功',
+                      message: `${getTimeBasedGreeting()} ${permission.data.user.nickname}`,
+                      type: 'success',
+                      offset: 40,
+                    })
+                  })
                 }
               } else {
                 useMessage({

@@ -17,3 +17,7 @@
   border-width: 2px;
   border-color: var(--el-text-color-secondary);
 }
+
+.el-table .cell {
+  word-wrap: normal;
+}

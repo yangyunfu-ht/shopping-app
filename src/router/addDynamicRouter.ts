@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import type { DynamicRoute } from '#/router'
+import type { Menu } from '#/router'
 import router from '@/router'
 
 const appLayoutsMap = import.meta.glob('@/layouts/**/**.{vue,tsx}')
@@ -11,7 +11,7 @@ const loadComponent = (componentPath: string) => {
 }
 
 const transformRoute = (
-  dynamicRoutes: DynamicRoute[],
+  dynamicRoutes: Menu[],
   parentRoutePath = ''
 ): RouteRecordRaw[] => {
   return dynamicRoutes.map((route) => {
@@ -21,18 +21,23 @@ const transformRoute = (
 
     return {
       path: fullPath,
-      name: route.name,
+      name: route.componentName,
       component: loadComponent(route.component),
       children:
         route.children && route.children.length > 0
           ? transformRoute(route.children, fullPath)
           : [],
-      meta: route.meta,
+      meta: {
+        icon: route.icon,
+        visible: route.visible,
+        keepAlive: route.keepAlive,
+        name: route.name,
+      },
     } as RouteRecordRaw
   })
 }
 
-export const addDynamicRoutes = (dynamicRoutes: DynamicRoute[]) => {
+export const addDynamicRoutes = (dynamicRoutes: Menu[]) => {
   return new Promise<RouteRecordRaw[]>((resolve, reject) => {
     if (!dynamicRoutes || dynamicRoutes.length === 0) {
       reject('No dynamic routes to add')
@@ -47,14 +52,14 @@ export const addDynamicRoutes = (dynamicRoutes: DynamicRoute[]) => {
     router.addRoute({
       path: '/:pathMatch(.*)*',
       name: 'notFoundWrapper',
-      meta: { title: '异常页面' },
+      meta: { name: '异常页面' },
       component: () => import('@/layouts/appLayout.vue'),
       children: [
         {
           path: '',
           name: 'notFound',
           component: () => import('@/pages/notFound/notFoundPage.vue'),
-          meta: { title: '404' },
+          meta: { name: '404' },
         },
       ],
     })

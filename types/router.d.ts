@@ -1,18 +1,24 @@
 import type { RouteRecordNameGeneric } from 'vue-router'
 
-export interface Meta {
+export interface Menu {
+    component: string
+    componentName: string
+    icon: string
+    id: number
     keepAlive: boolean
-    title: string
-    icon?: string
-   [key: string]: any
+    name: string
+    parentId: number
+    path: string
+    visible: boolean
+    children: Menu[] | null
 }
 
-export interface DynamicRoute {
-    path: string
+export interface Meta {
+    icon?: string
+    keepAlive: boolean
+    visible: boolean
     name: string
-    component: string
-    children?: DynamicRoute[]
-    meta?: Meta
+   [key: string]: any
 }
 
 export interface Tag {

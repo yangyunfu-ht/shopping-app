@@ -1,7 +1,6 @@
-import type { Tag } from '#/router'
+import type { Menu, Tag } from '#/router'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { RouteRecordRaw } from 'vue-router'
 import { useRouter } from 'vue-router'
 
 export const useMenuStore = defineStore(
@@ -9,12 +8,12 @@ export const useMenuStore = defineStore(
   () => {
     const router = useRouter()
 
-    const appMenus = ref<RouteRecordRaw[]>([])
+    const appMenus = ref<Menu[]>([])
     const appMenuCollapse = ref(false)
     const appDrawerAside = ref(false)
     const appTagsHistory = ref<Tag[]>([])
 
-    const setAppMenus = async (menus: RouteRecordRaw[]): Promise<boolean> => {
+    const setAppMenus = async (menus: Menu[]): Promise<boolean> => {
       if (menus.length) {
         appMenus.value = menus
 

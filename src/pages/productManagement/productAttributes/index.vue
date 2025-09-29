@@ -178,6 +178,7 @@ const {
 const gridApi = shallowRef<GridApi<any> | null>(null)
 const onGridReady = (params: GridReadyEvent) => {
   gridApi.value = params!.api
+  getTableData()
 }
 
 const selectRow = ref<any[]>([])

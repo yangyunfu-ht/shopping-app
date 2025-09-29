@@ -26,7 +26,7 @@ export const refreshAccessToken = async (): Promise<string> => {
 
     tokenStore.setToken(response.data.data)
 
-    return response.data.data.refreshToken
+    return response.data.data.accessToken
   } catch (error) {
     console.error('刷新令牌失败:', error)
     tokenStore.removeToken()

@@ -1,3 +1,5 @@
+import type { Menu } from "./router"
+
 export interface LoginReturn {
   accessToken: string
   expiresTime: number
@@ -15,7 +17,7 @@ export interface User {
 }
 
 export interface permissionReturn {
-  menus: Array<any>
+  menus: Array<Menu>
   permissions: Array<string>
   roles: Array<string>
   user: User

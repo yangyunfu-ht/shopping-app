@@ -1,5 +1,5 @@
 import type { permissionReturn } from '#/user'
-import { ElNotification } from 'element-plus'
+
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -27,13 +27,6 @@ export const useUserStore = defineStore(
         username.value = params.user.username
         permissions.value = params.permissions
         roles.value = params.roles
-
-        ElNotification({
-          title: '登陆成功',
-          message: `欢迎回来${nickname.value}`,
-          type: 'success',
-          offset: 40,
-        })
 
         return true
       } else {

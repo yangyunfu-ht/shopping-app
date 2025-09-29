@@ -1,13 +1,13 @@
+import type { Menu } from '#/router'
 import { ElMenu, ElMenuItem, ElSubMenu } from 'element-plus'
 import { defineComponent, type PropType } from 'vue'
-import type { RouteRecordRaw } from 'vue-router'
 import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'RenderAppMenu',
   props: {
     menus: {
-      type: Array as PropType<RouteRecordRaw[]>,
+      type: Array as PropType<Menu[]>,
       required: true,
       default: () => [],
     },
@@ -20,9 +20,9 @@ export default defineComponent({
   setup(props) {
     const route = useRoute()
 
-    const renderMenu = (menus: RouteRecordRaw[]) => {
+    const renderMenu = (menus: Menu[], parentPath = '') => {
       return menus.map((menu) => {
-        if (menu.meta?.hidden) {
+        if (!menu.visible) {
           return null
         }
 
@@ -34,32 +34,32 @@ export default defineComponent({
               v-slots={{
                 title: () => (
                   <>
-                    {menu.meta?.icon ? (
+                    {menu.icon ? (
                       <svgIcon
-                        icon={menu.meta?.icon}
+                        icon={menu.icon}
                         size={18}
                         color="#BFCBD9"
                       />
                     ) : null}
 
-                    <span>{menu.meta?.title}</span>
+                    <span>{menu.name}</span>
                   </>
                 ),
               }}
             >
-              {renderMenu(menu.children)}
+              {renderMenu(menu.children, menu.path)}
             </ElSubMenu>
           )
         }
 
         return (
           <ElMenuItem
-            index={menu.path}
-            key={menu.path}
+            index={parentPath + '/' + menu.path}
+            key={parentPath + '/' + menu.path}
             v-slots={{
               title: () => (
                 <>
-                  <span class={'ellipsis-text'}>{menu.meta?.title}</span>
+                  <span class={'ellipsis-text'}>{menu.name}</span>
                 </>
               ),
             }}

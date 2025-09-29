@@ -8,6 +8,9 @@ import { useFullscreen } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import AppMessage from './appMessage.vue'
 import { useMessageBox } from '@/hooks/useMessageBox'
+import { useRequest } from '@/hooks/useRequest'
+import { Api } from '@/pages/login/api'
+import { useMessage } from '@/hooks/useMessage'
 
 export default defineComponent({
   name: 'AppSetting',
@@ -17,6 +20,7 @@ export default defineComponent({
     const globalStore = useGlobalStore()
     const { appMessageVisible } = storeToRefs(globalStore)
     const { toggle, isSupported, isFullscreen } = useFullscreen(document.body)
+    const { request } = useRequest()
 
     const handleFullScreen = () => {
       toggle()
@@ -35,14 +39,38 @@ export default defineComponent({
             type: 'warning',
           },
         })
-        .then(() => {
-          tokenStore.removeToken().finally(() => {
-            router.replace({
-              path: '/login',
+        .then(async () => {
+          try {
+            const { code, msg } = await request({
+              url: Api.loginOut,
+              method: 'post',
             })
+            if (code === 0) {
+              LoginOutSystem()
+            } else {
+              useMessage({
+                type: 'error',
+                message: msg,
+              })
+              LoginOutSystem()
+            }
+          } catch (err) {
+            console.log(err)
+            LoginOutSystem()
+          }
+        })
+    }
+
+    const LoginOutSystem = () => {
+      tokenStore.removeToken().finally(() => {
+        router
+          .replace({
+            path: '/login',
+          })
+          .then(() => {
             window.location.reload()
           })
-        })
+      })
     }
 
     return () => (

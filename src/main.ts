@@ -16,9 +16,25 @@ import store from './store'
 import directives from './directives'
 import components from './components'
 
-const app = createApp(App)
-app.use(router)
-app.use(store)
-app.use(directives)
-app.use(components)
-app.mount('#app')
+const startApp = async () => {
+  const app = createApp(App)
+  app.use(router)
+  app.use(store)
+  app.use(directives)
+  app.use(components)
+  app.mount('#app')
+}
+
+startApp()
+// .then(() => {
+//   window.addEventListener('load', async () => {
+//     try {
+//       const module = await import('@/utils/updateUser.ts')
+//       const { updateUser } = module
+
+//       await updateUser()
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   })
+// })

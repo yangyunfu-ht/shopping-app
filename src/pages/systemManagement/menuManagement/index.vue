@@ -59,11 +59,17 @@
             <template #typeSlot="{ row }">
               {{ row.type === 1 ? '目录' : row.type === 2 ? '菜单' : '按钮' }}
             </template>
+            <template #iconSlot="{ row }">
+              <svg-icon
+                v-if="row.icon"
+                :icon="row.icon"
+              />
+            </template>
             <template #keepAliveSlot="{ row }">
-              {{ row.keepAlive ? '是' : '否' }}
+              {{ row.keepAlive ? '缓存' : '不缓存' }}
             </template>
             <template #visibleSlot="{ row }">
-              {{ row.visible ? '是' : '否' }}
+              {{ row.visible ? '显示' : '隐藏' }}
             </template>
           </base-table>
         </div>
@@ -243,16 +249,11 @@ const treeTableColumns: TableColumn[] = [
     slot: 'typeSlot',
   },
   {
-    colId: 'sort',
-    field: 'sort',
-    headerName: '排序值',
-    minWidth: 100,
-  },
-  {
     colId: 'icon',
     field: 'icon',
     headerName: '菜单图标',
     minWidth: 100,
+    slot: 'iconSlot',
   },
   {
     colId: 'path',
@@ -273,6 +274,12 @@ const treeTableColumns: TableColumn[] = [
     minWidth: 100,
   },
   {
+    colId: 'permission',
+    field: 'permission',
+    headerName: '权限标识',
+    minWidth: 100,
+  },
+  {
     colId: 'keepAlive',
     field: 'keepAlive',
     headerName: '菜单缓存',
@@ -285,6 +292,12 @@ const treeTableColumns: TableColumn[] = [
     headerName: '菜单显示',
     minWidth: 100,
     slot: 'visibleSlot',
+  },
+  {
+    colId: 'sort',
+    field: 'sort',
+    headerName: '排序值',
+    minWidth: 100,
   },
 ]
 </script>

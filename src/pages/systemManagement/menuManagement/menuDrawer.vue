@@ -2,7 +2,7 @@
   <app-drawer
     v-model="visible"
     :title="title"
-    @close="handleClose(ruleFormRef)"
+    @close="handleClose"
     @confirm="handleConfirm(ruleFormRef)"
   >
     <div
@@ -79,12 +79,12 @@
           </el-form-item>
 
           <el-form-item
-            label="菜单路径"
+            label="路由地址"
             prop="path"
           >
             <el-input
               v-model.trim="ruleForm.path"
-              placeholder="请输入菜单路径"
+              placeholder="请输入路由地址"
             />
           </el-form-item>
 
@@ -94,6 +94,16 @@
           >
             <el-input
               v-model.trim="ruleForm.component"
+              placeholder="请输入组件路径"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="组件名称"
+            prop="componentName"
+          >
+            <el-input
+              v-model.trim="ruleForm.componentName"
               placeholder="请输入组件路径"
             />
           </el-form-item>
@@ -111,25 +121,6 @@
           </el-form-item>
 
           <el-form-item
-            label="菜单状态"
-            prop="status"
-          >
-            <el-select
-              v-model="ruleForm.status"
-              placeholder="请选择菜单状态"
-            >
-              <el-option
-                :value="0"
-                label="开启"
-              />
-              <el-option
-                :value="1"
-                label="关闭"
-              />
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
             label="菜单显示"
             prop="visible"
           >
@@ -138,12 +129,31 @@
               placeholder="请选择"
             >
               <el-option
-                :value="0"
+                :value="true"
                 label="显示"
               />
               <el-option
-                :value="1"
+                :value="false"
                 label="隐藏"
+              />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            label="菜单缓存"
+            prop="keepAlive"
+          >
+            <el-select
+              v-model="ruleForm.keepAlive"
+              placeholder="请选择菜单缓存"
+            >
+              <el-option
+                :value="true"
+                label="缓存"
+              />
+              <el-option
+                :value="false"
+                label="不缓存"
               />
             </el-select>
           </el-form-item>
@@ -183,12 +193,12 @@
           </el-form-item>
 
           <el-form-item
-            label="菜单路径"
+            label="路由地址"
             prop="path"
           >
             <el-input
               v-model.trim="ruleForm.path"
-              placeholder="请输入菜单路径"
+              placeholder="请输入路由地址"
             />
           </el-form-item>
 
@@ -198,6 +208,16 @@
           >
             <el-input
               v-model.trim="ruleForm.component"
+              placeholder="请输入组件路径"
+            />
+          </el-form-item>
+
+          <el-form-item
+            label="组件名称"
+            prop="componentName"
+          >
+            <el-input
+              v-model.trim="ruleForm.componentName"
               placeholder="请输入组件路径"
             />
           </el-form-item>
@@ -215,25 +235,6 @@
           </el-form-item>
 
           <el-form-item
-            label="菜单状态"
-            prop="status"
-          >
-            <el-select
-              v-model="ruleForm.status"
-              placeholder="请选择菜单状态"
-            >
-              <el-option
-                :value="0"
-                label="开启"
-              />
-              <el-option
-                :value="1"
-                label="关闭"
-              />
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
             label="菜单显示"
             prop="visible"
           >
@@ -242,12 +243,31 @@
               placeholder="请选择"
             >
               <el-option
-                :value="0"
+                :value="true"
                 label="显示"
               />
               <el-option
-                :value="1"
+                :value="false"
                 label="隐藏"
+              />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            label="菜单缓存"
+            prop="keepAlive"
+          >
+            <el-select
+              v-model="ruleForm.keepAlive"
+              placeholder="请选择菜单缓存"
+            >
+              <el-option
+                :value="true"
+                label="缓存"
+              />
+              <el-option
+                :value="false"
+                label="不缓存"
               />
             </el-select>
           </el-form-item>
@@ -274,25 +294,6 @@
               :min="0"
               style="width: 100%"
             />
-          </el-form-item>
-
-          <el-form-item
-            label="菜单状态"
-            prop="status"
-          >
-            <el-select
-              v-model="ruleForm.status"
-              placeholder="请选择菜单状态"
-            >
-              <el-option
-                :value="0"
-                label="开启"
-              />
-              <el-option
-                :value="1"
-                label="关闭"
-              />
-            </el-select>
           </el-form-item>
         </template>
       </el-form>
@@ -328,17 +329,20 @@ const emits = defineEmits<{
 
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
-  type: 2,
-  name: '',
-  parentId: null,
-  icon: '',
-  path: '',
-  component: '',
-  sort: 0,
-  status: 0,
-  visible: 0,
-  permission: '',
-  id: '',
+  type: 2, // 菜单类型
+  name: '', //菜单名称
+  parentId: null, //父菜单ID
+  icon: '', // 菜单图标
+  path: '', //路由地址
+  component: '', // 组件路径
+  componentName: '', // 组件名
+  sort: 0, // 显示顺序
+  status: 0, // 菜单状态
+  visible: true, // 是否可见
+  keepAlive: true, // 是否缓存
+  permission: '', // 权限标识
+  alwaysShow: true,
+  id: null, //菜单ID
 })
 
 const rules = reactive<FormRules<typeof ruleForm>>({
@@ -351,10 +355,21 @@ const rules = reactive<FormRules<typeof ruleForm>>({
   ],
 })
 
-const handleClose = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
-  ruleForm.id = ''
+const handleClose = () => {
+  ruleForm.type = 2
+  ruleForm.name = ''
+  ruleForm.parentId = null
+  ruleForm.icon = ''
+  ruleForm.path = ''
+  ruleForm.component = ''
+  ruleForm.componentName = ''
+  ruleForm.sort = 0
+  ruleForm.status = 0
+  ruleForm.visible = true
+  ruleForm.keepAlive = true
+  ruleForm.permission = ''
+  ruleForm.alwaysShow = true
+  ruleForm.id = null
 }
 
 const handleConfirm = async (formEl: FormInstance | undefined) => {
@@ -365,7 +380,10 @@ const handleConfirm = async (formEl: FormInstance | undefined) => {
         const { code, msg } = await request({
           url: ruleForm.id ? Api.change : Api.create,
           method: ruleForm.id ? 'put' : 'post',
-          data: ruleForm,
+          data: {
+            ...ruleForm,
+            parentId: ruleForm.parentId === null ? 0 : ruleForm.parentId,
+          },
         })
         if (code === 0) {
           visible.value = false
@@ -411,13 +429,15 @@ const changeOpen = async (id: any) => {
     if (code === 0) {
       ruleForm.type = data.type
       ruleForm.name = data.name
-      ruleForm.parentId = data.parentId
+      ruleForm.parentId = data.parentId === 0 ? null : data.parentId
       ruleForm.icon = data.icon
-      ruleForm.component = data.component
       ruleForm.path = data.path
+      ruleForm.component = data.component
+      ruleForm.componentName = data.componentName
       ruleForm.sort = data.sort
       ruleForm.status = data.status
       ruleForm.visible = data.visible
+      ruleForm.keepAlive = data.keepAlive
       ruleForm.permission = data.permission
     } else {
       useMessage({
