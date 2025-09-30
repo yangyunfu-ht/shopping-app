@@ -14,6 +14,26 @@ export type RealMenuItem = {
 
 export const mockRoutes: Array<RealMenuItem> = [
   {
+    path: '/home',
+    name: 'home',
+    component: '/src/layouts/appLayout.vue',
+    meta: {
+      keepAlive: false,
+      title: '首页',
+    },
+    children: [
+      {
+        path: 'homePage',
+        name: 'homePage',
+        component: '/src/pages/home/homePage.vue',
+        meta: {
+          keepAlive: false,
+          title: '首页',
+        },
+      },
+    ],
+  },
+  {
     path: '/productManagement',
     name: 'productManagement',
     component: '/src/layouts/appLayout.vue',
@@ -222,37 +242,6 @@ export const mockRoutes: Array<RealMenuItem> = [
           },
         ],
       },
-      {
-        path: 'mallDecoration',
-        name: 'mallDecoration',
-        component: '/src/layouts/subLayout.vue',
-        meta: {
-          keepAlive: false,
-          title: '商城装修',
-        },
-        children: [
-          {
-            path: 'decorationTemplate',
-            name: 'decorationTemplate',
-            component:
-              '/src/pages/marketingManagement/mallDecoration/decorationTemplate/index.vue',
-            meta: {
-              keepAlive: true,
-              title: '装修模板',
-            },
-          },
-          {
-            path: 'decorationPage',
-            name: 'decorationPage',
-            component:
-              '/src/pages/marketingManagement/mallDecoration/decorationPage/index.vue',
-            meta: {
-              keepAlive: true,
-              title: '装修页面',
-            },
-          },
-        ],
-      },
     ],
   },
   {
@@ -426,28 +415,6 @@ export const mockRoutes: Array<RealMenuItem> = [
         meta: {
           keepAlive: false,
           title: '签到记录',
-        },
-      },
-    ],
-  },
-  {
-    path: '/customerServiceCenter',
-    name: 'customerServiceCenter',
-    component: '/src/layouts/appLayout.vue',
-    meta: {
-      keepAlive: false,
-      title: '客服中心',
-      icon: 'customerService',
-    },
-    children: [
-      {
-        path: 'mallCustomerService',
-        name: 'mallCustomerService',
-        component:
-          '/src/pages/customerServiceCenter/mallCustomerService/index.vue',
-        meta: {
-          keepAlive: false,
-          title: '商场客服',
         },
       },
     ],

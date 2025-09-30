@@ -8,7 +8,7 @@ export default defineComponent({
     const route = useRoute()
 
     const breadcrumbs = computed(() =>
-      route.matched.filter((el) => el.meta.title)
+      route.matched.filter((el) => el.meta.name)
     )
 
     return () => (
@@ -18,7 +18,7 @@ export default defineComponent({
           style={{ fontSize: '14px' }}
         >
           {breadcrumbs.value.map((breadcrumb) => (
-            <ElBreadcrumbItem>{breadcrumb.meta?.title}</ElBreadcrumbItem>
+            <ElBreadcrumbItem>{breadcrumb.meta?.name}</ElBreadcrumbItem>
           ))}
         </ElBreadcrumb>
       </div>

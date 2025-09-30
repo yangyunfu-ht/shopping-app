@@ -276,6 +276,27 @@
         <!-- 按钮 -->
         <template v-if="ruleForm.type === 3">
           <el-form-item
+            label="上级菜单"
+            prop="parentId"
+          >
+            <el-tree-select
+              v-model="ruleForm.parentId"
+              :data="menuData"
+              check-strictly
+              node-key="id"
+              :render-after-expand="false"
+              :props="{
+                label: 'name',
+                children: 'children',
+              }"
+              filterable
+              clearable
+              style="width: 100%"
+              placeholder="请选择上级菜单"
+            />
+          </el-form-item>
+
+          <el-form-item
             label="权限标识"
             prop="permission"
           >

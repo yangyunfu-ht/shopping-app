@@ -42,12 +42,14 @@ export default defineComponent({
         .getRoutes()
         .map((el) => {
           return {
-            label: el.meta.title,
-            value: el.meta.title,
+            label: el.meta.name,
+            value: el.meta.name,
             path: el.path,
             name: el.name,
+            children: el.children,
           }
         })
+        .filter((menu) => !menu.children.length)
         .filter((ele) => ele.label && ele.value)
     }
 
@@ -58,6 +60,7 @@ export default defineComponent({
       if (!queryString) {
         return cb([])
       } else {
+        console.log(generateSearchValue())
         cb(
           generateSearchValue().filter((item) =>
             (item.label as string).includes(queryString)

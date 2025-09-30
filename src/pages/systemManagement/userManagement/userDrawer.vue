@@ -28,7 +28,6 @@
         <el-form-item
           label="用户密码"
           prop="password"
-          v-if="!ruleForm.id"
         >
           <el-input
             v-model.trim="ruleForm.password"

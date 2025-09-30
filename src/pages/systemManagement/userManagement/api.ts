@@ -14,4 +14,6 @@ export const Api = {
   roleList: '/admin-api/system/role/simple-list',
   queryUserRoles: '/admin-api/system/permission/list-user-roles',
   assignRoles: '/admin-api/system/permission/assign-user-role',
+  shopMallList: '/admin-api/trade/delivery/pick-up-store/simple-list',
+  dataAssignment: '/admin-api/system/permission/assign-user-market-scope',
 } as const

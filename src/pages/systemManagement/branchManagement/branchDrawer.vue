@@ -16,6 +16,16 @@
         label-width="100px"
       >
         <el-form-item
+          label="部门名称"
+          prop="name"
+        >
+          <el-input
+            v-model.trim="ruleForm.name"
+            placeholder="请输入部门名称"
+          />
+        </el-form-item>
+
+        <el-form-item
           label="上级部门"
           prop="parentId"
         >
@@ -35,15 +45,7 @@
             placeholder="请选择上级部门"
           />
         </el-form-item>
-        <el-form-item
-          label="部门名称"
-          prop="name"
-        >
-          <el-input
-            v-model.trim="ruleForm.name"
-            placeholder="请输入部门名称"
-          />
-        </el-form-item>
+
         <el-form-item
           label="联系电话"
           prop="phone"

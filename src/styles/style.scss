@@ -108,3 +108,7 @@ body,
 .el-message-box__status {
   font-size: 24px !important;
 }
+
+.el-upload--picture-card {
+  --el-upload-picture-card-size: 111px !important;
+}

@@ -68,6 +68,11 @@
           @click="handleDelete"
           >删除</el-button
         >
+        <el-button
+          type="success"
+          @click="handleRoleAuthorization"
+          >菜单分配</el-button
+        >
       </template>
 
       <template #table>
@@ -91,6 +96,11 @@
       ref="roleRef"
       @submit="getTableData"
     />
+
+    <menu-assignment
+      ref="menuRef"
+      :tree-data="menuTreeData"
+    />
   </div>
 </template>
 
@@ -102,18 +112,47 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { reactive, ref, shallowRef } from 'vue'
+import { onMounted, reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall } from '@/utils/layout'
 import roleDrawer from './roleDrawer.vue'
+import menuAssignment from './menuAssignment.vue'
 import { useMessage } from '@/hooks/useMessage'
 import { useMessageBox } from '@/hooks/useMessageBox'
 import { useRequest } from '@/hooks/useRequest'
 import { Api } from './api'
 import { dayjs } from 'element-plus'
+import { buildTree, type TreeNode } from '@/utils/array'
 
 defineOptions({
   name: 'roleManagement',
 })
+
+onMounted(() => {
+  getMenuTreeData()
+})
+
+const menuTreeData = ref<TreeNode[]>([])
+const getMenuTreeData = async () => {
+  try {
+    const { data, code, msg } = await request({
+      url: Api.menuTree,
+      method: 'get',
+    })
+    if (code === 0) {
+      menuTreeData.value = buildTree(data, 'id', 'parentId')
+    } else {
+      useMessage({
+        message: msg,
+        type: 'error',
+      })
+    }
+  } catch (err: any) {
+    useMessage({
+      message: err.message,
+      type: 'error',
+    })
+  }
+}
 
 const messageBox = useMessageBox()
 const { request, loading } = useRequest()
@@ -255,6 +294,23 @@ const handleDelete = () => {
         })
       }
     })
+}
+
+const menuRef = ref<InstanceType<typeof menuAssignment>>()
+const handleRoleAuthorization = () => {
+  if (selectRow.value.length !== 1) {
+    messageBox.confirm({
+      title: '提示',
+      message: '请选择一条角色数据！',
+      options: {
+        type: 'warning',
+        showCancelButton: false,
+      },
+    })
+    return
+  }
+  const [{ id }] = selectRow.value
+  menuRef.value!.openDrawer(id)
 }
 
 const columnDefs = ref<ColDef[]>([

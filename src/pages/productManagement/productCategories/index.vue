@@ -76,7 +76,7 @@
           >
             <template #picUrlSlot="{ row }">
               <el-image
-                style="width: 40px; height: 40px; cursor: pointer"
+                style="width: 30px; height: 30px; cursor: pointer"
                 :src="row.picUrl"
                 fit="fill"
                 @click="handleOnPreview(row.picUrl)"

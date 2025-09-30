@@ -42,6 +42,7 @@ service.interceptors.response.use(
     return response
   },
   async (error: any) => {
+    console.log(error)
     const originalRequest = error.config
 
     if (axios.isCancel(error) || !error.response) {

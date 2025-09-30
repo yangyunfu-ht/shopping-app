@@ -25,16 +25,15 @@ const startApp = async () => {
   app.mount('#app')
 }
 
-startApp()
-// .then(() => {
-//   window.addEventListener('load', async () => {
-//     try {
-//       const module = await import('@/utils/updateUser.ts')
-//       const { updateUser } = module
+startApp().then(() => {
+  window.addEventListener('load', async () => {
+    try {
+      const module = await import('@/utils/updateUser.ts')
+      const { updateUser } = module
 
-//       await updateUser()
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   })
-// })
+      await updateUser()
+    } catch (error) {
+      console.log(error)
+    }
+  })
+})

@@ -116,11 +116,6 @@
           @click="handleDelete"
           >删除</el-button
         >
-        <el-button
-          type="danger"
-          @click="handleOpen"
-          >打开modal</el-button
-        >
       </template>
 
       <template #table>
@@ -141,8 +136,6 @@
     </page-layout>
 
     <product-drawer ref="productRef" />
-
-    <product-modal ref="modalRef" />
   </div>
 </template>
 
@@ -157,7 +150,6 @@ import type {
 import { h, reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall, wrapperColLarge } from '@/utils/layout'
 import productDrawer from './productDrawer.vue'
-import productModal from './productModal.vue'
 import { useMessage } from '@/hooks/useMessage'
 import { useMessageBox } from '@/hooks/useMessageBox'
 import { useRequest } from '@/hooks/useRequest'
@@ -242,11 +234,6 @@ const handleDelete = () => {
     type: 'error',
     message: '这是一个搓搓',
   })
-}
-
-const modalRef = ref<InstanceType<typeof productModal> | null>(null)
-const handleOpen = () => {
-  modalRef.value!.openModal()
 }
 
 const columnDefs = ref<ColDef[]>([

@@ -1,6 +1,6 @@
 import type { Menu } from '#/router'
 import { ElMenu, ElMenuItem, ElSubMenu } from 'element-plus'
-import { defineComponent, type PropType } from 'vue'
+import { computed, defineComponent, type PropType } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default defineComponent({
@@ -19,6 +19,8 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute()
+
+    const defaultActive = computed(() => route.path)
 
     const renderMenu = (menus: Menu[], parentPath = '') => {
       return menus.map((menu) => {
@@ -47,7 +49,10 @@ export default defineComponent({
                 ),
               }}
             >
-              {renderMenu(menu.children, menu.path)}
+              {renderMenu(
+                menu.children,
+                parentPath !== '' ? parentPath + '/' + menu.path : menu.path
+              )}
             </ElSubMenu>
           )
         }
@@ -59,6 +64,13 @@ export default defineComponent({
             v-slots={{
               title: () => (
                 <>
+                  {menu.icon ? (
+                    <svgIcon
+                      icon={menu.icon}
+                      size={18}
+                      color="#BFCBD9"
+                    />
+                  ) : null}
                   <span class={'ellipsis-text'}>{menu.name}</span>
                 </>
               ),
@@ -74,7 +86,7 @@ export default defineComponent({
         router
         collapse={props.collapse}
         popper-offset={8}
-        defaultActive={route.path}
+        defaultActive={defaultActive.value}
         style={{
           borderRight: 'none',
           userSelect: 'none',

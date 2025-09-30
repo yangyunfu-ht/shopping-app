@@ -63,6 +63,7 @@
               <svg-icon
                 v-if="row.icon"
                 :icon="row.icon"
+                color="#606266"
               />
             </template>
             <template #keepAliveSlot="{ row }">

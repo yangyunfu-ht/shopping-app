@@ -21,11 +21,11 @@
                 </el-form-item>
               </el-col>
               <el-col v-bind="wrapperColSmall">
-                <el-form-item label="商场编码">
+                <el-form-item label="商场电话">
                   <el-input
-                    v-model.trim="searchForm.code"
+                    v-model.trim="searchForm.phone"
                     clearable
-                    placeholder="请输入商场编码"
+                    placeholder="请输入商场电话"
                   />
                 </el-form-item>
               </el-col>
@@ -102,29 +102,25 @@ import type {
   GridApi,
   GridReadyEvent,
 } from 'ag-grid-community'
-import { onMounted, reactive, ref, shallowRef } from 'vue'
+import { reactive, ref, shallowRef } from 'vue'
 import { wrapperColSmall } from '@/utils/layout'
 import shopMallDrawer from './shopMallDrawer.vue'
 import { useMessage } from '@/hooks/useMessage'
 import { useMessageBox } from '@/hooks/useMessageBox'
 import { useRequest } from '@/hooks/useRequest'
 import { Api } from './api'
-import { dayjs } from 'element-plus'
+import logoCellRender from './logoCellRender'
 
 defineOptions({
-  name: 'roleManagement',
-})
-
-onMounted(() => {
-  getTableData()
+  name: 'shopMallList',
 })
 
 const messageBox = useMessageBox()
 const { request, loading } = useRequest()
 
 const searchForm = reactive({
-  name: '',
-  code: '',
+  name: undefined,
+  phone: undefined,
   status: null,
 })
 
@@ -141,11 +137,13 @@ const {
 const gridApi = shallowRef<GridApi<any> | null>(null)
 const onGridReady = (params: GridReadyEvent) => {
   gridApi.value = params!.api
+  getTableData()
 }
 
-const selectRow = ref([])
-const tableData = ref([])
+const selectRow = ref<any[]>([])
+const tableData = ref<any[]>([])
 const getTableData = async () => {
+  gridApi.value!.deselectAll()
   try {
     const { data, code, msg } = await request<{
       total: number
@@ -160,11 +158,13 @@ const getTableData = async () => {
       },
     })
     if (code === 0) {
-      gridApi.value!.setRowData(data?.list ?? [])
       setTotal(data?.total ?? 0)
+      tableData.value = data?.list ?? []
+      gridApi.value!.setRowData(tableData.value)
     } else {
-      gridApi.value!.setRowData([])
       setTotal(0)
+      tableData.value = []
+      gridApi.value!.setRowData(tableData.value)
       useMessage({
         message: msg,
         type: 'error',
@@ -300,17 +300,66 @@ const columnDefs = ref<ColDef[]>([
     sortable: false,
   },
   {
-    headerName: '商场编码',
-    field: 'code',
-    colId: 'code',
+    headerName: '商场logo',
+    field: 'logo',
+    colId: 'logo',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+    cellRenderer: logoCellRender,
+  },
+  {
+    headerName: '商场电话',
+    field: 'phone',
+    colId: 'phone',
     minWidth: 150,
     flex: 1,
     sortable: false,
   },
   {
-    headerName: '商场顺序',
-    field: 'sort',
-    colId: 'sort',
+    headerName: '商场简介',
+    field: 'introduction',
+    colId: 'introduction',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+  },
+  {
+    headerName: '详细地址',
+    field: 'detailAddress',
+    colId: 'detailAddress',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+  },
+  {
+    headerName: '营业开始时间',
+    field: 'openingTime',
+    colId: 'openingTime',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+  },
+  {
+    headerName: '营业结束时间',
+    field: 'closingTime',
+    colId: 'closingTime',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+  },
+  {
+    headerName: '经度',
+    field: 'longitude',
+    colId: 'longitude',
+    minWidth: 150,
+    flex: 1,
+    sortable: false,
+  },
+  {
+    headerName: '纬度',
+    field: 'latitude',
+    colId: 'latitude',
     minWidth: 150,
     flex: 1,
     sortable: false,
@@ -324,24 +373,6 @@ const columnDefs = ref<ColDef[]>([
     sortable: false,
     valueGetter: (params: ValueGetterParams) =>
       params.data.status === 0 ? '开启' : '关闭',
-  },
-  {
-    headerName: '商场备注',
-    field: 'remark',
-    colId: 'remark',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-  },
-  {
-    headerName: '创建时间',
-    field: 'createTime',
-    colId: 'createTime',
-    minWidth: 150,
-    flex: 1,
-    sortable: false,
-    valueGetter: (params: ValueGetterParams) =>
-      dayjs(params.data.createTime).format('YYYY-MM-DD HH:MM:ss'),
   },
 ])
 </script>

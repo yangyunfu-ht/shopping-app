@@ -55,6 +55,18 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
+                <!-- <el-col v-bind="wrapperColLarge">
+                  <el-form-item label="创建时间">
+                    <el-date-picker
+                      v-model="searchForm.createTime"
+                      value-format="YYYY-MM-DD HH:mm:ss"
+                      type="datetimerange"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                      class="!w-240px"
+                    />
+                  </el-form-item>
+                </el-col> -->
               </el-row>
             </el-form>
           </search-collapse>
@@ -109,6 +121,11 @@
             @click="handleAssignRoles"
             >分配角色</el-button
           >
+          <el-button
+            type="success"
+            @click="handleAssignData"
+            >分配数据权限</el-button
+          >
         </template>
 
         <template #table>
@@ -141,6 +158,12 @@
         :tree-data="treeData"
         :role-data="rolesData"
       />
+
+      <dataAssignment
+        ref="dataRef"
+        :tree-data="treeData"
+        @submit="getTableData"
+      />
     </div>
   </div>
 </template>
@@ -164,6 +187,7 @@ import { Api } from './api'
 import { buildTree, type TreeNode } from '@/utils/array'
 import { chooseFile, downloadFile } from '@/utils/file'
 import assignRoles from './assignRoles.vue'
+import dataAssignment from './dataAssignment.vue'
 
 defineOptions({
   name: 'userManagement',
@@ -277,9 +301,10 @@ const messageBox = useMessageBox()
 const { request, loading } = useRequest()
 
 const searchForm = reactive({
-  username: '',
-  mobile: '',
+  username: undefined,
+  mobile: undefined,
   status: null,
+  // createTime: [],
 })
 
 const {
@@ -300,6 +325,7 @@ const onGridReady = (params: GridReadyEvent) => {
 const selectRow = ref([])
 const tableData = ref<any>([])
 const getTableData = async (deptId = null) => {
+  gridApi.value!.deselectAll()
   try {
     const { data, code, msg } = await request<{
       total: number
@@ -308,10 +334,10 @@ const getTableData = async (deptId = null) => {
       url: Api.list,
       method: 'get',
       params: {
-        ...searchForm,
         deptId,
         pageNo: currentPage.value,
         pageSize: pageSize.value,
+        ...searchForm,
       },
     })
     if (code === 0) {
@@ -500,6 +526,24 @@ const handleAssignRoles = () => {
   }
   const [{ username, id, deptId }] = selectRow.value
   assignRef.value!.openDrawer(username, id, deptId)
+}
+
+const dataRef = ref<InstanceType<typeof dataAssignment>>()
+const handleAssignData = async () => {
+  if (selectRow.value.length !== 1) {
+    messageBox.confirm({
+      message: '请选择一条用户信息数据',
+      title: '提示',
+      options: {
+        showCancelButton: false,
+        showConfirmButton: false,
+        type: 'warning',
+      },
+    })
+    return
+  }
+  const [{ username, id, deptId, dataScopeMarketIds }] = selectRow.value
+  dataRef.value!.openDrawer(username, id, deptId, dataScopeMarketIds)
 }
 
 const columnDefs = ref<ColDef[]>([
