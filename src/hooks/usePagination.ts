@@ -11,8 +11,8 @@ import { ref } from 'vue'
 export function usePagination(options: UsePaginationOptions) {
   const {
     initialPage = 1,
-    initialPageSize = 100,
-    initialPageSizes = [100, 200, 300, 400, 500],
+    initialPageSize = 50,
+    initialPageSizes = [10, 20, 30, 40, 50, 100],
   } = options
 
   // 核心状态
